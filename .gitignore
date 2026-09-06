@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables (NEVER commit this!)
+.env
+.env.local
+.env.*.local
+
+# Firebase
+.firebase/
+
+# Editor
+.DS_Store
+*.log
+.vscode/
+.idea/
