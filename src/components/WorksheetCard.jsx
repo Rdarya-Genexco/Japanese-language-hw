@@ -22,11 +22,11 @@ export default function WorksheetCard({ worksheet, onClick, onDelete, onPrint, o
 
   return (
     <div
-      className="group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden"
+      className="group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
       onClick={onClick}
     >
       {/* Coloured accent stripe */}
-      <div className={`h-1.5 w-full ${isPdf ? 'bg-gradient-to-r from-rose-400 to-pink-500' : 'bg-gradient-to-r from-blue-400 to-violet-500'}`} />
+      <div className={`h-1.5 w-full rounded-t-2xl ${isPdf ? 'bg-gradient-to-r from-rose-400 to-pink-500' : 'bg-gradient-to-r from-blue-400 to-violet-500'}`} />
 
       <div className="p-4 flex items-start gap-3">
         {/* Icon */}
