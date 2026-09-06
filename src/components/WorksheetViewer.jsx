@@ -1,11 +1,12 @@
-import { useRef } from 'react'
-import { X, Printer, FileDown, Trash2 } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { X, Printer, FileDown, Trash2, Loader2 } from 'lucide-react'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import { useLang } from '../contexts/LanguageContext'
 
 export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   const { t, langCode } = useLang()
   const iframeRef = useRef(null)
+  const [busy, setBusy] = useState(null) // 'pdf' | 'docx' | 'print' | null
 
   const { name, worksheetData, worksheetHtml, createdAt } = worksheet
   const isHtml = !!worksheetHtml
@@ -20,31 +21,59 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
 
   // ── Actions ───────────────────────────────────────────────────────────────
 
-  function handlePrint() {
-    if (isHtml) {
-      const win = window.open('', '_blank')
-      win.document.write(worksheetHtml)
-      win.document.close()
-      win.focus()
-      setTimeout(() => win.print(), 600)
-    } else {
-      openPrintView(worksheetData)
+  async function handlePrint() {
+    if (busy) return
+    setBusy('print')
+    try {
+      if (isHtml) {
+        const win = window.open('', '_blank')
+        if (!win) { alert('Please allow popups for this site and try again.'); return }
+        win.document.write(worksheetHtml)
+        win.document.close()
+        win.focus()
+        setTimeout(() => win.print(), 800)
+      } else {
+        openPrintView(worksheetData)
+      }
+    } catch (err) {
+      console.error(err)
+      alert('Print failed: ' + err.message)
+    } finally {
+      setBusy(null)
     }
   }
 
-  function handlePdf() {
-    if (isHtml) {
-      downloadAsPdfFromHtml(worksheetHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
-    } else {
-      downloadAsPdf(worksheetData)
+  async function handlePdf() {
+    if (busy) return
+    setBusy('pdf')
+    try {
+      if (isHtml) {
+        await downloadAsPdfFromHtml(worksheetHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
+      } else {
+        await downloadAsPdf(worksheetData)
+      }
+    } catch (err) {
+      console.error(err)
+      alert('PDF download failed: ' + err.message)
+    } finally {
+      setBusy(null)
     }
   }
 
-  function handleDocx() {
-    if (isHtml) {
-      downloadAsDocxFromHtml(worksheetHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
-    } else {
-      downloadAsDocx(worksheetData)
+  async function handleDocx() {
+    if (busy) return
+    setBusy('docx')
+    try {
+      if (isHtml) {
+        await downloadAsDocxFromHtml(worksheetHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
+      } else {
+        await downloadAsDocx(worksheetData)
+      }
+    } catch (err) {
+      console.error(err)
+      alert('Word download failed: ' + err.message)
+    } finally {
+      setBusy(null)
     }
   }
 
@@ -87,25 +116,32 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
           <div className="flex gap-2 mt-4">
             <button
               onClick={handlePdf}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-white text-violet-700 hover:bg-violet-50 px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center shadow-sm"
+              disabled={!!busy}
+              className="flex items-center gap-1.5 text-xs font-semibold bg-white text-violet-700 hover:bg-violet-50 disabled:opacity-60 px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center shadow-sm"
             >
-              <FileDown size={13} /> PDF
+              {busy === 'pdf' ? <Loader2 size={13} className="animate-spin" /> : <FileDown size={13} />}
+              PDF
             </button>
             <button
               onClick={handleDocx}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center border border-white/20"
+              disabled={!!busy}
+              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center border border-white/20"
             >
-              <FileDown size={13} /> Word
+              {busy === 'docx' ? <Loader2 size={13} className="animate-spin" /> : <FileDown size={13} />}
+              Word
             </button>
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center border border-white/20"
+              disabled={!!busy}
+              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center border border-white/20"
             >
-              <Printer size={13} /> {t('print')}
+              {busy === 'print' ? <Loader2 size={13} className="animate-spin" /> : <Printer size={13} />}
+              {t('print')}
             </button>
             <button
               onClick={onDelete}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-rose-500/80 hover:bg-rose-500 text-white px-3 py-1.5 rounded-lg transition-colors border border-rose-400/30"
+              disabled={!!busy}
+              className="flex items-center gap-1.5 text-xs font-semibold bg-rose-500/80 hover:bg-rose-500 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors border border-rose-400/30"
               title={t('delete')}
             >
               <Trash2 size={13} />

@@ -362,9 +362,9 @@ export async function downloadAsPdfFromHtml(html, filename = 'worksheet') {
   wrap.innerHTML = body.innerHTML
   document.body.appendChild(wrap)
 
-  // Wait for fonts and layout
+  // Wait for fonts and layout — CJK/Russian Noto fonts can take 2-3 s on slow connections
   await document.fonts.ready
-  await new Promise(r => setTimeout(r, 800))
+  await new Promise(r => setTimeout(r, 1800))
 
   // html2canvas scale:2 → canvas px = DOM px × 2
   const CANVAS_SCALE = 2
