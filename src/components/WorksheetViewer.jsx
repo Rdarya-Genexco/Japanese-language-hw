@@ -119,7 +119,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
           <iframe
             ref={iframeRef}
             srcDoc={worksheetHtml}
-            sandbox="allow-same-origin allow-scripts"
+            sandbox="allow-same-origin"
             className="flex-1 w-full bg-white border-0"
             title="Worksheet"
             style={{ minHeight: 0 }}
