@@ -7,7 +7,7 @@ import {
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection,
 } from '../utils/firestoreService'
-import { openPrintView, downloadAsDocx, downloadAsPdf } from '../utils/worksheetGenerator'
+import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
 import Breadcrumb from '../components/Breadcrumb'
 import FolderCard from '../components/FolderCard'
@@ -100,8 +100,17 @@ export default function DashboardPage() {
     setWsLoading(true)
     try {
       const full = await getWorksheet(user.uid, ws.id)
-      openPrintView(full.worksheetData)
-    } catch { alert(t('loadFailed')) }
+      if (full.worksheetHtml) {
+        const win = window.open('', '_blank')
+        if (!win) { alert('Please allow popups for this site and try again.'); return }
+        win.document.write(full.worksheetHtml)
+        win.document.close()
+        win.focus()
+        setTimeout(() => win.print(), 800)
+      } else {
+        openPrintView(full.worksheetData)
+      }
+    } catch (err) { alert(t('loadFailed') + ': ' + err.message) }
     finally  { setWsLoading(false) }
   }
 
@@ -109,8 +118,12 @@ export default function DashboardPage() {
     setWsLoading(true)
     try {
       const full = await getWorksheet(user.uid, ws.id)
-      await downloadAsDocx(full.worksheetData)
-    } catch { alert(t('loadFailed')) }
+      if (full.worksheetHtml) {
+        await downloadAsDocxFromHtml(full.worksheetHtml, (ws.name || 'worksheet').replace(/\.[^.]+$/, ''))
+      } else {
+        await downloadAsDocx(full.worksheetData)
+      }
+    } catch (err) { alert(t('loadFailed') + ': ' + err.message) }
     finally  { setWsLoading(false) }
   }
 
@@ -118,8 +131,12 @@ export default function DashboardPage() {
     setWsLoading(true)
     try {
       const full = await getWorksheet(user.uid, ws.id)
-      await downloadAsPdf(full.worksheetData)
-    } catch { alert(t('loadFailed')) }
+      if (full.worksheetHtml) {
+        await downloadAsPdfFromHtml(full.worksheetHtml, (ws.name || 'worksheet').replace(/\.[^.]+$/, ''))
+      } else {
+        await downloadAsPdf(full.worksheetData)
+      }
+    } catch (err) { alert(t('loadFailed') + ': ' + err.message) }
     finally  { setWsLoading(false) }
   }
 
