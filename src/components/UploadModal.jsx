@@ -49,8 +49,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
     try {
       const { data, mimeType } = await parseFile(file)
       setCurrentStep(1)
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || ''
-      if (!apiKey) throw new Error('No Gemini API key configured. Set VITE_GEMINI_API_KEY in .env.local.')
+      const apiKey = ''
       const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode)
       // worksheetData is an HTML string (new pipeline) or a plain object (legacy)
       if (worksheetData && typeof worksheetData === 'object') {
