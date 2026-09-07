@@ -7,7 +7,7 @@
  *   users/{uid}/config/settings   — per-user config (Gemini API key etc.)
  */
 import {
-  restAdd, restGet, restSet, restUpdate, restDelete, restQuery,
+  restAdd, restGet, restSet, restUpdate, restDelete, restQuery, restList,
 } from './firestoreREST'
 
 // ── Connectivity test ──────────────────────────────────────────────────────────
@@ -58,6 +58,12 @@ export async function createFolder(uid, parentId, name) {
 export async function getFolders(uid, parentId = 'root') {
   const pid = (!parentId || parentId === 'undefined') ? 'root' : parentId
   const docs = await restQuery(`users/${uid}/folders`, 'parentId', pid)
+  return docs.map(d => ({ ...d, createdAt: makeCreatedAt(d.createdAt) }))
+}
+
+/** Get ALL folders for a user (flat list, any depth) — used for Move To picker. */
+export async function getAllFolders(uid) {
+  const docs = await restList(`users/${uid}/folders`)
   return docs.map(d => ({ ...d, createdAt: makeCreatedAt(d.createdAt) }))
 }
 

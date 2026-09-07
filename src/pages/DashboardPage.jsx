@@ -5,7 +5,7 @@ import { useLang } from '../contexts/LanguageContext'
 import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
-  renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
+  renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet, getAllFolders,
 } from '../utils/firestoreService'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
@@ -15,6 +15,7 @@ import WorksheetCard from '../components/WorksheetCard'
 import UploadModal from '../components/UploadModal'
 import NewFolderModal from '../components/NewFolderModal'
 import WorksheetViewer from '../components/WorksheetViewer'
+import MoveToModal from '../components/MoveToModal'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw } from 'lucide-react'
 
@@ -40,6 +41,7 @@ export default function DashboardPage() {
   const [isDragging,      setIsDragging]      = useState(false)
   const [dragOverFolderId, setDragOverFolderId] = useState(null)
   const [touchPos,         setTouchPos]         = useState(null)
+  const [moveToWorksheet,  setMoveToWorksheet]  = useState(null) // {id, name}
 
   // ── Load folder contents ──────────────────────────────────────────────────
   const load = useCallback(async () => {
@@ -211,7 +213,11 @@ export default function DashboardPage() {
 
         {/* Breadcrumb + action buttons */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-          <Breadcrumb items={breadcrumb} />
+          <Breadcrumb
+            items={breadcrumb}
+            isDragTarget={isDragging}
+            onDropWorksheet={handleMoveWorksheet}
+          />
           <div className="flex items-center gap-2">
             <button onClick={() => setShowNewFolder(true)} className="btn-secondary text-sm">
               <FolderPlus size={16} /> {t('newFolder')}
@@ -323,6 +329,7 @@ export default function DashboardPage() {
                       onTouchDragStart={handleTouchDragStart}
                       onTouchDragMove={handleTouchDragMove}
                       onTouchDragEnd={handleTouchDragEnd}
+                      onMoveTo={() => setMoveToWorksheet({ id: ws.id, name: ws.name })}
                     />
                   ))}
                 </div>
@@ -351,6 +358,16 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {moveToWorksheet && (
+        <MoveToModal
+          uid={user.uid}
+          worksheetName={moveToWorksheet.name}
+          currentFolderId={folderId}
+          onMove={(targetFolderId) => handleMoveWorksheet(moveToWorksheet.id, targetFolderId)}
+          onClose={() => setMoveToWorksheet(null)}
+        />
+      )}
 
       {showUpload && (
         <UploadModal

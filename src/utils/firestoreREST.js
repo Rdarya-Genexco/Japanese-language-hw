@@ -144,6 +144,20 @@ export async function restDelete(collection, id) {
   if (!res.ok && res.status !== 404) throw new Error(`Delete failed: ${res.status}`)
 }
 
+/** List ALL documents in a collection (no filter). */
+export async function restList(collection) {
+  const t = await token()
+  const res = await fetch(`${BASE}/${collection}`, {
+    headers: { Authorization: `Bearer ${t}` },
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err?.error?.message || `List failed: ${res.status}`)
+  }
+  const data = await res.json()
+  return (data.documents || []).map(fromDoc)
+}
+
 /** Query a collection by a single field equality filter. */
 export async function restQuery(collection, field, value) {
   const parts = collection.split('/')
