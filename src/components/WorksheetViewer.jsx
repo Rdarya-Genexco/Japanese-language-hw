@@ -78,11 +78,17 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   }
 
   // ── Display name for header ────────────────────────────────────────────────
-  const displayTitle = isHtml ? name : (title || name)
+  function decodeHtml(str) {
+    if (!str) return str
+    const el = document.createElement('textarea')
+    el.innerHTML = str
+    return el.value
+  }
+  const displayTitle = decodeHtml(isHtml ? name : (title || name))
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-6xl max-h-[96vh] flex flex-col overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:w-[95vw] max-w-none max-h-[97vh] flex flex-col overflow-hidden">
 
         {/* Gradient header */}
         <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 px-5 pt-5 pb-4 flex-shrink-0">
