@@ -2,9 +2,10 @@ import { useState, useRef, useEffect } from 'react'
 import { FileText, MoreVertical, Download, Printer, Trash2, Eye } from 'lucide-react'
 import { useLang } from '../contexts/LanguageContext'
 
-export default function WorksheetCard({ worksheet, onClick, onDelete, onPrint, onDocx, onPdf }) {
+export default function WorksheetCard({ worksheet, onClick, onDelete, onPrint, onDocx, onPdf, onDragStart, onDragEnd }) {
   const { t, langCode } = useLang()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [dragging, setDragging] = useState(false)
   const menuRef = useRef(null)
 
   useEffect(() => {
@@ -20,9 +21,27 @@ export default function WorksheetCard({ worksheet, onClick, onDelete, onPrint, o
   const date = createdAt?.toDate?.()?.toLocaleDateString(locale) || '—'
   const isPdf = originalFileType === 'pdf'
 
+  const handleDragStart = (e) => {
+    setDragging(true)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('worksheetId', worksheet.id)
+    e.dataTransfer.setData('worksheetName', name || '')
+    onDragStart?.()
+  }
+
+  const handleDragEnd = () => {
+    setDragging(false)
+    onDragEnd?.()
+  }
+
   return (
     <div
-      className="group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      className={`group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-grab active:cursor-grabbing select-none ${
+        dragging ? 'opacity-40 scale-95 shadow-none' : ''
+      }`}
       onClick={onClick}
     >
       {/* Coloured accent stripe */}

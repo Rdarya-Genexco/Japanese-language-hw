@@ -18,9 +18,10 @@ function palette(id = '') {
   return PALETTES[h % PALETTES.length]
 }
 
-export default function FolderCard({ folder, onClick, onDelete, onRename }) {
+export default function FolderCard({ folder, onClick, onDelete, onRename, isDragTarget, onDropWorksheet }) {
   const { t } = useLang()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [dragOver, setDragOver] = useState(false)
   const menuRef = useRef(null)
   const p = palette(folder.id)
 
@@ -32,14 +33,44 @@ export default function FolderCard({ folder, onClick, onDelete, onRename }) {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  const handleDragOver = (e) => {
+    if (!isDragTarget) return
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setDragOver(true)
+  }
+
+  const handleDragLeave = () => setDragOver(false)
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setDragOver(false)
+    const worksheetId = e.dataTransfer.getData('worksheetId')
+    if (worksheetId) onDropWorksheet?.(worksheetId, folder.id)
+  }
+
   return (
     <div
-      className={`group relative rounded-2xl border hover:shadow-lg transition-all duration-200 cursor-pointer p-4 flex flex-col items-center text-center gap-2 hover:-translate-y-0.5 ${p.card}`}
+      className={`group relative rounded-2xl border hover:shadow-lg transition-all duration-200 cursor-pointer p-4 flex flex-col items-center text-center gap-2 hover:-translate-y-0.5 ${p.card} ${
+        dragOver ? 'ring-2 ring-violet-400 ring-offset-2 scale-105 shadow-xl brightness-95' : ''
+      }`}
       onClick={onClick}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
     >
+      {/* Drop hint */}
+      {dragOver && (
+        <div className="absolute inset-0 rounded-2xl bg-violet-400/10 flex items-center justify-center pointer-events-none z-10">
+          <span className="text-xs font-bold text-violet-600 dark:text-violet-300 bg-white/80 dark:bg-slate-800/80 px-2 py-1 rounded-lg shadow">
+            Move here
+          </span>
+        </div>
+      )}
+
       {/* Folder icon */}
       <div className="relative mt-1">
-        <Folder className={`w-12 h-12 ${p.icon}`} fill="currentColor" fillOpacity={0.25} strokeWidth={1.5} />
+        <Folder className={`w-12 h-12 ${p.icon} transition-transform ${dragOver ? 'scale-110' : ''}`} fill="currentColor" fillOpacity={0.25} strokeWidth={1.5} />
       </div>
 
       {/* Name */}

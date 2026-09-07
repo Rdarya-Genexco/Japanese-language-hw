@@ -5,7 +5,7 @@ import { useLang } from '../contexts/LanguageContext'
 import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
-  renameFolder, buildBreadcrumb, testFirestoreConnection,
+  renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
 } from '../utils/firestoreService'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
@@ -37,6 +37,7 @@ export default function DashboardPage() {
   const [showNewFolder, setShowNewFolder] = useState(false)
   const [viewWorksheet, setViewWorksheet] = useState(null)
   const [wsLoading,     setWsLoading]    = useState(false)
+  const [isDragging,    setIsDragging]   = useState(false)
 
   // ── Load folder contents ──────────────────────────────────────────────────
   const load = useCallback(async () => {
@@ -151,6 +152,18 @@ export default function DashboardPage() {
     load()
   }
 
+  // ── Move worksheet (drag & drop) ─────────────────────────────────────────
+  const handleMoveWorksheet = async (worksheetId, targetFolderId) => {
+    if (targetFolderId === folderId) return // already in this folder
+    try {
+      await moveWorksheet(user.uid, worksheetId, targetFolderId)
+      load()
+    } catch (err) {
+      console.error('[Dashboard] moveWorksheet error', err)
+      alert('Failed to move worksheet: ' + err.message)
+    }
+  }
+
   // ── Worksheet CRUD ────────────────────────────────────────────────────────
   const handleDeleteWorksheet = async (ws) => {
     if (!window.confirm(`${t('confirmDeleteWorksheet')}\n「${ws.name}」`)) return
@@ -253,6 +266,8 @@ export default function DashboardPage() {
                       onClick={() => navigate(`/folder/${folder.id}`)}
                       onDelete={() => handleDeleteFolder(folder)}
                       onRename={() => handleRenameFolder(folder)}
+                      isDragTarget={isDragging}
+                      onDropWorksheet={handleMoveWorksheet}
                     />
                   ))}
                 </div>
@@ -276,6 +291,8 @@ export default function DashboardPage() {
                       onPrint={() => handlePrint(ws)}
                       onDocx={() => handleDocx(ws)}
                       onPdf={() => handlePdfDownload(ws)}
+                      onDragStart={() => setIsDragging(true)}
+                      onDragEnd={() => setIsDragging(false)}
                     />
                   ))}
                 </div>
