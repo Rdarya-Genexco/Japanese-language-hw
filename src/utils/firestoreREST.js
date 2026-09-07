@@ -4,7 +4,7 @@
  */
 import { auth } from '../firebase/config'
 
-const PROJECT_ID = 'lang-a63d8'
+const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
 const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/lang/documents`
 
 // ─── Auth token ──────────────────────────────────────────────────────────────

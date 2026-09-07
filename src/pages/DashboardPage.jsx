@@ -18,7 +18,7 @@ import WorksheetViewer from '../components/WorksheetViewer'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw } from 'lucide-react'
 
-const PROJECT_ID = 'lang-a63d8'
+const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
 
 export default function DashboardPage() {
   const { user }              = useAuth()
@@ -321,7 +321,7 @@ export default function DashboardPage() {
 }
 
 function buildDriveHelp(code) {
-  const PROJECT_ID = 'lang-a63d8'
+  const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
   if (code === 'db-not-created') {
     return {
       title: 'Firestore database has not been created yet',
