@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
+import { onAuthStateChanged, signInWithRedirect, getRedirectResult, signOut } from 'firebase/auth'
 import { auth, googleProvider } from '../firebase/config'
 
 const AuthContext = createContext(null)
@@ -14,6 +14,10 @@ export function AuthProvider({ children }) {
     if (typeof window !== 'undefined' && window.location.search.includes('mock=1')) {
       setUser(MOCK_USER); setLoading(false); return
     }
+
+    // Handle redirect result from Google sign-in
+    getRedirectResult(auth).catch(() => {}) // swallow — onAuthStateChanged handles the user
+
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u)
       setLoading(false)
@@ -22,12 +26,8 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider)
-    } catch (err) {
-      console.error('Sign-in error:', err)
-      throw err
-    }
+    // Use redirect instead of popup to avoid Cross-Origin-Opener-Policy issues
+    await signInWithRedirect(auth, googleProvider)
   }
 
   const logout = async () => {

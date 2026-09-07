@@ -38,14 +38,6 @@ export default function DashboardPage() {
   const [viewWorksheet, setViewWorksheet] = useState(null)
   const [wsLoading,     setWsLoading]    = useState(false)
 
-  // ── Connectivity test on mount ────────────────────────────────────────────
-  useEffect(() => {
-    testFirestoreConnection(user.uid).then(result => {
-      if (!result.ok) setDriveError({ code: result.code, message: result.message })
-      else            setDriveError(null)
-    })
-  }, [user.uid])
-
   // ── Load folder contents ──────────────────────────────────────────────────
   const load = useCallback(async () => {
     try {
