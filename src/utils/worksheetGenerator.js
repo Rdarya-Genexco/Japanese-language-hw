@@ -1,4 +1,8 @@
 import { getLang } from './languages'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx'
+import { saveAs } from 'file-saver'
 
 /**
  * Generates a print-ready bilingual HTML string from worksheet JSON.
@@ -328,11 +332,6 @@ function parseHtmlDoc(html) {
  * Renders the HTML in a hidden off-screen div, captures with html2canvas, exports via jsPDF.
  */
 export async function downloadAsPdfFromHtml(html, filename = 'worksheet') {
-  const [{ jsPDF }, { default: html2canvas }] = await Promise.all([
-    import('jspdf'),
-    import('html2canvas'),
-  ])
-
   const { css, body } = parseHtmlDoc(html)
 
   // Inject CSS + content into a hidden off-screen wrapper in the live document
@@ -474,12 +473,6 @@ export async function downloadAsPdfFromHtml(html, filename = 'worksheet') {
  * Parses the HTML DOM and maps headings / paragraphs / tables into docx constructs.
  */
 export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
-  const {
-    Document, Paragraph, TextRun, HeadingLevel, AlignmentType,
-    BorderStyle, Table, TableRow, TableCell, WidthType, Packer,
-  } = await import('docx')
-  const { saveAs } = await import('file-saver')
-
   const { body } = parseHtmlDoc(html)
   const children = []
 
@@ -640,11 +633,6 @@ export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
 // ── PDF download (html2canvas → jsPDF) ───────────────────────────────────────
 
 export async function downloadAsPdf(worksheetData) {
-  const [{ jsPDF }, { default: html2canvas }] = await Promise.all([
-    import('jspdf'),
-    import('html2canvas'),
-  ])
-
   const lang = getLang(worksheetData.language)
 
   // Inject target font into the live document if not already present
@@ -733,12 +721,6 @@ export async function downloadAsPdf(worksheetData) {
 // ── DOCX download ─────────────────────────────────────────────────────────────
 
 export async function downloadAsDocx(worksheetData) {
-  const {
-    Document, Paragraph, TextRun, HeadingLevel, AlignmentType,
-    BorderStyle, Table, TableRow, TableCell, WidthType, Packer,
-  } = await import('docx')
-  const { saveAs } = await import('file-saver')
-
   const { title, titleEn, subject, subjectEn, grade, instructions, instructionsEn, sections = [] } = worksheetData
   const lang = getLang(worksheetData.language)
   const ui = lang.ui
