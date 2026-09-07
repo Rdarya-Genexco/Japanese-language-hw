@@ -2,11 +2,17 @@ import { useState, useRef, useEffect } from 'react'
 import { FileText, MoreVertical, Download, Printer, Trash2, Eye } from 'lucide-react'
 import { useLang } from '../contexts/LanguageContext'
 
-export default function WorksheetCard({ worksheet, onClick, onDelete, onPrint, onDocx, onPdf, onDragStart, onDragEnd }) {
+export default function WorksheetCard({
+  worksheet, onClick, onDelete, onPrint, onDocx, onPdf,
+  onDragStart, onDragEnd,
+  onTouchDragStart, onTouchDragMove, onTouchDragEnd,
+}) {
   const { t, langCode } = useLang()
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [dragging, setDragging] = useState(false)
-  const menuRef = useRef(null)
+  const [menuOpen,  setMenuOpen]  = useState(false)
+  const [dragging,  setDragging]  = useState(false)
+  const menuRef  = useRef(null)
+  const cardRef  = useRef(null)
+  const touchDragging = useRef(false)
 
   useEffect(() => {
     const handler = (e) => {
@@ -16,33 +22,64 @@ export default function WorksheetCard({ worksheet, onClick, onDelete, onPrint, o
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  // ── Prevent page scroll during touch drag (must be non-passive) ───────────
+  useEffect(() => {
+    const el = cardRef.current
+    if (!el) return
+    const handleTouchMove = (e) => {
+      if (!touchDragging.current) return
+      e.preventDefault()
+      const touch = e.touches[0]
+      onTouchDragMove?.(worksheet.id, touch.clientX, touch.clientY)
+    }
+    el.addEventListener('touchmove', handleTouchMove, { passive: false })
+    return () => el.removeEventListener('touchmove', handleTouchMove)
+  }, [worksheet.id, onTouchDragMove])
+
   const { name, originalFileType, createdAt } = worksheet
   const locale = langCode === 'ja' ? 'ja-JP' : langCode === 'zh-CN' ? 'zh-CN' : langCode === 'ko' ? 'ko-KR' : 'en-US'
   const date = createdAt?.toDate?.()?.toLocaleDateString(locale) || '—'
   const isPdf = originalFileType === 'pdf'
 
+  // ── Mouse drag (desktop) ──────────────────────────────────────────────────
   const handleDragStart = (e) => {
     setDragging(true)
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('worksheetId', worksheet.id)
-    e.dataTransfer.setData('worksheetName', name || '')
     onDragStart?.()
   }
+  const handleDragEnd = () => { setDragging(false); onDragEnd?.() }
 
-  const handleDragEnd = () => {
+  // ── Touch drag (mobile) ───────────────────────────────────────────────────
+  const handleTouchStart = (e) => {
+    // Only start drag if not tapping the menu button
+    if (e.target.closest('[data-menu]')) return
+    touchDragging.current = true
+    setDragging(true)
+    const touch = e.touches[0]
+    onTouchDragStart?.(worksheet.id, touch.clientX, touch.clientY)
+  }
+
+  const handleTouchEnd = (e) => {
+    if (!touchDragging.current) return
+    touchDragging.current = false
     setDragging(false)
-    onDragEnd?.()
+    const touch = e.changedTouches[0]
+    onTouchDragEnd?.(worksheet.id, touch.clientX, touch.clientY)
   }
 
   return (
     <div
+      ref={cardRef}
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       className={`group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-grab active:cursor-grabbing select-none ${
         dragging ? 'opacity-40 scale-95 shadow-none' : ''
       }`}
-      onClick={onClick}
+      onClick={dragging ? undefined : onClick}
     >
       {/* Coloured accent stripe */}
       <div className={`h-1.5 w-full rounded-t-2xl ${isPdf ? 'bg-gradient-to-r from-rose-400 to-pink-500' : 'bg-gradient-to-r from-blue-400 to-violet-500'}`} />
@@ -69,7 +106,7 @@ export default function WorksheetCard({ worksheet, onClick, onDelete, onPrint, o
         </div>
 
         {/* Context menu */}
-        <div ref={menuRef} className="flex-shrink-0" onClick={e => e.stopPropagation()}>
+        <div data-menu ref={menuRef} className="flex-shrink-0" onClick={e => e.stopPropagation()}>
           <button
             onClick={() => setMenuOpen(v => !v)}
             className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-all"

@@ -37,7 +37,9 @@ export default function DashboardPage() {
   const [showNewFolder, setShowNewFolder] = useState(false)
   const [viewWorksheet, setViewWorksheet] = useState(null)
   const [wsLoading,     setWsLoading]    = useState(false)
-  const [isDragging,    setIsDragging]   = useState(false)
+  const [isDragging,      setIsDragging]      = useState(false)
+  const [dragOverFolderId, setDragOverFolderId] = useState(null)
+  const [touchPos,         setTouchPos]         = useState(null)
 
   // ── Load folder contents ──────────────────────────────────────────────────
   const load = useCallback(async () => {
@@ -154,7 +156,7 @@ export default function DashboardPage() {
 
   // ── Move worksheet (drag & drop) ─────────────────────────────────────────
   const handleMoveWorksheet = async (worksheetId, targetFolderId) => {
-    if (targetFolderId === folderId) return // already in this folder
+    if (!targetFolderId || targetFolderId === folderId) return
     try {
       await moveWorksheet(user.uid, worksheetId, targetFolderId)
       load()
@@ -162,6 +164,30 @@ export default function DashboardPage() {
       console.error('[Dashboard] moveWorksheet error', err)
       alert('Failed to move worksheet: ' + err.message)
     }
+  }
+
+  // ── Touch drag helpers ────────────────────────────────────────────────────
+  const handleTouchDragStart = (wsId, x, y) => {
+    setIsDragging(true)
+    setTouchPos({ x, y })
+  }
+
+  const handleTouchDragMove = (wsId, x, y) => {
+    setTouchPos({ x, y })
+    // Find the folder element under the touch point
+    const el = document.elementFromPoint(x, y)
+    const folderEl = el?.closest('[data-folder-id]')
+    setDragOverFolderId(folderEl?.dataset.folderId || null)
+  }
+
+  const handleTouchDragEnd = (wsId, x, y) => {
+    const el = document.elementFromPoint(x, y)
+    const folderEl = el?.closest('[data-folder-id]')
+    const targetFolderId = folderEl?.dataset.folderId || null
+    setIsDragging(false)
+    setDragOverFolderId(null)
+    setTouchPos(null)
+    if (targetFolderId) handleMoveWorksheet(wsId, targetFolderId)
   }
 
   // ── Worksheet CRUD ────────────────────────────────────────────────────────
@@ -267,6 +293,7 @@ export default function DashboardPage() {
                       onDelete={() => handleDeleteFolder(folder)}
                       onRename={() => handleRenameFolder(folder)}
                       isDragTarget={isDragging}
+                      dragOverFolderId={dragOverFolderId}
                       onDropWorksheet={handleMoveWorksheet}
                     />
                   ))}
@@ -291,13 +318,26 @@ export default function DashboardPage() {
                       onPrint={() => handlePrint(ws)}
                       onDocx={() => handleDocx(ws)}
                       onPdf={() => handlePdfDownload(ws)}
-                      onDragStart={() => setIsDragging(true)}
-                      onDragEnd={() => setIsDragging(false)}
+                      onDragStart={() => { setIsDragging(true); setDragOverFolderId(null) }}
+                      onDragEnd={() => { setIsDragging(false); setDragOverFolderId(null) }}
+                      onTouchDragStart={handleTouchDragStart}
+                      onTouchDragMove={handleTouchDragMove}
+                      onTouchDragEnd={handleTouchDragEnd}
                     />
                   ))}
                 </div>
               </section>
             )}
+          </div>
+        )}
+
+        {/* Touch drag floating indicator */}
+        {isDragging && touchPos && (
+          <div
+            className="fixed z-50 pointer-events-none flex items-center gap-2 bg-violet-600 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-2xl"
+            style={{ left: touchPos.x + 16, top: touchPos.y - 20 }}
+          >
+            📄 {dragOverFolderId ? '→ Move here' : 'Drag to a folder'}
           </div>
         )}
 
