@@ -88,7 +88,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:w-[95vw] max-w-none max-h-[97vh] flex flex-col overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden" style={{ width: '95vw', maxHeight: '97vh' }}>
 
         {/* Gradient header */}
         <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 px-5 pt-5 pb-4 flex-shrink-0">
