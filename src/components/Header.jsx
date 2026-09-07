@@ -41,7 +41,10 @@ export default function Header() {
           <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30 shadow-sm">
             <span className="text-lg leading-none">🌉</span>
           </div>
-          <span className="font-bold text-white hidden sm:block tracking-tight">Doc Translate</span>
+          <div className="hidden sm:flex flex-col leading-none">
+            <span className="font-bold text-white tracking-tight">Doc Translate</span>
+            <span className="text-white/60 text-[10px] font-medium tracking-wide mt-0.5">Every worksheet in your language!</span>
+          </div>
         </button>
 
         {/* Right side */}
