@@ -61,7 +61,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
     } catch (err) {
       console.error(err)
       setError(err.message || 'An error occurred. Please try again.')
-      setProcessing(false); setCurrentStep(-1)
+      setProcessing(false); setCurrentStep(-1); setDone(false)
     }
   }
 
@@ -147,9 +147,19 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
               </div>
 
               {error && (
-                <div className="mt-3 flex items-start gap-2 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3">
-                  <AlertCircle size={14} className="text-rose-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>
+                <div className="mt-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle size={14} className="text-rose-500 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>
+                  </div>
+                  {file && (
+                    <button
+                      onClick={handleProcess}
+                      className="mt-2 w-full text-xs font-semibold bg-rose-500 hover:bg-rose-600 text-white rounded-lg px-3 py-1.5 transition-colors"
+                    >
+                      ↺ {t('retry') || 'Retry'}
+                    </button>
+                  )}
                 </div>
               )}
 

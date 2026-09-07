@@ -365,8 +365,8 @@ export async function downloadAsPdfFromHtml(html, filename = 'worksheet') {
   await document.fonts.ready
   await new Promise(r => setTimeout(r, 1800))
 
-  // html2canvas scale:2 → canvas px = DOM px × 2
-  const CANVAS_SCALE = 2
+  // html2canvas scale:3 → canvas px = DOM px × 3 (sharper text/lines in PDF)
+  const CANVAS_SCALE = 3
 
   // Measure block boundaries in DOM space BEFORE rendering so we can snap
   // page breaks to the start of each question block.
