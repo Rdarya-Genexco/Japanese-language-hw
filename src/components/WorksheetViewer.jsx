@@ -77,6 +77,18 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
     }
   }
 
+  // ── Suppress print page-break artifacts in screen preview ────────────────
+  const NO_PAGEBREAK_CSS = `<style>
+    @media screen {
+      * { page-break-before: auto; page-break-after: auto;
+          page-break-inside: auto; break-before: auto;
+          break-after: auto; break-inside: auto; }
+    }
+  </style>`
+  const previewHtml = worksheetHtml
+    ? worksheetHtml.replace('</head>', NO_PAGEBREAK_CSS + '</head>')
+    : worksheetHtml
+
   // ── Display name for header ────────────────────────────────────────────────
   function decodeHtml(str) {
     if (!str) return str
@@ -160,7 +172,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
           // ── New: render Gemini-generated HTML in a sandboxed iframe ─────────
           <iframe
             ref={iframeRef}
-            srcDoc={worksheetHtml}
+            srcDoc={previewHtml}
             sandbox="allow-same-origin"
             className="flex-1 w-full bg-white border-0"
             title="Worksheet"
