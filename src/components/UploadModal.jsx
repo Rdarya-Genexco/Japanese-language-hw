@@ -6,7 +6,8 @@ import { saveWorksheet } from '../utils/firestoreService'
 import { useLang } from '../contexts/LanguageContext'
 
 const STEP_COLORS = ['bg-blue-500', 'bg-violet-500', 'bg-emerald-500']
-const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx']
+const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx', '.pptx', '.png', '.jpg', '.jpeg']
+const ACCEPTED_EXTS  = ['pdf', 'doc', 'docx', 'pptx', 'png', 'jpg', 'jpeg']
 
 export default function UploadModal({ uid, folderId, onClose, onComplete }) {
   const { langCode, lang, t } = useLang()
@@ -27,7 +28,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
 
   const handleFile = (f) => {
     const ext = f.name.split('.').pop().toLowerCase()
-    if (!['pdf', 'doc', 'docx'].includes(ext)) {
+    if (!ACCEPTED_EXTS.includes(ext)) {
       setError(t('wrongFile'))
       return
     }
@@ -65,7 +66,8 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
     }
   }
 
-  const ext = file?.name?.split('.').pop().toLowerCase()
+  const ext  = file?.name?.split('.').pop().toLowerCase()
+  const isImg = ext === 'png' || ext === 'jpg' || ext === 'jpeg'
   const isProcessing = processing && !done
 
   return (
@@ -115,9 +117,17 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                 {file ? (
                   <div className="flex flex-col items-center gap-2">
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                      ext === 'pdf' ? 'bg-rose-100 dark:bg-rose-900/30' : 'bg-blue-100 dark:bg-blue-900/30'
+                      ext === 'pdf'    ? 'bg-rose-100 dark:bg-rose-900/30'
+                      : ext === 'pptx' ? 'bg-orange-100 dark:bg-orange-900/30'
+                      : isImg          ? 'bg-emerald-100 dark:bg-emerald-900/30'
+                      : 'bg-blue-100 dark:bg-blue-900/30'
                     }`}>
-                      <FileText className={ext === 'pdf' ? 'text-rose-500' : 'text-blue-500'} size={24} strokeWidth={1.5} />
+                      <FileText className={
+                        ext === 'pdf'    ? 'text-rose-500'
+                        : ext === 'pptx' ? 'text-orange-500'
+                        : isImg          ? 'text-emerald-500'
+                        : 'text-blue-500'
+                      } size={24} strokeWidth={1.5} />
                     </div>
                     <p className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{file.name}</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">{(file.size / 1024).toFixed(0)} KB</p>
@@ -139,7 +149,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                         {t('orBrowse')}
                       </p>
                     </div>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">PDF · DOCX · max 20 MB</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">PDF · DOCX · PPTX · PNG · JPG · max 20 MB</p>
                   </div>
                 )}
                 <input ref={fileInputRef} type="file" accept={ACCEPTED_TYPES.join(',')} className="hidden"

@@ -151,10 +151,17 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
   const contentParts = []
   contentParts.push({ text: prompt })
 
-  if (mimeType === 'application/pdf' && fileData instanceof ArrayBuffer) {
-    // Send raw PDF bytes — Gemini can read layout, tables, images natively
+  const BINARY_MIME_TYPES = [
+    'application/pdf',
+    'image/png',
+    'image/jpeg',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  ]
+
+  if (BINARY_MIME_TYPES.includes(mimeType) && fileData instanceof ArrayBuffer) {
+    // Send raw bytes inline — Gemini reads PDF, images and PPTX natively
     const b64 = arrayBufferToBase64(fileData)
-    contentParts.push({ inline_data: { mime_type: 'application/pdf', data: b64 } })
+    contentParts.push({ inline_data: { mime_type: mimeType, data: b64 } })
   } else if (mimeType === 'text/html') {
     // DOCX converted to HTML by mammoth — tell Gemini it's HTML markup so it
     // reads tables, headings, bold/italic properly instead of treating it as prose
