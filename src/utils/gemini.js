@@ -286,6 +286,17 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
       }
     }
 
+    // Strip any leftover [WORKSHEET_IMAGE] placeholders.
+    // Gemini may output them even for non-image inputs (PDFs/DOCXs with embedded
+    // images) because the rule is always in the system prompt. When we never
+    // injected a real dataUri the placeholder ends up as a literal src value →
+    // broken image icon. Remove the whole <img> tag (not just the text) so
+    // nothing renders rather than a broken icon.
+    if (rawText.includes('[WORKSHEET_IMAGE]')) {
+      rawText = rawText.replace(/<img\b[^>]*\[WORKSHEET_IMAGE\][^>]*>/gi, '')
+      rawText = rawText.replace(/\[WORKSHEET_IMAGE\]/g, '')
+    }
+
     return rawText  // HTML string
   }
 
