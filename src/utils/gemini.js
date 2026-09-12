@@ -87,6 +87,8 @@ IMAGE EMBEDDING RULE (applies when the source is a photo or image file):
 • The placeholder [WORKSHEET_IMAGE] will be replaced with the real image automatically — do NOT write a data URI yourself
 • Do NOT wrap it in a gray div or write [Photo A: …] alt-text descriptions in brackets
 
+DOCX EMBEDDED IMAGES: The source HTML may contain <img src="[DOCX_IMAGE_0]">, <img src="[DOCX_IMAGE_1]">, etc. where embedded images were. You MUST keep these <img> tags exactly as-is in your output — same src value, same position in the document. Do not remove, rename, or modify them.
+
 OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
 }
 
@@ -148,6 +150,38 @@ Output a single complete self-contained HTML document — nothing else.
 
 --- DOCUMENT CONTENT BELOW ---
 `
+}
+
+// ── DOCX image extraction ─────────────────────────────────────────────────────
+
+/**
+ * Strip base64 data URIs out of <img> tags in DOCX-converted HTML and replace
+ * them with numbered placeholders so Gemini doesn't see (or drop) large blobs.
+ *
+ * Returns { strippedHtml, imageUris } where imageUris[N] is the original data
+ * URI for placeholder [DOCX_IMAGE_N].
+ */
+function extractDocxImages(html) {
+  const imageUris = []
+  const strippedHtml = html.replace(
+    /<img(\s[^>]*)?\bsrc\s*=\s*"(data:[^"]+)"([^>]*)>/gi,
+    (fullTag, before = '', dataUri, after = '') => {
+      const idx = imageUris.length
+      imageUris.push(dataUri)
+      // Keep the img tag but replace the src with the placeholder text
+      return `<img${before} src="[DOCX_IMAGE_${idx}]"${after}>`
+    }
+  )
+  return { strippedHtml, imageUris }
+}
+
+/**
+ * Re-inject extracted data URIs back into translated HTML by replacing
+ * [DOCX_IMAGE_N] markers with the original base64 strings.
+ */
+function reInjectDocxImages(html, imageUris) {
+  return imageUris.reduce((h, uri, idx) =>
+    h.replace(new RegExp(`\\[DOCX_IMAGE_${idx}\\]`, 'g'), uri), html)
 }
 
 // ── Gemini API ────────────────────────────────────────────────────────────────
@@ -212,6 +246,17 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     ? `Translate the worksheet instructions in this image into ${lang.name}. Show the image first, then list only the translated instruction/direction lines below it.`
     : buildHtmlPrompt(lang)
 
+  // For DOCX (text/html): strip embedded base64 images out before sending to Gemini.
+  // Gemini ignores / drops large base64 blobs in plain text — we replace them with
+  // numbered placeholders and re-inject after translation.
+  let docxImageUris = []
+  let processedFileData = fileData
+  if (mimeType === 'text/html') {
+    const { strippedHtml, imageUris } = extractDocxImages(String(fileData))
+    processedFileData = strippedHtml
+    docxImageUris = imageUris
+  }
+
   // Build content parts: prompt text + file data
   const contentParts = []
   contentParts.push({ text: prompt })
@@ -239,12 +284,12 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     const b64 = arrayBufferToBase64(fileData)
     contentParts.push({ inline_data: { mime_type: mimeType, data: b64 } })
   } else if (mimeType === 'text/html') {
-    // DOCX converted to HTML by mammoth — tell Gemini it's HTML markup so it
-    // reads tables, headings, bold/italic properly instead of treating it as prose
-    contentParts.push({ text: 'The worksheet content below is HTML extracted from a Word document. Read all structural elements (tables, headings, lists, bold text) as part of the worksheet layout:\n\n' + String(fileData) })
+    // DOCX converted to HTML by mammoth — images already extracted above.
+    // Tell Gemini it's HTML markup so it reads tables, headings, bold/italic properly.
+    contentParts.push({ text: 'The worksheet content below is HTML extracted from a Word document. Read all structural elements (tables, headings, lists, bold text, and [DOCX_IMAGE_N] image placeholders) as part of the worksheet layout:\n\n' + processedFileData })
   } else {
     // Plain text fallback
-    contentParts.push({ text: String(fileData) })
+    contentParts.push({ text: String(processedFileData) })
   }
 
   const body = {
@@ -318,6 +363,12 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     // (no allow-scripts) so scripts would be blocked and Chrome logs a violation.
     // Worksheets never need JS; removing it keeps the CSP clean.
     rawText = rawText.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+
+    // Re-inject DOCX embedded images — replace [DOCX_IMAGE_N] placeholders with
+    // the original base64 data URIs that were extracted before sending to Gemini.
+    if (docxImageUris.length > 0) {
+      rawText = reInjectDocxImages(rawText, docxImageUris)
+    }
 
     // Strip any leftover [WORKSHEET_IMAGE] placeholders from non-image inputs.
     // Gemini may output them even for PDFs/DOCXs because the rule is always in
