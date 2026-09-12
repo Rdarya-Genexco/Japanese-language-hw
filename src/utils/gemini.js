@@ -265,8 +265,23 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
           // Gemini used the placeholder — swap it in
           rawText = rawText.replace(/\[WORKSHEET_IMAGE\]/g, dataUri)
         } else {
-          // Fallback: prepend at the very top of <body> (case-insensitive)
-          rawText = rawText.replace(/<body([^>]*)>/i, `<body$1>\n${wrapper}`)
+          // Inject right after the opening <body ...> tag.
+          // Use indexOf (never fails) instead of a regex that can silently produce no-op.
+          const lc = rawText.toLowerCase()
+          const bodyStart = lc.indexOf('<body')
+          if (bodyStart !== -1) {
+            const bodyEnd = rawText.indexOf('>', bodyStart)
+            if (bodyEnd !== -1) {
+              // Insert immediately after the closing > of <body ...>
+              rawText = rawText.slice(0, bodyEnd + 1) + '\n' + wrapper + rawText.slice(bodyEnd + 1)
+            } else {
+              // Malformed tag — prepend to whole document
+              rawText = wrapper + rawText
+            }
+          } else {
+            // No <body> tag at all — prepend to whole document
+            rawText = wrapper + rawText
+          }
         }
       }
     }
