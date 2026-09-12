@@ -73,16 +73,22 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
       setCurrentStep(1)
       const apiKey = ''
 
-      // For image files, generate a compressed thumbnail for embedding in the HTML
-      // (Firestore docs have a 1MB limit — raw images blow past it; compressed JPEG stays ~50–100KB)
-      let thumbnailDataUri = null
+      // For image files, generate two thumbnails:
+      //  • geminiThumb  — small (500px, 60 %) sent to Gemini API to minimise request size and avoid timeouts
+      //  • embedThumb   — quality (800px, 72 %) embedded in the HTML output for the viewer
+      // Firestore's 1 MB doc limit is the constraint for embedThumb; geminiThumb just needs to be legible.
+      let geminiThumb = null
+      let embedThumb  = null
       const imgExts = ['png', 'jpg', 'jpeg']
       const fileExt  = file.name.split('.').pop().toLowerCase()
       if (imgExts.includes(fileExt)) {
-        thumbnailDataUri = await compressImage(file, 800, 0.72)
+        ;[geminiThumb, embedThumb] = await Promise.all([
+          compressImage(file, 500, 0.60),
+          compressImage(file, 800, 0.72),
+        ])
       }
 
-      const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode, thumbnailDataUri)
+      const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode, geminiThumb, embedThumb)
       // worksheetData is an HTML string (new pipeline) or a plain object (legacy)
       if (worksheetData && typeof worksheetData === 'object') {
         worksheetData.language = worksheetData.language || langCode

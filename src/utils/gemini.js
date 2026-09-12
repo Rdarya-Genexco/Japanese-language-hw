@@ -112,7 +112,7 @@ const MODEL_CHAIN = [
   'gemini-3.1-pro',
 ]
 
-const TIMEOUT_MS = 180_000 // 3 min — PDF+HTML is heavier than JSON
+const TIMEOUT_MS = 300_000 // 5 min — PDF+HTML is heavier than JSON; large files need extra headroom
 
 async function callGemini(model, body, apiKey) {
   const url = `${GEMINI_BASE}/${model}:generateContent?key=${apiKey}`
@@ -145,7 +145,7 @@ async function callGemini(model, body, apiKey) {
  * @param {string} langCode             Target language code, e.g. 'ja', 'en', 'fr'
  * @returns {Promise<string>}           Self-contained HTML document
  */
-export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja', thumbnailDataUri = null) {
+export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja', thumbnailDataUri = null, embedThumbnailDataUri = null) {
   if (!apiKey) apiKey = DEFAULT_API_KEY
 
   const lang = getLang(langCode)
@@ -252,7 +252,9 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     // Fall back to raw bytes only if no thumbnail was provided.
     const IMAGE_MIME_TYPES = ['image/png', 'image/jpeg']
     if (IMAGE_MIME_TYPES.includes(mimeType)) {
-      const dataUri = thumbnailDataUri ||
+      // Prefer the full-quality embed thumbnail for display; fall back to the
+      // (smaller) Gemini-input thumbnail, then raw bytes as last resort.
+      const dataUri = embedThumbnailDataUri || thumbnailDataUri ||
         (fileData instanceof ArrayBuffer
           ? `data:${mimeType};base64,${arrayBufferToBase64(fileData)}`
           : null)
