@@ -82,6 +82,11 @@ TRANSLATION RULES:
 • Keep question labels exactly: "a)", "b)", "1.", "(i)", etc.
 • A question with sub-parts a) b) c) is ONE question — keep all sub-parts in one block
 
+IMAGE EMBEDDING RULE (applies when the source is a photo or image file):
+• Wherever the source image/photo belongs in the layout, output this EXACT tag — nothing else, no gray box, no bracket description: <img src="[WORKSHEET_IMAGE]" class="ws-photo" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 12pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+• The placeholder [WORKSHEET_IMAGE] will be replaced with the real image automatically — do NOT write a data URI yourself
+• Do NOT wrap it in a gray div or write [Photo A: …] alt-text descriptions in brackets
+
 OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
 }
 
@@ -229,6 +234,22 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     if (!rawText.includes('<html') && !rawText.includes('<!DOCTYPE')) {
       // Wrap bare content in a minimal document
       rawText = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:system-ui,sans-serif;max-width:800px;margin:0 auto;padding:24px 32px;color:#111}p{white-space:pre-wrap}</style></head><body>${rawText}</body></html>`
+    }
+
+    // For image uploads: inject the actual photo into the HTML output
+    const IMAGE_MIME_TYPES = ['image/png', 'image/jpeg']
+    if (IMAGE_MIME_TYPES.includes(mimeType) && fileData instanceof ArrayBuffer) {
+      const b64     = arrayBufferToBase64(fileData)
+      const dataUri = `data:${mimeType};base64,${b64}`
+      const imgTag  = `<img src="${dataUri}" class="ws-photo" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 12pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);">`
+
+      if (rawText.includes('[WORKSHEET_IMAGE]')) {
+        // Gemini used the placeholder — swap it in
+        rawText = rawText.replace(/\[WORKSHEET_IMAGE\]/g, dataUri)
+      } else {
+        // Fallback: prepend the image at the very top of <body>
+        rawText = rawText.replace(/<body([^>]*)>/, `<body$1>\n<div style="text-align:center;margin-bottom:16pt">${imgTag}</div>`)
+      }
     }
 
     return rawText  // HTML string
