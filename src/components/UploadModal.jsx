@@ -5,6 +5,27 @@ import { processWorksheetWithGemini } from '../utils/gemini'
 import { saveWorksheet } from '../utils/firestoreService'
 import { useLang } from '../contexts/LanguageContext'
 
+/** Compress an image File to a JPEG data URI at max `maxPx` on the longest side. */
+function compressImage(file, maxPx = 800, quality = 0.72) {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      const scale = Math.min(1, maxPx / Math.max(img.width, img.height))
+      const w = Math.round(img.width  * scale)
+      const h = Math.round(img.height * scale)
+      const canvas = document.createElement('canvas')
+      canvas.width  = w
+      canvas.height = h
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+      URL.revokeObjectURL(url)
+      resolve(canvas.toDataURL('image/jpeg', quality))
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null) }
+    img.src = url
+  })
+}
+
 const STEP_COLORS = ['bg-blue-500', 'bg-violet-500', 'bg-emerald-500']
 const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg']
 const ACCEPTED_EXTS  = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg']
@@ -51,7 +72,17 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
       const { data, mimeType } = await parseFile(file)
       setCurrentStep(1)
       const apiKey = ''
-      const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode)
+
+      // For image files, generate a compressed thumbnail for embedding in the HTML
+      // (Firestore docs have a 1MB limit — raw images blow past it; compressed JPEG stays ~50–100KB)
+      let thumbnailDataUri = null
+      const imgExts = ['png', 'jpg', 'jpeg']
+      const fileExt  = file.name.split('.').pop().toLowerCase()
+      if (imgExts.includes(fileExt)) {
+        thumbnailDataUri = await compressImage(file, 800, 0.72)
+      }
+
+      const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode, thumbnailDataUri)
       // worksheetData is an HTML string (new pipeline) or a plain object (legacy)
       if (worksheetData && typeof worksheetData === 'object') {
         worksheetData.language = worksheetData.language || langCode

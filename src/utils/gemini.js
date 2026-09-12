@@ -145,7 +145,7 @@ async function callGemini(model, body, apiKey) {
  * @param {string} langCode             Target language code, e.g. 'ja', 'en', 'fr'
  * @returns {Promise<string>}           Self-contained HTML document
  */
-export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja') {
+export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja', thumbnailDataUri = null) {
   if (!apiKey) apiKey = DEFAULT_API_KEY
 
   const lang = getLang(langCode)
@@ -236,19 +236,27 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
       rawText = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:system-ui,sans-serif;max-width:800px;margin:0 auto;padding:24px 32px;color:#111}p{white-space:pre-wrap}</style></head><body>${rawText}</body></html>`
     }
 
-    // For image uploads: inject the actual photo into the HTML output
+    // For image uploads: inject the photo into the HTML output.
+    // Use the pre-compressed thumbnail (passed in) to stay well under Firestore's 1MB doc limit.
+    // Fall back to raw bytes only if no thumbnail was provided.
     const IMAGE_MIME_TYPES = ['image/png', 'image/jpeg']
-    if (IMAGE_MIME_TYPES.includes(mimeType) && fileData instanceof ArrayBuffer) {
-      const b64     = arrayBufferToBase64(fileData)
-      const dataUri = `data:${mimeType};base64,${b64}`
-      const imgTag  = `<img src="${dataUri}" class="ws-photo" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 12pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);">`
+    if (IMAGE_MIME_TYPES.includes(mimeType)) {
+      const dataUri = thumbnailDataUri ||
+        (fileData instanceof ArrayBuffer
+          ? `data:${mimeType};base64,${arrayBufferToBase64(fileData)}`
+          : null)
 
-      if (rawText.includes('[WORKSHEET_IMAGE]')) {
-        // Gemini used the placeholder — swap it in
-        rawText = rawText.replace(/\[WORKSHEET_IMAGE\]/g, dataUri)
-      } else {
-        // Fallback: prepend the image at the very top of <body>
-        rawText = rawText.replace(/<body([^>]*)>/, `<body$1>\n<div style="text-align:center;margin-bottom:16pt">${imgTag}</div>`)
+      if (dataUri) {
+        const imgTag = `<img src="${dataUri}" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 12pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);">`
+        const wrapper = `<div style="text-align:center;margin-bottom:16pt">${imgTag}</div>`
+
+        if (rawText.includes('[WORKSHEET_IMAGE]')) {
+          // Gemini used the placeholder — swap it in
+          rawText = rawText.replace(/\[WORKSHEET_IMAGE\]/g, dataUri)
+        } else {
+          // Fallback: prepend at the very top of <body> (case-insensitive)
+          rawText = rawText.replace(/<body([^>]*)>/i, `<body$1>\n${wrapper}`)
+        }
       }
     }
 
