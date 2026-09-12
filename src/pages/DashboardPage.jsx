@@ -6,7 +6,7 @@ import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet, getAllFolders,
-} from '../utils/firestoreService'
+} from '../utils/storageService'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
 import Breadcrumb from '../components/Breadcrumb'

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut } from 'firebase/auth'
+import { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, signInAnonymously } from 'firebase/auth'
 import { auth, googleProvider } from '../firebase/config'
 
 const AuthContext = createContext(null)
@@ -44,8 +44,12 @@ export function AuthProvider({ children }) {
     await signOut(auth)
   }
 
+  const loginAnonymous = async () => {
+    await signInAnonymously(auth)
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, logout, loginAnonymous }}>
       {children}
     </AuthContext.Provider>
   )

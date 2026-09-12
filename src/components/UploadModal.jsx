@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { X, Upload, FileText, CheckCircle, AlertCircle, Sparkles } from 'lucide-react'
 import { parseFile } from '../utils/fileParser'
 import { processWorksheetWithGemini } from '../utils/gemini'
-import { saveWorksheet } from '../utils/firestoreService'
+import { saveWorksheet } from '../utils/storageService'
 import { useLang } from '../contexts/LanguageContext'
 
 /** Compress an image File to a JPEG data URI at max `maxPx` on the longest side. */

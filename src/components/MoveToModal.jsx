@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X, Folder, Home, Loader2 } from 'lucide-react'
-import { getAllFolders } from '../utils/firestoreService'
+import { getAllFolders } from '../utils/storageService'
 import { useLang } from '../contexts/LanguageContext'
 
 export default function MoveToModal({ uid, worksheetName, currentFolderId, onMove, onClose }) {
