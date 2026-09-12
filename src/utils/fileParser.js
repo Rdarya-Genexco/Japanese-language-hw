@@ -54,5 +54,12 @@ export async function parseFile(file) {
     }
   }
 
-  throw new Error('Unsupported file type. Please upload a PDF, DOCX, PPTX, PNG or JPG.')
+  if (ext === 'ppt') {
+    return {
+      data: await file.arrayBuffer(),
+      mimeType: 'application/vnd.ms-powerpoint',
+    }
+  }
+
+  throw new Error('Unsupported file type. Please upload a PDF, DOCX, PPT, PPTX, PNG or JPG.')
 }

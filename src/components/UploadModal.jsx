@@ -6,8 +6,8 @@ import { saveWorksheet } from '../utils/firestoreService'
 import { useLang } from '../contexts/LanguageContext'
 
 const STEP_COLORS = ['bg-blue-500', 'bg-violet-500', 'bg-emerald-500']
-const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx', '.pptx', '.png', '.jpg', '.jpeg']
-const ACCEPTED_EXTS  = ['pdf', 'doc', 'docx', 'pptx', 'png', 'jpg', 'jpeg']
+const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg']
+const ACCEPTED_EXTS  = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg']
 
 export default function UploadModal({ uid, folderId, onClose, onComplete }) {
   const { langCode, lang, t } = useLang()
@@ -149,7 +149,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                         {t('orBrowse')}
                       </p>
                     </div>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">PDF · DOCX · PPTX · PNG · JPG · max 20 MB</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">PDF · DOCX · PPT · PPTX · PNG · JPG · max 20 MB</p>
                   </div>
                 )}
                 <input ref={fileInputRef} type="file" accept={ACCEPTED_TYPES.join(',')} className="hidden"

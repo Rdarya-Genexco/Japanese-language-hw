@@ -156,6 +156,7 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     'image/png',
     'image/jpeg',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/vnd.ms-powerpoint',
   ]
 
   if (BINARY_MIME_TYPES.includes(mimeType) && fileData instanceof ArrayBuffer) {
