@@ -156,7 +156,8 @@ export async function getWorksheet(uid, worksheetId) {
       originalFileName: doc.originalFileName || '',
       originalFileType: doc.originalFileType || '',
       createdAt       : makeCreatedAt(doc.createdAt),
-      worksheetHtml   : doc.worksheetHtml,   // string: rendered HTML
+      worksheetHtml   : doc.worksheetHtml,           // string: rendered HTML
+      originalImageUri: doc.originalImageUri || null, // data URI for embedded photo
       worksheetData   : null,
     }
   }

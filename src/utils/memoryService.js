@@ -126,6 +126,7 @@ export async function getWorksheet(_uid, worksheetId) {
     originalFileType: doc.originalFileType || '',
     createdAt       : doc.createdAt,
     worksheetHtml   : doc.worksheetHtml || null,
+    originalImageUri: doc.originalImageUri || null,
     worksheetData   : wsData || null,
   }
 }
