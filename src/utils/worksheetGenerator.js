@@ -1,7 +1,7 @@
 import { getLang } from './languages'
 import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun } from 'docx'
 import { saveAs } from 'file-saver'
 
 /**
@@ -595,6 +595,45 @@ export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
           for (const child of el.children) processNode(child)
         }
         break
+      case 'img': {
+        const src = el.getAttribute('src') || ''
+        // Only embed data URIs (base64-encoded images); skip external URLs
+        const dataUriMatch = src.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/)
+        if (dataUriMatch) {
+          const mimeType = dataUriMatch[1]   // e.g. "image/jpeg"
+          const base64   = dataUriMatch[2]
+          // Decode to get byte length for the docx library
+          const binaryStr  = atob(base64)
+          const bytes      = new Uint8Array(binaryStr.length)
+          for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i)
+          // Use natural dimensions if available; fall back to a sensible default
+          const natW = el.naturalWidth  || el.width  || 0
+          const natH = el.naturalHeight || el.height || 0
+          // Scale to fit within ~14 cm wide (approx 396 pt / 5040 EMU-twips equivalent)
+          const MAX_W_PT = 396  // points (72 pt/in × 5.5 in)
+          let wPt = natW > 0 ? Math.round(natW * 72 / 96) : MAX_W_PT   // px → pt at 96 dpi
+          let hPt = natH > 0 ? Math.round(natH * 72 / 96) : Math.round(MAX_W_PT * 0.75)
+          if (wPt > MAX_W_PT) {
+            hPt = Math.round(hPt * MAX_W_PT / wPt)
+            wPt = MAX_W_PT
+          }
+          // docx ImageRun expects width/height in EMU (1 pt = 12700 EMU)
+          const PT_TO_EMU = 12700
+          children.push(new Paragraph({
+            children: [new ImageRun({
+              data       : bytes.buffer,
+              type       : mimeType.replace('image/', ''),
+              transformation: {
+                width : wPt * PT_TO_EMU,
+                height: hPt * PT_TO_EMU,
+              },
+            })],
+            alignment: AlignmentType.CENTER,
+            spacing  : SP,
+          }))
+        }
+        break
+      }
       default:
         if (text) {
           children.push(new Paragraph({ children: [new TextRun({ text, size: 22 })], spacing: SP }))
