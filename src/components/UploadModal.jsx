@@ -68,6 +68,10 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
   const handleProcess = async () => {
     if (!file) return
     setProcessing(true); setError(''); setCurrentStep(0)
+    // Yield to the browser so React can paint the spinner before heavy work starts.
+    // Without this, parseFile / canvas ops block the main thread and Chrome logs
+    // a "[Violation] 'click' handler took Xms" warning.
+    await new Promise(resolve => setTimeout(resolve, 0))
     try {
       const { data, mimeType } = await parseFile(file)
       setCurrentStep(1)

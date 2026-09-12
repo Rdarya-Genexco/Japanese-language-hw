@@ -143,17 +143,23 @@ export default function DashboardPage() {
     load()
   }
 
-  const handleDeleteFolder = async (folder) => {
-    if (!window.confirm(`${t('confirmDeleteFolder')}\n「${folder.name}」`)) return
-    await deleteFolder(user.uid, folder.id)
-    load()
+  const handleDeleteFolder = (folder) => {
+    // Defer off the click handler so window.confirm doesn't count against it
+    // (Chrome Long Tasks API flags "click handler took Xms" otherwise)
+    setTimeout(async () => {
+      if (!window.confirm(`${t('confirmDeleteFolder')}\n「${folder.name}」`)) return
+      await deleteFolder(user.uid, folder.id)
+      load()
+    }, 0)
   }
 
-  const handleRenameFolder = async (folder) => {
-    const name = window.prompt(`${t('folderName')}:`, folder.name)
-    if (!name || name === folder.name) return
-    await renameFolder(user.uid, folder.id, name.trim())
-    load()
+  const handleRenameFolder = (folder) => {
+    setTimeout(async () => {
+      const name = window.prompt(`${t('folderName')}:`, folder.name)
+      if (!name || name === folder.name) return
+      await renameFolder(user.uid, folder.id, name.trim())
+      load()
+    }, 0)
   }
 
   // ── Move worksheet (drag & drop) ─────────────────────────────────────────
@@ -193,11 +199,13 @@ export default function DashboardPage() {
   }
 
   // ── Worksheet CRUD ────────────────────────────────────────────────────────
-  const handleDeleteWorksheet = async (ws) => {
-    if (!window.confirm(`${t('confirmDeleteWorksheet')}\n「${ws.name}」`)) return
-    await deleteWorksheet(user.uid, ws.id)
-    if (viewWorksheet?.id === ws.id) setViewWorksheet(null)
-    load()
+  const handleDeleteWorksheet = (ws) => {
+    setTimeout(async () => {
+      if (!window.confirm(`${t('confirmDeleteWorksheet')}\n「${ws.name}」`)) return
+      await deleteWorksheet(user.uid, ws.id)
+      if (viewWorksheet?.id === ws.id) setViewWorksheet(null)
+      load()
+    }, 0)
   }
 
   const isEmpty = !loading && folders.length === 0 && worksheets.length === 0
