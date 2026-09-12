@@ -155,9 +155,10 @@ export default function DashboardPage() {
 
   const handleRenameFolder = (folder) => {
     setTimeout(async () => {
-      const name = window.prompt(`${t('folderName')}:`, folder.name)
+      const raw = window.prompt(`${t('folderName')}:`, folder.name)
+      const name = raw?.trim()
       if (!name || name === folder.name) return
-      await renameFolder(user.uid, folder.id, name.trim())
+      await renameFolder(user.uid, folder.id, name)
       load()
     }, 0)
   }

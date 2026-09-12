@@ -144,18 +144,31 @@ export async function restDelete(collection, id) {
   if (!res.ok && res.status !== 404) throw new Error(`Delete failed: ${res.status}`)
 }
 
-/** List ALL documents in a collection (no filter). */
+/** List ALL documents in a collection (no filter), following pagination. */
 export async function restList(collection) {
-  const t = await token()
-  const res = await fetch(`${BASE}/${collection}`, {
-    headers: { Authorization: `Bearer ${t}` },
-  })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.error?.message || `List failed: ${res.status}`)
-  }
-  const data = await res.json()
-  return (data.documents || []).map(fromDoc)
+  const tok = await token()
+  const docs = []
+  let pageToken = null
+
+  do {
+    const url = pageToken
+      ? `${BASE}/${collection}?pageToken=${encodeURIComponent(pageToken)}`
+      : `${BASE}/${collection}`
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${tok}` } })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      const msg = err?.error?.message || `List failed: ${res.status}`
+      const code = (err?.error?.status || 'UNKNOWN').toLowerCase().replace(/_/g, '-')
+      const e = new Error(msg)
+      e.code = code
+      throw e
+    }
+    const data = await res.json()
+    docs.push(...(data.documents || []).map(fromDoc))
+    pageToken = data.nextPageToken || null
+  } while (pageToken)
+
+  return docs
 }
 
 /** Query a collection by a single field equality filter. */
@@ -180,7 +193,11 @@ export async function restQuery(collection, field, value) {
   )
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
-    throw new Error(err?.error?.message || `Query failed: ${res.status}`)
+    const msg = err?.error?.message || `Query failed: ${res.status}`
+    const code = (err?.error?.status || 'UNKNOWN').toLowerCase().replace(/_/g, '-')
+    const e = new Error(msg)
+    e.code = code
+    throw e
   }
   const rows = await res.json()
   return rows.filter(r => r.document).map(r => fromDoc(r.document))

@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.search.includes('mock=1')) {
+    if (import.meta.env.DEV && typeof window !== 'undefined' && window.location.search.includes('mock=1')) {
       setUser(MOCK_USER); setLoading(false); return
     }
 

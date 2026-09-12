@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { X, Upload, FileText, CheckCircle, AlertCircle, Sparkles } from 'lucide-react'
 import { parseFile } from '../utils/fileParser'
 import { processWorksheetWithGemini } from '../utils/gemini'
-import { saveWorksheet } from '../utils/storageService'
+import { saveWorksheet, getGeminiApiKey } from '../utils/storageService'
 import { useLang } from '../contexts/LanguageContext'
 
 /** Compress an image File to a JPEG data URI at max `maxPx` on the longest side. */
@@ -27,8 +27,8 @@ function compressImage(file, maxPx = 800, quality = 0.72) {
 }
 
 const STEP_COLORS = ['bg-blue-500', 'bg-violet-500', 'bg-emerald-500']
-const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg']
-const ACCEPTED_EXTS  = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg']
+const ACCEPTED_TYPES = ['.pdf', '.docx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg']
+const ACCEPTED_EXTS  = ['pdf', 'docx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg']
 
 export default function UploadModal({ uid, folderId, onClose, onComplete }) {
   const { langCode, lang, t } = useLang()
@@ -75,7 +75,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
     try {
       const { data, mimeType } = await parseFile(file)
       setCurrentStep(1)
-      const apiKey = ''
+      const apiKey = (await getGeminiApiKey(uid).catch(() => null)) || ''
 
       // For image files, generate two thumbnails:
       //  • geminiThumb  — small (500px, 60 %) sent to Gemini API to minimise request size and avoid timeouts
@@ -190,7 +190,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                         {t('orBrowse')}
                       </p>
                     </div>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">PDF · DOCX · PPT · PPTX · PNG · JPG · max 20 MB</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">PDF · DOCX · PPTX · PNG · JPG · max 20 MB</p>
                   </div>
                 )}
                 <input ref={fileInputRef} type="file" accept={ACCEPTED_TYPES.join(',')} className="hidden"

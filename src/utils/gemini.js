@@ -276,11 +276,19 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     }
 
     // Model doesn't exist → try next
-    if (response.status === 404 || response.status === 400) {
+    if (response.status === 404) {
       const errBody = await response.json().catch(() => ({}))
       lastErr = errBody?.error?.message || `HTTP ${response.status}`
       console.warn(`[Gemini] ${model} not available (${response.status}), trying next…`)
       continue
+    }
+
+    // 400 Bad Request — invalid request body (bad API key format, bad payload, etc.)
+    // This is a caller error, not a model-availability issue; throwing immediately is correct.
+    if (response.status === 400) {
+      const errBody = await response.json().catch(() => ({}))
+      const msg = errBody?.error?.message || 'Bad request'
+      throw new Error(`Gemini: ${msg}`)
     }
 
     if (!response.ok) {

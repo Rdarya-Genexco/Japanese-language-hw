@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Folder, Home, Loader2 } from 'lucide-react'
+import { X, Folder, Home, Loader2, AlertCircle } from 'lucide-react'
 import { getAllFolders } from '../utils/storageService'
 import { useLang } from '../contexts/LanguageContext'
 
@@ -7,21 +7,30 @@ export default function MoveToModal({ uid, worksheetName, currentFolderId, onMov
   const { t } = useLang()
   const [folders, setFolders]   = useState([])
   const [loading, setLoading]   = useState(true)
+  const [loadError, setLoadError] = useState('')
   const [moving,  setMoving]    = useState(false)
+  const [moveError, setMoveError] = useState('')
   const [selected, setSelected] = useState(null) // folderId
 
   useEffect(() => {
     getAllFolders(uid)
       .then(all => setFolders(all.filter(f => f.id !== currentFolderId)))
-      .catch(() => {})
+      .catch(err => setLoadError(err.message || 'Failed to load folders'))
       .finally(() => setLoading(false))
   }, [uid, currentFolderId])
 
   const handleMove = async () => {
     if (selected === null) return
     setMoving(true)
-    await onMove(selected === 'root' ? 'root' : selected)
-    onClose()
+    setMoveError('')
+    try {
+      await onMove(selected === 'root' ? 'root' : selected)
+      onClose()
+    } catch (err) {
+      setMoveError(err.message || 'Move failed. Please try again.')
+    } finally {
+      setMoving(false)
+    }
   }
 
   const ROOT = { id: 'root', name: 'My Drive (Root)' }
@@ -45,6 +54,12 @@ export default function MoveToModal({ uid, worksheetName, currentFolderId, onMov
         </div>
 
         <div className="p-4">
+          {loadError && (
+            <div className="mb-3 flex items-start gap-2 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3">
+              <AlertCircle size={14} className="text-rose-500 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-rose-600 dark:text-rose-400">{loadError}</p>
+            </div>
+          )}
           {loading ? (
             <div className="flex items-center justify-center py-8 gap-2 text-slate-400">
               <Loader2 size={18} className="animate-spin" />
@@ -78,6 +93,12 @@ export default function MoveToModal({ uid, worksheetName, currentFolderId, onMov
             </div>
           )}
 
+          {moveError && (
+            <div className="mt-3 flex items-start gap-2 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3">
+              <AlertCircle size={14} className="text-rose-500 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-rose-600 dark:text-rose-400">{moveError}</p>
+            </div>
+          )}
           <div className="flex gap-2 mt-4">
             <button onClick={onClose} className="btn-secondary flex-1 justify-center text-sm">
               {t('cancel')}
