@@ -90,6 +90,57 @@ IMAGE EMBEDDING RULE (applies when the source is a photo or image file):
 OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
 }
 
+/**
+ * System instruction for image-file uploads.
+ * The worksheet is shown as a photo — students work from the original image.
+ * Gemini's job is ONLY to translate the instructions/directions text, not to
+ * recreate questions or content.
+ */
+function buildImageSystemInstruction(lang) {
+  const isEnglish = lang.code === 'en'
+  const targetDesc = isEnglish
+    ? 'English'
+    : lang.name
+
+  return `You are a bilingual worksheet assistant producing print-ready HTML.
+
+TARGET LANGUAGE: ${targetDesc}
+
+YOUR ONLY JOB:
+1. Embed the worksheet photo using the EXACT tag below (do not describe or recreate it).
+2. Find every instruction or direction line in the image (e.g. "Circle the correct answer", "Match the following", "Fill in the blanks", section headings that tell students what to do) and translate ONLY those into ${targetDesc}.
+3. Do NOT translate or reproduce individual questions, answer options, vocabulary items, or any worksheet content — students will read those directly from the photo.
+4. Output a COMPLETE, SELF-CONTAINED HTML DOCUMENT — nothing else.
+
+IMAGE TAG (use this exactly — do not write a data URI):
+<img src="[WORKSHEET_IMAGE]" class="ws-photo" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 16pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+
+OUTPUT STRUCTURE:
+• The photo must appear first, full-width, using the exact tag above.
+• Below the photo: a clean "Instructions" block listing each translated instruction.
+  - Each instruction on its own line, with the original English text in small gray italic beneath it.
+  - If the source is already English, skip the gray italic line.
+• No other content.
+
+HTML REQUIREMENTS:
+• Complete document: <!DOCTYPE html><html lang="${lang.code}">…</html>
+• All CSS inside one <style> tag — NO external stylesheets, NO CDN links, NO JavaScript
+• Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', sans-serif
+• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding 28px 36px
+• Instructions block: background #f0f4ff; border-left: 4px solid #6366f1; border-radius: 6px; padding: 14px 18px; margin-top: 20pt
+• Each instruction item: font-size 1em; margin-bottom: 10pt
+• Original-language line: font-size: 0.82em; color: #888; font-style: italic; margin-top: 2pt
+• @media print { body { margin: 1.27cm; padding: 0; } }
+
+WHAT YOU MUST NEVER DO:
+• Never output JSON, markdown, plain text, or explanations — HTML ONLY
+• Never add \`\`\`html fences — output raw HTML starting with <!DOCTYPE html>
+• Never recreate or list the questions, answer choices, or any worksheet body content
+• Never write a data URI for the image — use [WORKSHEET_IMAGE] exactly
+
+OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
+}
+
 function buildHtmlPrompt(lang) {
   return `Translate the document below into ${lang.name}.
 Reproduce every element exactly as it appears — sections, headings, bullet points, questions, tables, notes. Do not add, remove, or rearrange anything.
@@ -149,14 +200,22 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
   if (!apiKey) apiKey = DEFAULT_API_KEY
 
   const lang = getLang(langCode)
-  const systemInstruction = buildSystemInstruction(lang)
-  const prompt = buildHtmlPrompt(lang)
+  const IMAGE_MIME_TYPES_INPUT = ['image/png', 'image/jpeg']
+  const isImageInput = IMAGE_MIME_TYPES_INPUT.includes(mimeType)
+
+  // Images get a dedicated prompt: show photo + translate instructions only.
+  // All other file types get the full translation prompt.
+  const systemInstruction = isImageInput
+    ? buildImageSystemInstruction(lang)
+    : buildSystemInstruction(lang)
+  const prompt = isImageInput
+    ? `Translate the worksheet instructions in this image into ${lang.name}. Show the image first, then list only the translated instruction/direction lines below it.`
+    : buildHtmlPrompt(lang)
 
   // Build content parts: prompt text + file data
   const contentParts = []
   contentParts.push({ text: prompt })
 
-  const IMAGE_MIME_TYPES_INPUT = ['image/png', 'image/jpeg']
   const BINARY_MIME_TYPES = [
     'application/pdf',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
@@ -250,8 +309,7 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     // For image uploads: inject the photo into the HTML output.
     // Use the pre-compressed thumbnail (passed in) to stay well under Firestore's 1MB doc limit.
     // Fall back to raw bytes only if no thumbnail was provided.
-    const IMAGE_MIME_TYPES = ['image/png', 'image/jpeg']
-    if (IMAGE_MIME_TYPES.includes(mimeType)) {
+    if (isImageInput) {
       // Prefer the full-quality embed thumbnail for display; fall back to the
       // (smaller) Gemini-input thumbnail, then raw bytes as last resort.
       const dataUri = embedThumbnailDataUri || thumbnailDataUri ||
