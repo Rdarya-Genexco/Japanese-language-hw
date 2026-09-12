@@ -156,16 +156,27 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
   const contentParts = []
   contentParts.push({ text: prompt })
 
+  const IMAGE_MIME_TYPES_INPUT = ['image/png', 'image/jpeg']
   const BINARY_MIME_TYPES = [
     'application/pdf',
-    'image/png',
-    'image/jpeg',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     'application/vnd.ms-powerpoint',
   ]
 
-  if (BINARY_MIME_TYPES.includes(mimeType) && fileData instanceof ArrayBuffer) {
-    // Send raw bytes inline — Gemini reads PDF, images and PPTX natively
+  if (thumbnailDataUri && IMAGE_MIME_TYPES_INPUT.includes(mimeType)) {
+    // For images: send the pre-compressed thumbnail instead of the raw (possibly large) original.
+    // This avoids timeouts on large uploads — Gemini still reads 800px images accurately.
+    const commaIdx = thumbnailDataUri.indexOf(',')
+    const meta      = thumbnailDataUri.slice(5, commaIdx)          // "image/jpeg;base64"
+    const b64       = thumbnailDataUri.slice(commaIdx + 1)
+    const thumbMime = meta.split(';')[0]                            // "image/jpeg"
+    contentParts.push({ inline_data: { mime_type: thumbMime, data: b64 } })
+  } else if (IMAGE_MIME_TYPES_INPUT.includes(mimeType) && fileData instanceof ArrayBuffer) {
+    // No thumbnail — send raw bytes (fallback, large images may time out)
+    const b64 = arrayBufferToBase64(fileData)
+    contentParts.push({ inline_data: { mime_type: mimeType, data: b64 } })
+  } else if (BINARY_MIME_TYPES.includes(mimeType) && fileData instanceof ArrayBuffer) {
+    // PDF / PPTX / PPT — send raw bytes inline; Gemini reads these natively
     const b64 = arrayBufferToBase64(fileData)
     contentParts.push({ inline_data: { mime_type: mimeType, data: b64 } })
   } else if (mimeType === 'text/html') {
