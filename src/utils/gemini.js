@@ -306,6 +306,11 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
       rawText = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:system-ui,sans-serif;max-width:800px;margin:0 auto;padding:24px 32px;color:#111}p{white-space:pre-wrap}</style></head><body>${rawText}</body></html>`
     }
 
+    // Strip any <script> blocks — the iframe preview uses sandbox="allow-same-origin"
+    // (no allow-scripts) so scripts would be blocked and Chrome logs a violation.
+    // Worksheets never need JS; removing it keeps the CSP clean.
+    rawText = rawText.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+
     // For image uploads: inject the photo into the HTML output.
     // Use the pre-compressed thumbnail (passed in) to stay well under Firestore's 1MB doc limit.
     // Fall back to raw bytes only if no thumbnail was provided.
