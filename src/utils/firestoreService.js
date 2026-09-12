@@ -98,7 +98,7 @@ export async function deleteFolder(uid, folderId) {
  *   - a string  → new HTML-based worksheet (Gemini-generated HTML)
  *   - an object → legacy JSON-based worksheet
  */
-export async function saveWorksheet(uid, folderId, originalFile, worksheetPayload) {
+export async function saveWorksheet(uid, folderId, originalFile, worksheetPayload, imageUri = null) {
   const fid = (!folderId || folderId === 'undefined') ? 'root' : folderId
   const isHtml = typeof worksheetPayload === 'string'
 
@@ -121,6 +121,9 @@ export async function saveWorksheet(uid, folderId, originalFile, worksheetPayloa
       ? { worksheetHtml: worksheetPayload }
       : { worksheetData: JSON.stringify(worksheetPayload) }
     ),
+    // Store original image separately so the viewer can inject it client-side.
+    // This keeps worksheetHtml lean and avoids large data URIs inside HTML strings.
+    ...(imageUri ? { originalImageUri: imageUri } : {}),
     createdAt : new Date(),
   })
 }

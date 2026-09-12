@@ -8,7 +8,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   const iframeRef = useRef(null)
   const [busy, setBusy] = useState(null) // 'pdf' | 'docx' | 'print' | null
 
-  const { name, worksheetData, worksheetHtml, createdAt } = worksheet
+  const { name, worksheetData, worksheetHtml, originalImageUri, createdAt } = worksheet
   const isHtml = !!worksheetHtml
 
   // For legacy JSON worksheets — pull display fields from worksheetData
@@ -28,7 +28,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
       if (isHtml) {
         const win = window.open('', '_blank')
         if (!win) { alert('Please allow popups for this site and try again.'); return }
-        win.document.write(worksheetHtml)
+        win.document.write(hydratedHtml)
         win.document.close()
         win.focus()
         setTimeout(() => win.print(), 800)
@@ -48,7 +48,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
     setBusy('pdf')
     try {
       if (isHtml) {
-        await downloadAsPdfFromHtml(worksheetHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
+        await downloadAsPdfFromHtml(hydratedHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
       } else {
         await downloadAsPdf(worksheetData)
       }
@@ -65,7 +65,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
     setBusy('docx')
     try {
       if (isHtml) {
-        await downloadAsDocxFromHtml(worksheetHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
+        await downloadAsDocxFromHtml(hydratedHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
       } else {
         await downloadAsDocx(worksheetData)
       }
@@ -77,7 +77,21 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
     }
   }
 
-  // ── Suppress print page-break artifacts in screen preview ────────────────
+  // ── Inject original image + suppress print page-break artifacts ──────────
+
+  /** Replace [WORKSHEET_IMAGE] placeholder with the stored data URI (or remove it). */
+  function injectImage(html, imageUri) {
+    if (!html) return html
+    if (!html.includes('[WORKSHEET_IMAGE]')) return html
+    if (imageUri) {
+      return html.replace(/\[WORKSHEET_IMAGE\]/g, imageUri)
+    }
+    // No image URI — remove the broken placeholder tag entirely
+    return html
+      .replace(/<img\b[^>]*\[WORKSHEET_IMAGE\][^>]*>/gi, '')
+      .replace(/\[WORKSHEET_IMAGE\]/g, '')
+  }
+
   const NO_PAGEBREAK_CSS = `<style>
     @media screen {
       * { page-break-before: auto; page-break-after: auto;
@@ -85,9 +99,11 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
           break-after: auto; break-inside: auto; }
     }
   </style>`
-  const previewHtml = worksheetHtml
-    ? worksheetHtml.replace('</head>', NO_PAGEBREAK_CSS + '</head>')
-    : worksheetHtml
+
+  const hydratedHtml = injectImage(worksheetHtml, originalImageUri)
+  const previewHtml = hydratedHtml
+    ? hydratedHtml.replace('</head>', NO_PAGEBREAK_CSS + '</head>')
+    : hydratedHtml
 
   // ── Display name for header ────────────────────────────────────────────────
   function decodeHtml(str) {

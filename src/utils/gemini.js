@@ -196,7 +196,7 @@ async function callGemini(model, body, apiKey) {
  * @param {string} langCode             Target language code, e.g. 'ja', 'en', 'fr'
  * @returns {Promise<string>}           Self-contained HTML document
  */
-export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja', thumbnailDataUri = null, embedThumbnailDataUri = null) {
+export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja', thumbnailDataUri = null) {
   if (!apiKey) apiKey = DEFAULT_API_KEY
 
   const lang = getLang(langCode)
@@ -319,67 +319,34 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     // Worksheets never need JS; removing it keeps the CSP clean.
     rawText = rawText.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
 
-    // For image uploads: inject the photo into the HTML output.
-    // Use the pre-compressed thumbnail (passed in) to stay well under Firestore's 1MB doc limit.
-    // Fall back to raw bytes only if no thumbnail was provided.
-    if (isImageInput) {
-      // Prefer the full-quality embed thumbnail for display; fall back to the
-      // (smaller) Gemini-input thumbnail, then raw bytes as last resort.
-      const dataUri = embedThumbnailDataUri || thumbnailDataUri ||
-        (fileData instanceof ArrayBuffer
-          ? `data:${mimeType};base64,${arrayBufferToBase64(fileData)}`
-          : null)
-
-      console.log('[gemini] image upload — dataUri present:', !!dataUri,
-        '| embedThumb:', !!embedThumbnailDataUri,
-        '| geminiThumb:', !!thumbnailDataUri)
-      console.log('[gemini] rawText length:', rawText.length,
-        '| has [WORKSHEET_IMAGE]:', rawText.includes('[WORKSHEET_IMAGE]'),
-        '| has <body:', rawText.toLowerCase().includes('<body'))
-
-      if (dataUri) {
-        const imgTag = `<img src="${dataUri}" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 12pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);">`
-        const wrapper = `<div style="text-align:center;margin-bottom:16pt">${imgTag}</div>`
-
-        if (rawText.includes('[WORKSHEET_IMAGE]')) {
-          // Gemini used the placeholder — swap it in
-          console.log('[gemini] replacing [WORKSHEET_IMAGE] placeholder')
-          rawText = rawText.replace(/\[WORKSHEET_IMAGE\]/g, dataUri)
-        } else {
-          // Inject right after the opening <body ...> tag.
-          // Use indexOf (never fails) instead of a regex that can silently produce no-op.
-          const lc = rawText.toLowerCase()
-          const bodyStart = lc.indexOf('<body')
-          if (bodyStart !== -1) {
-            const bodyEnd = rawText.indexOf('>', bodyStart)
-            if (bodyEnd !== -1) {
-              // Insert immediately after the closing > of <body ...>
-              console.log('[gemini] injecting after <body> tag at', bodyStart)
-              rawText = rawText.slice(0, bodyEnd + 1) + '\n' + wrapper + rawText.slice(bodyEnd + 1)
-            } else {
-              console.log('[gemini] malformed <body> tag, prepending')
-              rawText = wrapper + rawText
-            }
-          } else {
-            console.log('[gemini] no <body> tag, prepending')
-            rawText = wrapper + rawText
-          }
-        }
-        console.log('[gemini] post-inject: html has <img src="data:', rawText.includes('<img src="data:'))
-      } else {
-        console.warn('[gemini] dataUri is null — image will NOT be embedded')
-      }
-    }
-
-    // Strip any leftover [WORKSHEET_IMAGE] placeholders.
-    // Gemini may output them even for non-image inputs (PDFs/DOCXs with embedded
-    // images) because the rule is always in the system prompt. When we never
-    // injected a real dataUri the placeholder ends up as a literal src value →
-    // broken image icon. Remove the whole <img> tag (not just the text) so
-    // nothing renders rather than a broken icon.
-    if (rawText.includes('[WORKSHEET_IMAGE]')) {
+    // Strip any leftover [WORKSHEET_IMAGE] placeholders from non-image inputs.
+    // Gemini may output them even for PDFs/DOCXs because the rule is always in
+    // the system prompt. For image inputs the placeholder is intentionally kept
+    // so WorksheetViewer can inject the actual data URI client-side.
+    // Keeping it as "[WORKSHEET_IMAGE]" in stored HTML is safe — the viewer
+    // replaces it before rendering; if originalImageUri is missing it falls back
+    // to removing the broken tag.
+    if (!isImageInput && rawText.includes('[WORKSHEET_IMAGE]')) {
       rawText = rawText.replace(/<img\b[^>]*\[WORKSHEET_IMAGE\][^>]*>/gi, '')
       rawText = rawText.replace(/\[WORKSHEET_IMAGE\]/g, '')
+    }
+
+    // For image inputs: ensure the placeholder is present so the viewer can
+    // inject the photo. If Gemini omitted it, inject it right after <body>.
+    if (isImageInput && !rawText.includes('[WORKSHEET_IMAGE]')) {
+      const placeholder = `<div style="text-align:center;margin-bottom:16pt"><img src="[WORKSHEET_IMAGE]" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 12pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);"></div>`
+      const lc = rawText.toLowerCase()
+      const bodyStart = lc.indexOf('<body')
+      if (bodyStart !== -1) {
+        const bodyEnd = rawText.indexOf('>', bodyStart)
+        if (bodyEnd !== -1) {
+          rawText = rawText.slice(0, bodyEnd + 1) + '\n' + placeholder + rawText.slice(bodyEnd + 1)
+        } else {
+          rawText = placeholder + rawText
+        }
+      } else {
+        rawText = placeholder + rawText
+      }
     }
 
     return rawText  // HTML string

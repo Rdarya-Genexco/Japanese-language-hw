@@ -69,7 +69,7 @@ export async function deleteFolder(_uid, folderId) {
 
 // ── Worksheets ─────────────────────────────────────────────────────────────────
 
-export async function saveWorksheet(_uid, folderId, originalFile, payload) {
+export async function saveWorksheet(_uid, folderId, originalFile, payload, imageUri = null) {
   const fid    = (!folderId || folderId === 'undefined') ? 'root' : folderId
   const isHtml = typeof payload === 'string'
   let name = originalFile.name
@@ -90,6 +90,7 @@ export async function saveWorksheet(_uid, folderId, originalFile, payload) {
       ? { worksheetHtml: payload }
       : { worksheetData: typeof payload === 'string' ? payload : JSON.stringify(payload) }
     ),
+    ...(imageUri ? { originalImageUri: imageUri } : {}),
     createdAt: now(),
   })
   return id

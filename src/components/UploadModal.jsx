@@ -92,13 +92,17 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
         ])
       }
 
-      const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode, geminiThumb, embedThumb)
+      // Pass only the Gemini-sized thumbnail to the AI (smaller = faster).
+      // The full-quality embedThumb is stored separately as originalImageUri so the
+      // viewer can inject it client-side — this keeps the stored HTML lean and avoids
+      // data-URI rendering issues inside the iframe.
+      const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode, geminiThumb)
       // worksheetData is an HTML string (new pipeline) or a plain object (legacy)
       if (worksheetData && typeof worksheetData === 'object') {
         worksheetData.language = worksheetData.language || langCode
       }
       setCurrentStep(2)
-      await saveWorksheet(uid, folderId, file, worksheetData)
+      await saveWorksheet(uid, folderId, file, worksheetData, embedThumb || geminiThumb || null)
       setCurrentStep(3); setDone(true)
     } catch (err) {
       console.error(err)
