@@ -1,7 +1,7 @@
 import { getLang } from './languages'
 import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun } from 'docx'
 import { saveAs } from 'file-saver'
 
 /**
@@ -482,6 +482,8 @@ export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
   const SP_H1  = { before: 0, after: 160, line: 360, lineRule: 'auto' }
   const SP_H2  = { before: 160, after: 160, line: 360, lineRule: 'auto' }  // small gap before section headers
   const SP_H3  = { before: 80,  after: 160, line: 360, lineRule: 'auto' }
+  const MAX_W_PT  = 396    // max image width in points (72 pt/in × 5.5 in ≈ 14 cm)
+  const PT_TO_EMU = 12700  // 1 pt = 12700 EMU (unit docx ImageRun expects)
 
   // Turn child nodes into TextRun array, preserving bold/italic and .en-sub gray text
   function nodeToRuns(el) {
@@ -587,7 +589,7 @@ export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
       case 'header': case 'body': case 'span':
         // For leaf-ish divs that contain only inline content (no block children), treat as paragraph
         const hasBlockChildren = Array.from(el.children).some(c =>
-          ['div','p','h1','h2','h3','h4','h5','table','ul','ol','hr','section'].includes(c.tagName?.toLowerCase())
+          ['div','p','h1','h2','h3','h4','h5','table','ul','ol','hr','section','img'].includes(c.tagName?.toLowerCase())
         )
         if (!hasBlockChildren && text) {
           children.push(new Paragraph({ children: nodeToRuns(el), spacing: SP }))
@@ -595,6 +597,43 @@ export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
           for (const child of el.children) processNode(child)
         }
         break
+      case 'img': {
+        const src = el.getAttribute('src') || ''
+        // Only embed data URIs (base64-encoded images); skip external URLs
+        const dataUriMatch = src.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/)
+        if (dataUriMatch) {
+          const mimeType = dataUriMatch[1]   // e.g. "image/jpeg"
+          const base64   = dataUriMatch[2]
+          // Decode to Uint8Array for the docx library (cached length avoids repeated .length reads)
+          const binaryStr = atob(base64)
+          const len   = binaryStr.length
+          const bytes = new Uint8Array(len)
+          for (let i = 0; i < len; i++) bytes[i] = binaryStr.charCodeAt(i)
+          // Use explicit HTML width/height attributes (px) if present; fall back to full-width 4:3.
+          // naturalWidth/naturalHeight are always 0 in a DOMParser tree (no image loading).
+          const srcW = el.width  || 0
+          const srcH = el.height || 0
+          let wPt = srcW > 0 ? Math.round(srcW * 72 / 96) : MAX_W_PT   // px → pt at 96 dpi
+          let hPt = srcH > 0 ? Math.round(srcH * 72 / 96) : Math.round(MAX_W_PT * 0.75)
+          // Scale down uniformly to fit within MAX_W_PT; no-op when wPt ≤ MAX_W_PT
+          const scale = Math.min(1, MAX_W_PT / wPt)
+          wPt = Math.round(wPt * scale)
+          hPt = Math.round(hPt * scale)
+          children.push(new Paragraph({
+            children: [new ImageRun({
+              data       : bytes.buffer,
+              type       : mimeType.replace('image/', ''),
+              transformation: {
+                width : wPt * PT_TO_EMU,
+                height: hPt * PT_TO_EMU,
+              },
+            })],
+            alignment: AlignmentType.CENTER,
+            spacing  : SP,
+          }))
+        }
+        break
+      }
       default:
         if (text) {
           children.push(new Paragraph({ children: [new TextRun({ text, size: 22 })], spacing: SP }))

@@ -94,51 +94,58 @@ OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
 
 /**
  * System instruction for image-file uploads.
- * The worksheet is shown as a photo — students work from the original image.
- * Gemini's job is ONLY to translate the instructions/directions text, not to
- * recreate questions or content.
+ * Gemini reads all text from the photo and fully recreates + translates the
+ * entire worksheet in the target language. The original image is shown at the
+ * top for reference, followed by the complete translated content.
  */
 function buildImageSystemInstruction(lang) {
   const isEnglish = lang.code === 'en'
   const targetDesc = isEnglish
-    ? 'English'
+    ? 'English (the target is English — the source worksheet may be in any language)'
     : lang.name
 
-  return `You are a bilingual worksheet assistant producing print-ready HTML.
+  return `You are a professional bilingual worksheet translator producing print-ready HTML.
 
 TARGET LANGUAGE: ${targetDesc}
 
-YOUR ONLY JOB:
-1. Embed the worksheet photo using the EXACT tag below (do not describe or recreate it).
-2. Find every instruction or direction line in the image (e.g. "Circle the correct answer", "Match the following", "Fill in the blanks", section headings that tell students what to do) and translate ONLY those into ${targetDesc}.
-3. Do NOT translate or reproduce individual questions, answer options, vocabulary items, or any worksheet content — students will read those directly from the photo.
-4. Output a COMPLETE, SELF-CONTAINED HTML DOCUMENT — nothing else.
+YOUR JOB:
+1. Read ALL text visible in the worksheet photo — title, instructions, every question, every answer option, vocabulary items, fill-in-the-blank sentences, tables, everything.
+2. Translate the ENTIRE worksheet into ${targetDesc} and output a COMPLETE, SELF-CONTAINED HTML DOCUMENT.
+3. Show the original photo at the very top of the page using the EXACT image tag below, then render the full translated worksheet beneath it.
 
 IMAGE TAG (use this exactly — do not write a data URI):
 <img src="[WORKSHEET_IMAGE]" class="ws-photo" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto 16pt;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
 
-OUTPUT STRUCTURE:
-• The photo must appear first, full-width, using the exact tag above.
-• Below the photo: a clean "Instructions" block listing each translated instruction.
-  - Each instruction on its own line, with the original English text in small gray italic beneath it.
-  - If the source is already English, skip the gray italic line.
-• No other content.
+WHAT YOU MUST NEVER DO:
+• Never output JSON, markdown, plain text, or explanations — HTML ONLY
+• Never add \`\`\`html fences — output raw HTML starting with <!DOCTYPE html>
+• Never skip or omit any question, option, or piece of content visible in the image
+• Never invent questions that are not in the image
+• Never write a data URI for the image — use [WORKSHEET_IMAGE] exactly
 
 HTML REQUIREMENTS:
 • Complete document: <!DOCTYPE html><html lang="${lang.code}">…</html>
 • All CSS inside one <style> tag — NO external stylesheets, NO CDN links, NO JavaScript
-• Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', sans-serif
-• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding 28px 36px
-• Instructions block: background #f0f4ff; border-left: 4px solid #6366f1; border-radius: 6px; padding: 14px 18px; margin-top: 20pt
-• Each instruction item: font-size 1em; margin-bottom: 10pt
-• Original-language line: font-size: 0.82em; color: #888; font-style: italic; margin-top: 2pt
+• Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif
+• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding 28px 36px; line-height: 1.5
+• Wrap EVERY question (stem + all its options/lines) in <div class="q-block"> with margin-bottom: 16pt
+• Sections: padding 14px 16px; margin-bottom: 16pt
 • @media print { body { margin: 1.27cm; padding: 0; } }
 
-WHAT YOU MUST NEVER DO:
-• Never output JSON, markdown, plain text, or explanations — HTML ONLY
-• Never add \`\`\`html fences — output raw HTML starting with <!DOCTYPE html>
-• Never recreate or list the questions, answer choices, or any worksheet body content
-• Never write a data URI for the image — use [WORKSHEET_IMAGE] exactly
+BILINGUAL SUBTITLE RULE (MANDATORY):
+${isEnglish
+  ? '• The target IS English — do NOT add any subtitle. Output only the English translation.'
+  : `• EVERY question stem MUST be immediately followed by the original text as a subtitle:
+  <div class="en-sub">original text here</div>
+• CSS: .en-sub { font-size: 0.82em; color: #777; font-style: italic; margin-top: 2pt; margin-bottom: 4pt; }
+• If the source text is already English, copy it unchanged as the subtitle.`}
+
+LAYOUT:
+• Original photo first (full-width, using the exact image tag above)
+• Divider line, then the translated worksheet title (large bold, centred)
+• Global instructions box (light blue background, left indigo border) if any
+• Numbered sections with translated headings and section instructions
+• All questions translated, each in a q-block div with answer spaces (ruled lines / blank boxes / option circles)
 
 OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
 }
