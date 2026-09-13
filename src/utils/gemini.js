@@ -39,13 +39,13 @@ HTML REQUIREMENTS:
 • Complete document: <!DOCTYPE html><html lang="${lang.code}">…</html>
 • All CSS inside one <style> tag — NO external stylesheets, NO CDN links, NO JavaScript
 • Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif
-• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding 28px 36px; line-height: 1.5
+• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding: 0; line-height: 1.5
 • Paragraphs and all text blocks: margin-top: 0; margin-bottom: 8pt; line-height: 1.5  (matches Word: Before 0pt / After 8pt / 1.5 lines)
 • p, li, td, th, span { margin-top: 0; margin-bottom: 8pt; line-height: 1.5 }
 • h1, h2, h3, h4 { margin-top: 0; margin-bottom: 8pt; line-height: 1.5 }
 • Wrap EVERY question (stem + all its options/lines) in <div class="q-block"> with margin-bottom: 16pt and padding-bottom: 4pt so there is always whitespace between questions — this prevents questions from being sliced across page breaks when the PDF is generated
 • Sections: padding 14px 16px; margin-bottom: 16pt
-• @media print { body { margin: 1.27cm; padding: 0; } .no-print { display:none; } }
+• @media print { body { margin: 0; padding: 0; } .no-print { display:none; } }
 
 BILINGUAL SUBTITLE RULE (MANDATORY):
 ${isEnglish
@@ -127,10 +127,10 @@ HTML REQUIREMENTS:
 • Complete document: <!DOCTYPE html><html lang="${lang.code}">…</html>
 • All CSS inside one <style> tag — NO external stylesheets, NO CDN links, NO JavaScript
 • Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif
-• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding 28px 36px; line-height: 1.5
+• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding: 0; line-height: 1.5
 • Wrap EVERY question (stem + all its options/lines) in <div class="q-block"> with margin-bottom: 16pt
 • Sections: padding 14px 16px; margin-bottom: 16pt
-• @media print { body { margin: 1.27cm; padding: 0; } }
+• @media print { body { margin: 0; padding: 0; } }
 
 BILINGUAL SUBTITLE RULE (MANDATORY):
 ${isEnglish
