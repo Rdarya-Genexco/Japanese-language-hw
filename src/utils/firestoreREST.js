@@ -5,7 +5,7 @@
 import { auth } from '../firebase/config'
 
 const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
-const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`
+const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/lang/documents`
 
 // ─── Auth token ──────────────────────────────────────────────────────────────
 
@@ -179,7 +179,7 @@ export async function restQuery(collection, field, value) {
 
   const t = await token()
   const res = await fetch(
-    `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/${parent}:runQuery`,
+    `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/lang/documents/${parent}:runQuery`,
     {
       method: 'POST',
       headers: { Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' },
