@@ -198,8 +198,8 @@ const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models'
 
 // Models in priority order — first available wins
 const MODEL_CHAIN = [
-  'gemini-3.5-flash',
   'gemini-3.6-flash',
+  'gemini-3.5-flash',
   'gemini-3.5-flash-lite',
   'gemini-3.1-pro',
 ]
@@ -250,7 +250,7 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     ? buildImageSystemInstruction(lang)
     : buildSystemInstruction(lang)
   const prompt = isImageInput
-    ? `Translate the worksheet instructions in this image into ${lang.name}. Show the image first, then list only the translated instruction/direction lines below it.`
+    ? `Translate the ENTIRE worksheet in this image into ${lang.name}. Show the original image first, then output the full translated worksheet with all questions, options, and content below it.`
     : buildHtmlPrompt(lang)
 
   // For DOCX (text/html): strip embedded base64 images out before sending to Gemini.
