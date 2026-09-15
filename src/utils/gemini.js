@@ -39,13 +39,13 @@ HTML REQUIREMENTS:
 • Complete document: <!DOCTYPE html><html lang="${lang.code}">…</html>
 • All CSS inside one <style> tag — NO external stylesheets, NO CDN links, NO JavaScript
 • Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif
-• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding 28px 36px; line-height: 1.5
+• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding: 0; line-height: 1.5
 • Paragraphs and all text blocks: margin-top: 0; margin-bottom: 8pt; line-height: 1.5  (matches Word: Before 0pt / After 8pt / 1.5 lines)
 • p, li, td, th, span { margin-top: 0; margin-bottom: 8pt; line-height: 1.5 }
 • h1, h2, h3, h4 { margin-top: 0; margin-bottom: 8pt; line-height: 1.5 }
 • Wrap EVERY question (stem + all its options/lines) in <div class="q-block"> with margin-bottom: 16pt and padding-bottom: 4pt so there is always whitespace between questions — this prevents questions from being sliced across page breaks when the PDF is generated
 • Sections: padding 14px 16px; margin-bottom: 16pt
-• @media print { body { margin: 1.27cm; padding: 0; } .no-print { display:none; } }
+• @media print { body { margin: 0; padding: 0; } .no-print { display:none; } }
 
 BILINGUAL SUBTITLE RULE (MANDATORY):
 ${isEnglish
@@ -89,6 +89,10 @@ IMAGE EMBEDDING RULE (applies when the source is a photo or image file):
 
 DOCX EMBEDDED IMAGES: The source HTML may contain <img src="[DOCX_IMAGE_0]">, <img src="[DOCX_IMAGE_1]">, etc. where embedded images were. You MUST keep these <img> tags exactly as-is in your output — same src value, same position in the document. Do not remove, rename, or modify them.
 
+PPTX / PPT SLIDE IMAGES: PowerPoint files often contain images embedded in slides. When you see an image or photo on a slide that you cannot output as a data URI, render it as a styled placeholder box in this EXACT format:
+<div class="slide-img-placeholder" data-img-index="0" style="background:#f0f4ff;border:2px dashed #93a8d4;border-radius:8px;padding:32px 16px;text-align:center;color:#6b7fa3;font-size:0.9em;margin:12pt 0;">[Image from slide]</div>
+Increment data-img-index for each subsequent image (0, 1, 2, …). Never skip or omit slide images — always show a placeholder where they appeared.
+
 OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
 }
 
@@ -127,7 +131,7 @@ HTML REQUIREMENTS:
 • Complete document: <!DOCTYPE html><html lang="${lang.code}">…</html>
 • All CSS inside one <style> tag — NO external stylesheets, NO CDN links, NO JavaScript
 • Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif
-• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding 28px 36px; line-height: 1.5
+• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding: 0; line-height: 1.5
 • Wrap EVERY question (stem + all its options/lines) in <div class="q-block"> with margin-bottom: 16pt
 • Sections: padding 14px 16px; margin-bottom: 16pt
 • @media print { body { margin: 1.27cm; padding: 0; } }
