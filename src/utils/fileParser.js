@@ -27,6 +27,33 @@ export async function extractDocxHtml(file) {
  *               images appear so Gemini knows where to place them.
  *   images    — [{b64, ext, mimeType}] in slide order, deduplicated across slides.
  */
+/**
+ * Compress a base64 image using Canvas so large PPTX images don't timeout Gemini.
+ * Resizes to max 700px and re-encodes as JPEG at 65% quality.
+ * Falls back to the original if Canvas is unavailable (e.g. Node.js).
+ */
+async function compressB64Image(b64, srcMimeType) {
+  if (typeof document === 'undefined') return { b64, mimeType: srcMimeType }
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const MAX = 700
+      let { naturalWidth: w, naturalHeight: h } = img
+      if (w > MAX || h > MAX) {
+        const s = MAX / Math.max(w, h)
+        w = Math.round(w * s); h = Math.round(h * s)
+      }
+      const canvas = document.createElement('canvas')
+      canvas.width = w; canvas.height = h
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.65)
+      resolve({ b64: dataUrl.split(',')[1], mimeType: 'image/jpeg' })
+    }
+    img.onerror = () => resolve({ b64, mimeType: srcMimeType })
+    img.src = `data:${srcMimeType};base64,${b64}`
+  })
+}
+
 async function extractPptxContent(arrayBuffer) {
   const JSZipMod = await import('jszip')
   const JSZip = JSZipMod.default || JSZipMod
@@ -43,7 +70,7 @@ async function extractPptxContent(arrayBuffer) {
   const seenMedia = new Set()
   const mediaToIdx = {}   // mediaPath → image index
 
-  // Pass 1: collect unique images in slide order
+  // Pass 1: collect unique images in slide order (compressed to keep payload small)
   for (const n of slideNumbers) {
     const slideXml = await zip.files[`ppt/slides/slide${n}.xml`].async('string')
     const relsPath = `ppt/slides/_rels/slide${n}.xml.rels`
@@ -63,9 +90,11 @@ async function extractPptxContent(arrayBuffer) {
       const ext = mediaPath.split('.').pop().toLowerCase()
       if (!['png', 'jpg', 'jpeg'].includes(ext)) continue
       seenMedia.add(mediaPath)
-      const b64 = await mediaFile.async('base64')
+      const rawB64 = await mediaFile.async('base64')
+      const srcMime = ext === 'png' ? 'image/png' : 'image/jpeg'
+      const { b64, mimeType } = await compressB64Image(rawB64, srcMime)
       mediaToIdx[mediaPath] = images.length
-      images.push({ b64, ext, mimeType: ext === 'png' ? 'image/png' : 'image/jpeg' })
+      images.push({ b64, ext: mimeType === 'image/png' ? 'png' : 'jpg', mimeType })
     }
   }
 
