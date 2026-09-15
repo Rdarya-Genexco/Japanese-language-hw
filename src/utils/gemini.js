@@ -89,6 +89,10 @@ IMAGE EMBEDDING RULE (applies when the source is a photo or image file):
 
 DOCX EMBEDDED IMAGES: The source HTML may contain <img src="[DOCX_IMAGE_0]">, <img src="[DOCX_IMAGE_1]">, etc. where embedded images were. You MUST keep these <img> tags exactly as-is in your output — same src value, same position in the document. Do not remove, rename, or modify them.
 
+PPTX / PPT SLIDE IMAGES: PowerPoint files often contain images embedded in slides. When you see an image or photo on a slide that you cannot output as a data URI, render it as a styled placeholder box in this EXACT format:
+<div class="slide-img-placeholder" data-img-index="0" style="background:#f0f4ff;border:2px dashed #93a8d4;border-radius:8px;padding:32px 16px;text-align:center;color:#6b7fa3;font-size:0.9em;margin:12pt 0;">[Image from slide]</div>
+Increment data-img-index for each subsequent image (0, 1, 2, …). Never skip or omit slide images — always show a placeholder where they appeared.
+
 OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
 }
 

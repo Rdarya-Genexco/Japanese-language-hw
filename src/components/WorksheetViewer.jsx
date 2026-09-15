@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react'
 import { X, Printer, FileDown, Trash2, Loader2 } from 'lucide-react'
-import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
+import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml, downloadAsPptxFromHtml } from '../utils/worksheetGenerator'
 import { useLang } from '../contexts/LanguageContext'
 
 export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   const { t, langCode } = useLang()
   const iframeRef = useRef(null)
-  const [busy, setBusy] = useState(null) // 'pdf' | 'docx' | 'print' | null
+  const [busy, setBusy] = useState(null) // 'pdf' | 'docx' | 'pptx' | 'print' | null
 
-  const { name, worksheetData, worksheetHtml, originalImageUri, createdAt } = worksheet
+  const { name, worksheetData, worksheetHtml, originalImageUri, originalFileType, createdAt } = worksheet
   const isHtml = !!worksheetHtml
 
   // For legacy JSON worksheets — pull display fields from worksheetData
@@ -76,6 +76,21 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
       setBusy(null)
     }
   }
+
+  async function handlePptx() {
+    if (busy) return
+    setBusy('pptx')
+    try {
+      await downloadAsPptxFromHtml(hydratedHtml, (name || 'worksheet').replace(/\.[^.]+$/, ''))
+    } catch (err) {
+      console.error(err)
+      alert('PPTX download failed: ' + err.message)
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  const isPptFile = originalFileType === 'pptx' || originalFileType === 'ppt'
 
   // ── Inject original image + suppress print page-break artifacts ──────────
 
@@ -164,6 +179,16 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
               {busy === 'docx' ? <Loader2 size={13} className="animate-spin" /> : <FileDown size={13} />}
               Word
             </button>
+            {isPptFile && isHtml && (
+              <button
+                onClick={handlePptx}
+                disabled={!!busy}
+                className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center border border-white/20"
+              >
+                {busy === 'pptx' ? <Loader2 size={13} className="animate-spin" /> : <FileDown size={13} />}
+                PPTX
+              </button>
+            )}
             <button
               onClick={handlePrint}
               disabled={!!busy}
