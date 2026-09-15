@@ -89,11 +89,61 @@ IMAGE EMBEDDING RULE (applies when the source is a photo or image file):
 
 DOCX EMBEDDED IMAGES: The source HTML may contain <img src="[DOCX_IMAGE_0]">, <img src="[DOCX_IMAGE_1]">, etc. where embedded images were. You MUST keep these <img> tags exactly as-is in your output — same src value, same position in the document. Do not remove, rename, or modify them.
 
-PPTX / PPT SLIDE IMAGES: PowerPoint files often contain images embedded in slides. When you see an image or photo on a slide that you cannot output as a data URI, render it as a styled placeholder box in this EXACT format:
-<div class="slide-img-placeholder" data-img-index="0" style="background:#f0f4ff;border:2px dashed #93a8d4;border-radius:8px;padding:32px 16px;text-align:center;color:#6b7fa3;font-size:0.9em;margin:12pt 0;">[Image from slide]</div>
-Increment data-img-index for each subsequent image (0, 1, 2, …). Never skip or omit slide images — always show a placeholder where they appeared.
-
 OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation.`
+}
+
+/**
+ * System instruction for PPTX uploads.
+ * Slide text and actual images are passed as separate content parts so Gemini
+ * can see each photo. Uses [PPTX_IMAGE_N] placeholders that get replaced with
+ * real data URIs after translation.
+ */
+function buildPptxSystemInstruction(lang, imageCount) {
+  const isEnglish = lang.code === 'en'
+  const targetDesc = isEnglish
+    ? 'English (the target is English — the source worksheet may be in any language)'
+    : lang.name
+
+  return `You are a professional bilingual worksheet translator producing print-ready HTML.
+
+TARGET LANGUAGE: ${targetDesc}
+
+YOUR ONLY JOB: translate this PowerPoint worksheet into ${targetDesc} and output a COMPLETE, SELF-CONTAINED HTML DOCUMENT.
+
+TRANSLATION RULE — EVERY WORD MUST BE TRANSLATED:
+• Every source-language word, phrase, vocabulary item, and sentence MUST have its ${targetDesc} translation.
+• For vocabulary lists: translate EACH item completely. Format: source term（${targetDesc} meaning）
+• Do NOT leave any vocabulary item without a translation.
+
+WHAT YOU MUST NEVER DO:
+• Never output JSON, markdown, plain text, or explanations — HTML ONLY
+• Never add \`\`\`html fences — output raw HTML starting with <!DOCTYPE html>
+• Never reorder, merge, split, add, or remove any question or section
+
+HTML REQUIREMENTS:
+• Complete document: <!DOCTYPE html><html lang="${lang.code}">…</html>
+• All CSS inside one <style> tag — NO external stylesheets, NO CDN links, NO JavaScript
+• Font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Hiragino Sans', 'Meiryo', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif
+• Body: background #fff; color #111; max-width 860px; margin 0 auto; padding: 0; line-height: 1.5
+• .q-block { margin-bottom: 16pt; padding: 10px 0; }
+• .en-sub { font-size: 0.82em; color: #777; font-style: italic; margin: 2pt 0 4pt; }
+• @media print { body { margin: 0; padding: 0; } }
+
+BILINGUAL SUBTITLE RULE:
+${isEnglish
+  ? '• The target IS English — do NOT add any subtitle. Output only the English translation.'
+  : '• After every translated heading or question stem, add: <div class="en-sub">original source text</div>'}
+
+IMAGE RULE — CRITICAL:
+You have been provided with ${imageCount} images as inline parts (parts 2 through ${imageCount + 1}).
+The slide content marks each slide\'s images with [PPTX_IMAGE_N] where N is the 0-based image index.
+• For EVERY [PPTX_IMAGE_N] marker in the slide content, insert this EXACT tag in the HTML at the correct position:
+  <img src="[PPTX_IMAGE_N]" alt="" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:8pt auto;box-shadow:0 2px 6px rgba(0,0,0,0.12);">
+  (replace N with the correct 0-based index)
+• Place each image at the appropriate position within its slide's content section.
+• Do NOT skip any image.
+
+OUTPUT: Start immediately with <!DOCTYPE html> — no preamble, no explanation, no markdown fences.`
 }
 
 /**
@@ -247,30 +297,34 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
   const lang = getLang(langCode)
   const IMAGE_MIME_TYPES_INPUT = ['image/png', 'image/jpeg']
   const isImageInput = IMAGE_MIME_TYPES_INPUT.includes(mimeType)
+  const isPptxSlides = mimeType === 'application/x-pptx-slides'
 
-  // Images get a dedicated prompt: show photo + translate instructions only.
-  // All other file types get the full translation prompt.
-  const systemInstruction = isImageInput
-    ? buildImageSystemInstruction(lang)
-    : buildSystemInstruction(lang)
+  // Build system instruction and content parts based on input type
+  let systemInstruction
+  let docxImageUris = []
+  let processedFileData = fileData
+
+  if (isPptxSlides) {
+    // PPTX: fileData = { slideText, images } — use dedicated PPTX instruction
+    systemInstruction = buildPptxSystemInstruction(lang, fileData.images.length)
+  } else if (isImageInput) {
+    systemInstruction = buildImageSystemInstruction(lang)
+  } else {
+    systemInstruction = buildSystemInstruction(lang)
+    // For DOCX (text/html): strip embedded base64 images out before sending to Gemini.
+    if (mimeType === 'text/html') {
+      const { strippedHtml, imageUris } = extractDocxImages(String(fileData))
+      processedFileData = strippedHtml
+      docxImageUris = imageUris
+    }
+  }
+
   const prompt = isImageInput
     ? `Translate the ENTIRE worksheet in this image into ${lang.name}. Show the original image first, then output the full translated worksheet with all questions, options, and content below it.`
     : buildHtmlPrompt(lang)
 
-  // For DOCX (text/html): strip embedded base64 images out before sending to Gemini.
-  // Gemini ignores / drops large base64 blobs in plain text — we replace them with
-  // numbered placeholders and re-inject after translation.
-  let docxImageUris = []
-  let processedFileData = fileData
-  if (mimeType === 'text/html') {
-    const { strippedHtml, imageUris } = extractDocxImages(String(fileData))
-    processedFileData = strippedHtml
-    docxImageUris = imageUris
-  }
-
-  // Build content parts: prompt text + file data
+  // Build content parts
   const contentParts = []
-  contentParts.push({ text: prompt })
 
   const BINARY_MIME_TYPES = [
     'application/pdf',
@@ -278,28 +332,35 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     'application/vnd.ms-powerpoint',
   ]
 
-  if (thumbnailDataUri && IMAGE_MIME_TYPES_INPUT.includes(mimeType)) {
+  if (isPptxSlides) {
+    // PPTX: send slide text + each image as a separate inline_data part
+    const { slideText, images } = fileData
+    const pptxPrompt = `Translate this PowerPoint worksheet into ${lang.name}.\n\nIMPORTANT:\n1. Translate EVERY vocabulary item with its ${lang.name} meaning in parentheses\n2. Insert <img src="[PPTX_IMAGE_N]"> wherever [PPTX_IMAGE_N] appears in the slide content\n3. Output COMPLETE HTML — include ALL slides\n\n--- SLIDE CONTENT ---\n${slideText}`
+    contentParts.push({ text: pptxPrompt })
+    for (const img of images) {
+      contentParts.push({ inline_data: { mime_type: img.mimeType, data: img.b64 } })
+    }
+  } else if (thumbnailDataUri && IMAGE_MIME_TYPES_INPUT.includes(mimeType)) {
     // For images: send the pre-compressed thumbnail instead of the raw (possibly large) original.
-    // This avoids timeouts on large uploads — Gemini still reads 800px images accurately.
+    contentParts.push({ text: prompt })
     const commaIdx = thumbnailDataUri.indexOf(',')
-    const meta      = thumbnailDataUri.slice(5, commaIdx)          // "image/jpeg;base64"
+    const meta      = thumbnailDataUri.slice(5, commaIdx)
     const b64       = thumbnailDataUri.slice(commaIdx + 1)
-    const thumbMime = meta.split(';')[0]                            // "image/jpeg"
+    const thumbMime = meta.split(';')[0]
     contentParts.push({ inline_data: { mime_type: thumbMime, data: b64 } })
   } else if (IMAGE_MIME_TYPES_INPUT.includes(mimeType) && fileData instanceof ArrayBuffer) {
-    // No thumbnail — send raw bytes (fallback, large images may time out)
+    contentParts.push({ text: prompt })
     const b64 = arrayBufferToBase64(fileData)
     contentParts.push({ inline_data: { mime_type: mimeType, data: b64 } })
   } else if (BINARY_MIME_TYPES.includes(mimeType) && fileData instanceof ArrayBuffer) {
-    // PDF / PPTX / PPT — send raw bytes inline; Gemini reads these natively
+    contentParts.push({ text: prompt })
     const b64 = arrayBufferToBase64(fileData)
     contentParts.push({ inline_data: { mime_type: mimeType, data: b64 } })
   } else if (mimeType === 'text/html') {
-    // DOCX converted to HTML by mammoth — images already extracted above.
-    // Tell Gemini it's HTML markup so it reads tables, headings, bold/italic properly.
+    contentParts.push({ text: prompt })
     contentParts.push({ text: 'The worksheet content below is HTML extracted from a Word document. Read all structural elements (tables, headings, lists, bold text, and [DOCX_IMAGE_N] image placeholders) as part of the worksheet layout:\n\n' + processedFileData })
   } else {
-    // Plain text fallback
+    contentParts.push({ text: prompt })
     contentParts.push({ text: String(processedFileData) })
   }
 
@@ -379,6 +440,14 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     // the original base64 data URIs that were extracted before sending to Gemini.
     if (docxImageUris.length > 0) {
       rawText = reInjectDocxImages(rawText, docxImageUris)
+    }
+
+    // Re-inject PPTX images — replace [PPTX_IMAGE_N] placeholders with real data URIs.
+    if (isPptxSlides && fileData.images.length > 0) {
+      for (let i = 0; i < fileData.images.length; i++) {
+        const { b64, mimeType: imgMime } = fileData.images[i]
+        rawText = rawText.replaceAll(`[PPTX_IMAGE_${i}]`, `data:${imgMime};base64,${b64}`)
+      }
     }
 
     // Strip any leftover [WORKSHEET_IMAGE] placeholders from non-image inputs.
