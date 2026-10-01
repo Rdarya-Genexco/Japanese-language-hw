@@ -17,6 +17,7 @@ export default function SettingsPage() {
   const [changingRole, setChangingRole] = useState(false)
   const [joinCode, setJoinCode] = useState('')
   const [joinStatus, setJoinStatus] = useState(null) // null | 'ok' | 'not-found' | 'verifying'
+  const [changingCode, setChangingCode] = useState(false)
 
   const handleChangeRole = async (newRole) => {
     if (newRole === role) return
@@ -36,6 +37,7 @@ export default function SettingsPage() {
       const room = await getClassroom(code)
       if (room) {
         setJoinStatus('ok')
+        setChangingCode(false)
         await saveClassroomCode(code)
       } else {
         setJoinStatus('not-found')
@@ -116,13 +118,13 @@ export default function SettingsPage() {
         {role === 'student' && (
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Classroom</p>
-            {classroomCode && joinStatus !== 'ok' ? (
+            {classroomCode && !changingCode && joinStatus !== 'ok' ? (
               <div className="flex items-center gap-2">
                 <span className="flex-1 font-mono font-black text-lg text-center tracking-widest text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 rounded-xl py-1.5 border border-cyan-200 dark:border-cyan-700">
                   {classroomCode}
                 </span>
                 <button
-                  onClick={() => { setJoinCode(''); setJoinStatus(null) }}
+                  onClick={() => { setJoinCode(''); setJoinStatus(null); setChangingCode(true) }}
                   className="text-xs text-slate-400 hover:text-slate-600 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                 >
                   Change

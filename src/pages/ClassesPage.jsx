@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useRole } from '../contexts/RoleContext'
@@ -13,8 +13,12 @@ import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, Ch
 
 export default function ClassesPage() {
   const { user } = useAuth()
-  const { saveClassroomCode } = useRole()
+  const { role, saveClassroomCode } = useRole()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (role && role !== 'teacher') navigate('/', { replace: true })
+  }, [role, navigate])
 
   const [classrooms, setClassrooms] = useState([])
   const [loadingClassrooms, setLoadingClassrooms] = useState(true)
@@ -34,6 +38,8 @@ export default function ClassesPage() {
 
   const [showAssignmentModal, setShowAssignmentModal] = useState(false)
   const [modalCode, setModalCode] = useState(null)
+
+  const fetchedCodesRef = useRef(new Set())
 
   useEffect(() => {
     getTeacherClassrooms(user.uid)
@@ -66,20 +72,24 @@ export default function ClassesPage() {
   const toggleClassroom = useCallback(async (code) => {
     if (activeCode === code) { setActiveCode(null); return }
     setActiveCode(code)
-    if (assignments[code] !== undefined) return
+    if (fetchedCodesRef.current.has(code)) return
+    fetchedCodesRef.current.add(code)
     setLoadingAssignments(p => ({ ...p, [code]: true }))
     try {
       const list = await getAssignments(code)
-      setAssignments(p => ({
-        ...p,
-        [code]: list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)),
-      }))
+      setAssignments(p => {
+        const optimistic = (p[code] || []).filter(a => !list.some(l => l.id === a.id))
+        return {
+          ...p,
+          [code]: [...list, ...optimistic].sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)),
+        }
+      })
     } catch {
-      setAssignments(p => ({ ...p, [code]: [] }))
+      setAssignments(p => ({ ...p, [code]: p[code] || [] }))
     } finally {
       setLoadingAssignments(p => ({ ...p, [code]: false }))
     }
-  }, [activeCode, assignments])
+  }, [activeCode])
 
   const toggleAssignment = async (code, a) => {
     if (expandedAssignment === a.id) { setExpandedAssignment(null); return }

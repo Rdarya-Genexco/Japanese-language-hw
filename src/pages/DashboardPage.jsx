@@ -25,7 +25,7 @@ import BottomNav from '../components/BottomNav'
 export default function DashboardPage() {
   const { user }              = useAuth()
   const { t }                 = useLang()
-  const { role } = useRole()
+  const { role, classroomCode } = useRole()
   const { folderId = 'root' } = useParams()
   const navigate              = useNavigate()
 
@@ -74,7 +74,6 @@ export default function DashboardPage() {
   }, [load, user.uid, folderId, t])
 
   // Load assignments for students who have a classroom code
-  const { classroomCode } = useRole()
   useEffect(() => {
     if (role !== 'student' || !classroomCode || folderId !== 'root') return
     getAssignments(classroomCode).then(list => {
