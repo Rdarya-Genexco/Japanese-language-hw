@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useRole } from '../contexts/RoleContext'
 import {
-  createClassroom, getAssignments, getAssignmentSubmissions, getClassroomSubmissions,
+  createClassroom, getTeacherClassrooms, getAssignments,
+  getAssignmentSubmissions, getClassroomSubmissions,
 } from '../utils/firestoreService'
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
@@ -12,41 +13,41 @@ import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, Ch
 
 export default function ClassesPage() {
   const { user } = useAuth()
-  const { classroomCode, saveClassroomCode } = useRole()
+  const { saveClassroomCode } = useRole()
   const navigate = useNavigate()
 
+  const [classrooms, setClassrooms] = useState([])
+  const [loadingClassrooms, setLoadingClassrooms] = useState(true)
   const [creating, setCreating] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [assignments, setAssignments] = useState([])
-  const [loadingAssignments, setLoadingAssignments] = useState(false)
-  const [showAssignmentModal, setShowAssignmentModal] = useState(false)
+
+  const [activeCode, setActiveCode] = useState(null)
+  const [copiedCode, setCopiedCode] = useState(null)
+
+  const [assignments, setAssignments] = useState({})
+  const [loadingAssignments, setLoadingAssignments] = useState({})
   const [expandedAssignment, setExpandedAssignment] = useState(null)
-  const [submissions, setSubmissions] = useState({}) // assignmentId → []
+  const [submissions, setSubmissions] = useState({})
   const [loadingSubs, setLoadingSubs] = useState({})
-  const [generalSubs, setGeneralSubs] = useState([])
-  const [loadingGeneralSubs, setLoadingGeneralSubs] = useState(false)
-  const [expandedGeneral, setExpandedGeneral] = useState(false)
+  const [generalSubs, setGeneralSubs] = useState({})
+  const [loadingGeneralSubs, setLoadingGeneralSubs] = useState({})
+  const [expandedGeneral, setExpandedGeneral] = useState(null)
 
-  const loadAssignments = useCallback(async () => {
-    if (!classroomCode) return
-    setLoadingAssignments(true)
-    try {
-      const list = await getAssignments(classroomCode)
-      setAssignments(list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)))
-    } catch {
-      // silent
-    } finally {
-      setLoadingAssignments(false)
-    }
-  }, [classroomCode])
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false)
+  const [modalCode, setModalCode] = useState(null)
 
-  useEffect(() => { loadAssignments() }, [loadAssignments])
+  useEffect(() => {
+    getTeacherClassrooms(user.uid)
+      .then(setClassrooms)
+      .finally(() => setLoadingClassrooms(false))
+  }, [user.uid])
 
   const handleCreateClassroom = async () => {
     setCreating(true)
     try {
       const code = await createClassroom(user.uid)
-      await saveClassroomCode(code)
+      saveClassroomCode(code).catch(() => {})
+      setClassrooms(prev => [{ code, teacherUid: user.uid, createdAt: { seconds: Date.now() / 1000 } }, ...prev])
+      setActiveCode(code)
     } catch (err) {
       alert('Failed to create classroom: ' + err.message)
     } finally {
@@ -54,24 +55,39 @@ export default function ClassesPage() {
     }
   }
 
-  const handleCopy = async () => {
+  const handleCopy = async (code) => {
     try {
-      await navigator.clipboard.writeText(classroomCode)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      await navigator.clipboard.writeText(code)
+      setCopiedCode(code)
+      setTimeout(() => setCopiedCode(null), 2000)
     } catch {}
   }
 
-  const toggleAssignment = async (a) => {
-    if (expandedAssignment === a.id) {
-      setExpandedAssignment(null)
-      return
+  const toggleClassroom = useCallback(async (code) => {
+    if (activeCode === code) { setActiveCode(null); return }
+    setActiveCode(code)
+    if (assignments[code] !== undefined) return
+    setLoadingAssignments(p => ({ ...p, [code]: true }))
+    try {
+      const list = await getAssignments(code)
+      setAssignments(p => ({
+        ...p,
+        [code]: list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)),
+      }))
+    } catch {
+      setAssignments(p => ({ ...p, [code]: [] }))
+    } finally {
+      setLoadingAssignments(p => ({ ...p, [code]: false }))
     }
+  }, [activeCode, assignments])
+
+  const toggleAssignment = async (code, a) => {
+    if (expandedAssignment === a.id) { setExpandedAssignment(null); return }
     setExpandedAssignment(a.id)
     if (submissions[a.id]) return
     setLoadingSubs(p => ({ ...p, [a.id]: true }))
     try {
-      const subs = await getAssignmentSubmissions(classroomCode, a.id)
+      const subs = await getAssignmentSubmissions(code, a.id)
       setSubmissions(p => ({ ...p, [a.id]: subs }))
     } catch {
       setSubmissions(p => ({ ...p, [a.id]: [] }))
@@ -80,18 +96,21 @@ export default function ClassesPage() {
     }
   }
 
-  const toggleGeneral = async () => {
-    if (expandedGeneral) { setExpandedGeneral(false); return }
-    setExpandedGeneral(true)
-    if (generalSubs.length > 0) return
-    setLoadingGeneralSubs(true)
+  const toggleGeneral = async (code) => {
+    if (expandedGeneral === code) { setExpandedGeneral(null); return }
+    setExpandedGeneral(code)
+    if (generalSubs[code]) return
+    setLoadingGeneralSubs(p => ({ ...p, [code]: true }))
     try {
-      const subs = await getClassroomSubmissions(classroomCode)
-      setGeneralSubs(subs.sort((a, b) => (b.submittedAt?.seconds || 0) - (a.submittedAt?.seconds || 0)))
+      const subs = await getClassroomSubmissions(code)
+      setGeneralSubs(p => ({
+        ...p,
+        [code]: subs.sort((a, b) => (b.submittedAt?.seconds || 0) - (a.submittedAt?.seconds || 0)),
+      }))
     } catch {
-      setGeneralSubs([])
+      setGeneralSubs(p => ({ ...p, [code]: [] }))
     } finally {
-      setLoadingGeneralSubs(false)
+      setLoadingGeneralSubs(p => ({ ...p, [code]: false }))
     }
   }
 
@@ -103,131 +122,210 @@ export default function ClassesPage() {
       <div className="max-w-2xl mx-auto px-4 py-6 with-bottom-nav">
 
         {/* Page header */}
-        <div className="flex items-center gap-3 mb-6">
-          <button
-            onClick={() => navigate('/')}
-            className="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors"
-          >
-            <ArrowLeft size={16} className="text-slate-600 dark:text-slate-400" />
-          </button>
-          <div>
-            <h1 className="font-bold text-slate-800 dark:text-slate-100 text-xl">My Classes</h1>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Manage your classroom and assignments</p>
-          </div>
-        </div>
-
-        {/* Classroom card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 mb-4">
-          <h2 className="font-semibold text-slate-700 dark:text-slate-300 text-sm mb-3 flex items-center gap-2">
-            <Users size={15} className="text-blue-500" /> Classroom
-          </h2>
-
-          {classroomCode ? (
-            <div className="flex items-center gap-3">
-              <div className="flex-1 bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-700 rounded-xl py-3 text-center">
-                <p className="font-black font-mono text-2xl tracking-widest text-cyan-600 dark:text-cyan-400">
-                  {classroomCode}
-                </p>
-                <p className="text-xs text-cyan-500 dark:text-cyan-500 mt-0.5">Share with students</p>
-              </div>
-              <button
-                onClick={handleCopy}
-                className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 flex-shrink-0 ${
-                  copied
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
-                }`}
-              >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-                {copied ? 'Copied!' : 'Copy'}
-              </button>
-            </div>
-          ) : (
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
             <button
-              onClick={handleCreateClassroom}
-              disabled={creating}
-              className="btn-primary w-full justify-center"
+              onClick={() => navigate('/')}
+              className="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors"
             >
-              {creating ? <Loader2 size={16} className="animate-spin" /> : '🏫'}
-              {creating ? 'Creating…' : 'Create Classroom'}
+              <ArrowLeft size={16} className="text-slate-600 dark:text-slate-400" />
             </button>
-          )}
+            <div>
+              <h1 className="font-bold text-slate-800 dark:text-slate-100 text-xl">My Classes</h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {loadingClassrooms
+                  ? 'Loading…'
+                  : classrooms.length === 0
+                    ? 'No classrooms yet'
+                    : `${classrooms.length} classroom${classrooms.length !== 1 ? 's' : ''}`}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleCreateClassroom}
+            disabled={creating}
+            className="btn-primary flex-shrink-0"
+          >
+            {creating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
+            {creating ? 'Creating…' : 'New Class'}
+          </button>
         </div>
 
-        {/* Assignments section */}
-        {classroomCode && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 mb-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-slate-700 dark:text-slate-300 text-sm flex items-center gap-2">
-                <FileText size={15} className="text-violet-500" />
+        {loadingClassrooms ? (
+          <div className="flex items-center gap-2 text-sm text-slate-400 py-10 justify-center">
+            <Loader2 size={18} className="animate-spin" /> Loading classrooms…
+          </div>
+        ) : classrooms.length === 0 ? (
+          <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <p className="text-5xl mb-3">🏫</p>
+            <p className="font-semibold text-slate-700 dark:text-slate-200">No classrooms yet</p>
+            <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Create your first classroom to get started.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {classrooms.map(cls => (
+              <ClassroomCard
+                key={cls.code}
+                cls={cls}
+                active={activeCode === cls.code}
+                copied={copiedCode === cls.code}
+                assignments={assignments[cls.code]}
+                loadingAssignments={loadingAssignments[cls.code]}
+                expandedAssignment={expandedAssignment}
+                submissions={submissions}
+                loadingSubs={loadingSubs}
+                generalSubs={generalSubs[cls.code]}
+                loadingGeneralSubs={loadingGeneralSubs[cls.code]}
+                expandedGeneral={expandedGeneral === cls.code}
+                onToggle={() => toggleClassroom(cls.code)}
+                onCopy={() => handleCopy(cls.code)}
+                onToggleAssignment={(a) => toggleAssignment(cls.code, a)}
+                onToggleGeneral={() => toggleGeneral(cls.code)}
+                onNewAssignment={() => { setModalCode(cls.code); setShowAssignmentModal(true) }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {showAssignmentModal && modalCode && (
+        <AssignmentModal
+          classroomCode={modalCode}
+          onClose={() => { setShowAssignmentModal(false); setModalCode(null) }}
+          onCreated={(newA) => {
+            const code = modalCode
+            setAssignments(prev => ({
+              ...prev,
+              [code]: [{ ...newA, createdAt: { seconds: Date.now() / 1000 } }, ...(prev[code] || [])],
+            }))
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+function ClassroomCard({
+  cls, active, copied,
+  assignments, loadingAssignments,
+  expandedAssignment, submissions, loadingSubs,
+  generalSubs, loadingGeneralSubs, expandedGeneral,
+  onToggle, onCopy, onToggleAssignment, onToggleGeneral, onNewAssignment,
+}) {
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+
+      {/* Classroom header */}
+      <div className="flex items-center gap-3 p-4">
+        <button onClick={onToggle} className="flex-1 flex items-center gap-3 text-left min-w-0">
+          <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Users size={18} className="text-cyan-600 dark:text-cyan-400" />
+          </div>
+          <div className="min-w-0">
+            <p className="font-black font-mono text-xl tracking-widest text-cyan-600 dark:text-cyan-400">
+              {cls.code}
+            </p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              {assignments !== undefined
+                ? `${assignments.length} assignment${assignments.length !== 1 ? 's' : ''}`
+                : 'Tap to view'}
+            </p>
+          </div>
+        </button>
+        <button
+          onClick={onCopy}
+          className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 flex-shrink-0 ${
+            copied
+              ? 'bg-emerald-500 text-white'
+              : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+          }`}
+        >
+          {copied ? <Check size={13} /> : <Copy size={13} />}
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+        <button onClick={onToggle} className="p-1 flex-shrink-0">
+          {active
+            ? <ChevronDown size={16} className="text-slate-400" />
+            : <ChevronRight size={16} className="text-slate-400" />}
+        </button>
+      </div>
+
+      {/* Expanded content */}
+      {active && (
+        <div className="border-t border-slate-100 dark:border-slate-700">
+
+          {/* Assignments */}
+          <div className="p-4 border-b border-slate-100 dark:border-slate-700">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                <FileText size={13} className="text-violet-500" />
                 Assignments
-                {assignments.length > 0 && (
-                  <span className="text-xs bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 font-bold px-2 py-0.5 rounded-full">
+                {assignments?.length > 0 && (
+                  <span className="bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 px-1.5 py-0.5 rounded-full text-[10px] font-bold">
                     {assignments.length}
                   </span>
                 )}
-              </h2>
+              </h3>
               <button
-                onClick={() => setShowAssignmentModal(true)}
-                className="flex items-center gap-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors"
+                onClick={onNewAssignment}
+                className="flex items-center gap-1 text-[11px] font-semibold bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg transition-colors"
               >
-                <Plus size={13} /> New Assignment
+                <Plus size={11} /> New
               </button>
             </div>
 
             {loadingAssignments ? (
-              <div className="flex items-center gap-2 text-sm text-slate-400 py-4 justify-center">
-                <Loader2 size={16} className="animate-spin" /> Loading…
+              <div className="flex items-center gap-2 text-xs text-slate-400 py-3 justify-center">
+                <Loader2 size={13} className="animate-spin" /> Loading…
               </div>
-            ) : assignments.length === 0 ? (
-              <div className="text-center py-6">
-                <p className="text-4xl mb-2">📋</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">No assignments yet.</p>
-                <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Create one so students can submit their work.</p>
-              </div>
+            ) : !assignments || assignments.length === 0 ? (
+              <p className="text-xs text-slate-400 text-center py-3">No assignments yet.</p>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {assignments.map(a => (
                   <div key={a.id} className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
                     <button
-                      onClick={() => toggleAssignment(a)}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                      onClick={() => onToggleAssignment(a)}
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-slate-800 dark:text-slate-100 text-sm truncate">{a.title}</p>
+                        <p className="font-semibold text-slate-800 dark:text-slate-100 text-xs truncate">{a.title}</p>
                         {a.description && (
-                          <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">{a.description}</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">{a.description}</p>
                         )}
                         {a.dueDate && (
-                          <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">Due: {a.dueDate}</p>
+                          <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-0.5">Due: {a.dueDate}</p>
+                        )}
+                        {a.attachedWorksheetName && (
+                          <p className="text-[10px] text-blue-500 dark:text-blue-400 mt-0.5 truncate">📎 {a.attachedWorksheetName}</p>
                         )}
                       </div>
                       {loadingSubs[a.id] ? (
-                        <Loader2 size={14} className="animate-spin text-slate-400 flex-shrink-0" />
+                        <Loader2 size={12} className="animate-spin text-slate-400 flex-shrink-0" />
                       ) : expandedAssignment === a.id ? (
-                        <ChevronDown size={14} className="text-slate-400 flex-shrink-0" />
+                        <ChevronDown size={12} className="text-slate-400 flex-shrink-0" />
                       ) : (
-                        <ChevronRight size={14} className="text-slate-400 flex-shrink-0" />
+                        <ChevronRight size={12} className="text-slate-400 flex-shrink-0" />
                       )}
                     </button>
 
                     {expandedAssignment === a.id && !loadingSubs[a.id] && (
-                      <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 px-4 py-3">
+                      <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 px-3 py-2">
                         {(submissions[a.id] || []).length === 0 ? (
-                          <p className="text-xs text-slate-400 dark:text-slate-500 text-center py-2">No submissions yet.</p>
+                          <p className="text-[10px] text-slate-400 text-center py-2">No submissions yet.</p>
                         ) : (
-                          <div className="space-y-2">
-                            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-semibold text-slate-500 mb-1.5">
                               {submissions[a.id].length} submission{submissions[a.id].length !== 1 ? 's' : ''}
                             </p>
                             {submissions[a.id].map(s => (
-                              <div key={s.id} className="flex items-center gap-2 text-xs bg-white dark:bg-slate-800 rounded-lg px-3 py-2 border border-slate-200 dark:border-slate-700">
-                                <span className="text-base flex-shrink-0">👤</span>
+                              <div key={s.id} className="flex items-center gap-2 text-[10px] bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1.5 border border-slate-200 dark:border-slate-700">
+                                <span className="text-sm flex-shrink-0">👤</span>
                                 <div className="flex-1 min-w-0">
                                   <p className="font-medium text-slate-700 dark:text-slate-200 truncate">
                                     {s.studentName || 'Student'}
                                   </p>
-                                  <p className="text-slate-400 dark:text-slate-500 truncate">{s.worksheetName}</p>
+                                  <p className="text-slate-400 truncate">{s.worksheetName}</p>
                                 </div>
                               </div>
                             ))}
@@ -240,62 +338,47 @@ export default function ClassesPage() {
               </div>
             )}
           </div>
-        )}
 
-        {/* General submissions */}
-        {classroomCode && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+          {/* General submissions */}
+          <div className="p-4">
             <button
-              onClick={toggleGeneral}
-              className="w-full flex items-center justify-between"
+              onClick={onToggleGeneral}
+              className="w-full flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2"
             >
-              <h2 className="font-semibold text-slate-700 dark:text-slate-300 text-sm flex items-center gap-2">
-                <Eye size={15} className="text-emerald-500" /> General Submissions
-              </h2>
-              {expandedGeneral ? (
-                <ChevronDown size={14} className="text-slate-400" />
-              ) : (
-                <ChevronRight size={14} className="text-slate-400" />
-              )}
+              <span className="flex items-center gap-1.5">
+                <Eye size={13} className="text-emerald-500" /> General Submissions
+              </span>
+              {expandedGeneral
+                ? <ChevronDown size={13} className="text-slate-400" />
+                : <ChevronRight size={13} className="text-slate-400" />}
             </button>
 
             {expandedGeneral && (
-              <div className="mt-4">
-                {loadingGeneralSubs ? (
-                  <div className="flex items-center gap-2 text-sm text-slate-400 py-4 justify-center">
-                    <Loader2 size={16} className="animate-spin" /> Loading…
-                  </div>
-                ) : generalSubs.length === 0 ? (
-                  <p className="text-xs text-slate-400 dark:text-slate-500 text-center py-4">No general submissions yet.</p>
-                ) : (
-                  <div className="space-y-2">
-                    {generalSubs.map(s => (
-                      <div key={s.id} className="flex items-center gap-2 text-xs bg-slate-50 dark:bg-slate-900/30 rounded-xl px-3 py-2.5 border border-slate-200 dark:border-slate-700">
-                        <span className="text-base flex-shrink-0">📄</span>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-slate-700 dark:text-slate-200 truncate">
-                            {s.studentName || 'Student'}
-                          </p>
-                          <p className="text-slate-400 dark:text-slate-500 truncate">{s.worksheetName || s.name}</p>
-                        </div>
+              loadingGeneralSubs ? (
+                <div className="flex items-center gap-2 text-xs text-slate-400 py-3 justify-center">
+                  <Loader2 size={13} className="animate-spin" /> Loading…
+                </div>
+              ) : !generalSubs || generalSubs.length === 0 ? (
+                <p className="text-[10px] text-slate-400 text-center py-2">No general submissions yet.</p>
+              ) : (
+                <div className="space-y-1.5">
+                  {generalSubs.map(s => (
+                    <div key={s.id} className="flex items-center gap-2 text-[10px] bg-slate-50 dark:bg-slate-900/30 rounded-xl px-2.5 py-2 border border-slate-200 dark:border-slate-700">
+                      <span className="text-sm flex-shrink-0">📄</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-slate-700 dark:text-slate-200 truncate">
+                          {s.studentName || 'Student'}
+                        </p>
+                        <p className="text-slate-400 truncate">{s.worksheetName || s.name}</p>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                    </div>
+                  ))}
+                </div>
+              )
             )}
           </div>
-        )}
-      </div>
 
-      {showAssignmentModal && classroomCode && (
-        <AssignmentModal
-          classroomCode={classroomCode}
-          onClose={() => setShowAssignmentModal(false)}
-          onCreated={(newA) => {
-            setAssignments(prev => [{ ...newA, createdAt: { seconds: Date.now() / 1000 } }, ...prev])
-          }}
-        />
+        </div>
       )}
     </div>
   )

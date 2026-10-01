@@ -191,8 +191,9 @@ export async function restQuery(collection, field, value) {
   const parent = parts.slice(0, -1).join('/')
 
   const t = await token()
+  const parentSegment = parent ? `/${parent}` : ''
   const res = await fetch(
-    `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/lang/documents/${parent}:runQuery`,
+    `${BASE}${parentSegment}:runQuery`,
     {
       method: 'POST',
       headers: { Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' },

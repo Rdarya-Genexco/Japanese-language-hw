@@ -95,6 +95,15 @@ export async function getClassroom(code) {
   return restGetPublic('classrooms', code.toUpperCase())
 }
 
+export async function getTeacherClassrooms(uid) {
+  try {
+    const docs = await restQuery('classrooms', 'teacherUid', uid)
+    return docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
+  } catch {
+    return []
+  }
+}
+
 export async function submitToClassroom(code, studentUid, studentName, worksheetName, worksheetHtml) {
   return restAdd(`classrooms/${code.toUpperCase()}/submissions`, {
     studentUid,

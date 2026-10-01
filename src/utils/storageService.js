@@ -36,7 +36,7 @@ export const buildBreadcrumb= (...a) => svc().buildBreadcrumb(...a)
 export {
   getUserRole, saveUserRole, getUserData, saveUserData,
   createShareToken, getSharedWorksheet,
-  createClassroom, getClassroom, submitToClassroom, getClassroomSubmissions,
+  createClassroom, getClassroom, getTeacherClassrooms, submitToClassroom, getClassroomSubmissions,
   createAssignment, getAssignments, getAssignmentSubmissions, submitToAssignment,
   getAllWorksheets,
 } from './firestoreService'
