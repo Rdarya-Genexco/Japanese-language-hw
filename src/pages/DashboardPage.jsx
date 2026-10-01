@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
+import { useRole } from '../contexts/RoleContext'
 import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet, getAllFolders,
+  createClassroom,
 } from '../utils/storageService'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
@@ -17,13 +19,14 @@ import NewFolderModal from '../components/NewFolderModal'
 import WorksheetViewer from '../components/WorksheetViewer'
 import MoveToModal from '../components/MoveToModal'
 import EmptyState from '../components/EmptyState'
-import { FolderPlus, Upload, RefreshCw } from 'lucide-react'
+import { FolderPlus, Upload, RefreshCw, LayoutGrid, List } from 'lucide-react'
 
 const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
 
 export default function DashboardPage() {
   const { user }              = useAuth()
   const { t }                 = useLang()
+  const { role }              = useRole()
   const { folderId = 'root' } = useParams()
   const navigate              = useNavigate()
 
@@ -42,6 +45,10 @@ export default function DashboardPage() {
   const [dragOverFolderId, setDragOverFolderId] = useState(null)
   const [touchPos,         setTouchPos]         = useState(null)
   const [moveToWorksheet,  setMoveToWorksheet]  = useState(null) // {id, name}
+  const [listView,         setListView]         = useState(false)
+  const [classroomCode,    setClassroomCode]    = useState(null)
+  const [creatingClass,    setCreatingClass]    = useState(false)
+  const streak = worksheets.length > 0 ? Math.min(worksheets.length, 7) : 0
 
   // ── Load folder contents ──────────────────────────────────────────────────
   const load = useCallback(async () => {
@@ -226,11 +233,77 @@ export default function DashboardPage() {
   // Error help text (kept in English for technical content)
   const driveHelp = driveError ? buildDriveHelp(driveError.code) : null
 
+  const handleCreateClassroom = async () => {
+    setCreatingClass(true)
+    try {
+      const code = await createClassroom(user.uid)
+      setClassroomCode(code)
+    } catch (err) {
+      alert('Failed to create classroom: ' + err.message)
+    } finally {
+      setCreatingClass(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-violet-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex flex-col">
-      <Header />
+      <Header streak={streak} />
 
       <div className="max-w-6xl mx-auto w-full px-4 py-4 flex-1">
+
+        {/* Student motivational banner */}
+        {role === 'student' && folderId === 'root' && !loading && (
+          <div className="mb-4 bg-gradient-to-r from-violet-500 to-pink-500 rounded-2xl p-4 flex items-center gap-4">
+            <span className="text-4xl flex-shrink-0">🎒</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-white text-sm">
+                {user?.displayName ? `Welcome back, ${user.displayName.split(' ')[0]}!` : 'Welcome back!'}
+              </p>
+              <p className="text-white/80 text-xs mt-0.5">
+                {worksheets.length > 0
+                  ? `You have ${worksheets.length} worksheet${worksheets.length !== 1 ? 's' : ''} — keep it up! 🔥`
+                  : 'Upload your first worksheet to get started!'}
+              </p>
+            </div>
+            {streak > 0 && (
+              <div className="flex-shrink-0 text-center">
+                <p className="text-2xl font-black text-white">{streak}</p>
+                <p className="text-white/70 text-xs">streak</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Teacher stats row */}
+        {role === 'teacher' && folderId === 'root' && !loading && (
+          <div className="mb-4 grid grid-cols-3 gap-3">
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
+              <p className="text-2xl font-black text-blue-600 dark:text-blue-400">{worksheets.length}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Worksheets</p>
+            </div>
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
+              <p className="text-2xl font-black text-violet-600 dark:text-violet-400">{folders.length}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Folders</p>
+            </div>
+            <button
+              onClick={classroomCode ? undefined : handleCreateClassroom}
+              disabled={creatingClass}
+              className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-cyan-300 transition-colors disabled:opacity-60"
+            >
+              {classroomCode ? (
+                <>
+                  <p className="text-base font-black text-cyan-600 dark:text-cyan-400 tracking-widest font-mono">{classroomCode}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Class code</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-2xl">{creatingClass ? '⏳' : '🏫'}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{creatingClass ? '...' : 'Create class'}</p>
+                </>
+              )}
+            </button>
+          </div>
+        )}
 
         {/* Breadcrumb + action buttons */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
@@ -240,6 +313,15 @@ export default function DashboardPage() {
             onDropWorksheet={handleMoveWorksheet}
           />
           <div className="flex items-center gap-2">
+            {role === 'teacher' && (
+              <button
+                onClick={() => setListView(v => !v)}
+                className="btn-secondary text-sm"
+                title={listView ? 'Grid view' : 'List view'}
+              >
+                {listView ? <LayoutGrid size={16} /> : <List size={16} />}
+              </button>
+            )}
             <button onClick={() => setShowNewFolder(true)} className="btn-secondary text-sm">
               <FolderPlus size={16} /> {t('newFolder')}
             </button>
@@ -335,11 +417,12 @@ export default function DashboardPage() {
                   <h2 className="text-sm font-bold text-slate-600 dark:text-slate-400 tracking-wide">{t('worksheets')}</h2>
                   <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold px-2 py-0.5 rounded-full border border-blue-200 dark:border-blue-700">{worksheets.length}</span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className={listView ? 'flex flex-col gap-2' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3'}>
                   {worksheets.map(ws => (
                     <WorksheetCard
                       key={ws.id}
                       worksheet={ws}
+                      listView={listView}
                       onClick={() => handleViewWorksheet(ws)}
                       onDelete={() => handleDeleteWorksheet(ws)}
                       onPrint={() => handlePrint(ws)}

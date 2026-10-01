@@ -1,13 +1,20 @@
 import { useState, useRef, useEffect } from 'react'
 import { FileText, MoreVertical, Download, Printer, Trash2, Eye, FolderInput } from 'lucide-react'
 import { useLang } from '../contexts/LanguageContext'
+import { useRole } from '../contexts/RoleContext'
+
+const SUBJECT_EMOJI = {
+  pdf: '📕', docx: '📘', doc: '📘', pptx: '📙', ppt: '📙', png: '🖼️', jpg: '🖼️', jpeg: '🖼️',
+}
 
 export default function WorksheetCard({
   worksheet, onClick, onDelete, onPrint, onDocx, onPdf, onMoveTo,
   onDragStart, onDragEnd,
   onTouchDragStart, onTouchDragMove, onTouchDragEnd,
+  listView = false,
 }) {
   const { t, langCode } = useLang()
+  const { role } = useRole()
   const [menuOpen,  setMenuOpen]  = useState(false)
   const [dragging,  setDragging]  = useState(false)
   const menuRef  = useRef(null)
@@ -68,6 +75,53 @@ export default function WorksheetCard({
     onTouchDragEnd?.(worksheet.id, touch.clientX, touch.clientY)
   }
 
+  const subjectEmoji = SUBJECT_EMOJI[originalFileType] || '📄'
+
+  if (listView) {
+    return (
+      <div
+        ref={cardRef}
+        className={`group relative bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-200 cursor-pointer select-none flex items-center gap-3 px-4 py-3 ${
+          dragging ? 'opacity-40' : ''
+        }`}
+        onClick={dragging ? undefined : onClick}
+      >
+        <span className="text-2xl flex-shrink-0">{subjectEmoji}</span>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-slate-800 dark:text-slate-100 text-sm truncate">{name}</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">{date}</p>
+        </div>
+        <span className={`text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
+          isPdf ? 'bg-rose-100 text-rose-600' : 'bg-blue-100 text-blue-600'
+        }`}>{isPdf ? 'PDF' : 'DOCX'}</span>
+        <div data-menu ref={menuRef} className="flex-shrink-0" onClick={e => e.stopPropagation()}>
+          <button
+            onClick={() => setMenuOpen(v => !v)}
+            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-all"
+          >
+            <MoreVertical size={14} className="text-slate-400" />
+          </button>
+          {menuOpen && (
+            <div className="absolute right-2 top-10 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1 z-50 min-w-[170px]">
+              <button onClick={() => { onClick(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
+                <Eye size={13} className="text-violet-500" /> {t('open')}
+              </button>
+              <button onClick={() => { onPdf?.(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
+                <Download size={13} className="text-rose-500" /> {t('downloadPdf')}
+              </button>
+              <button onClick={() => { onMoveTo?.(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
+                <FolderInput size={13} className="text-violet-500" /> Move to…
+              </button>
+              <button onClick={() => { onDelete(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30">
+                <Trash2 size={13} /> {t('delete')}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       ref={cardRef}
@@ -85,11 +139,13 @@ export default function WorksheetCard({
       <div className={`h-1.5 w-full rounded-t-2xl ${isPdf ? 'bg-gradient-to-r from-rose-400 to-pink-500' : 'bg-gradient-to-r from-blue-400 to-violet-500'}`} />
 
       <div className="p-4 flex items-start gap-3">
-        {/* Icon */}
+        {/* Icon — student gets emoji, teacher gets FileText */}
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
           isPdf ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-500' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-500'
         }`}>
-          <FileText size={20} strokeWidth={1.8} />
+          {role === 'student'
+            ? <span className="text-xl leading-none">{subjectEmoji}</span>
+            : <FileText size={20} strokeWidth={1.8} />}
         </div>
 
         {/* Info */}

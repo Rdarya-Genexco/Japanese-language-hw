@@ -171,6 +171,19 @@ export async function restList(collection) {
   return docs
 }
 
+/** Get a single document without authentication (for public collections). */
+export async function restGetPublic(collection, id) {
+  try {
+    const res = await fetch(`${BASE}/${collection}/${id}`)
+    if (res.status === 404) return null
+    if (!res.ok) return null
+    const result = await res.json()
+    return fromDoc(result)
+  } catch {
+    return null
+  }
+}
+
 /** Query a collection by a single field equality filter. */
 export async function restQuery(collection, field, value) {
   const parts = collection.split('/')

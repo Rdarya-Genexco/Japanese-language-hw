@@ -7,7 +7,7 @@
  *   users/{uid}/config/settings   — per-user config (Gemini API key etc.)
  */
 import {
-  restAdd, restGet, restSet, restUpdate, restDelete, restQuery, restList,
+  restAdd, restGet, restSet, restUpdate, restDelete, restQuery, restList, restGetPublic,
 } from './firestoreREST'
 
 // ── Connectivity test ──────────────────────────────────────────────────────────
@@ -35,6 +35,62 @@ export async function testFirestoreConnection(uid) {
     console.error('[Firestore] connection test failed', err)
     return { ok: false, code: err.code || 'unknown', message: err.message }
   }
+}
+
+// ── User profile (role) ────────────────────────────────────────────────────────
+
+export async function getUserRole(uid) {
+  try {
+    const doc = await restGet('users', uid)
+    return doc?.role || null
+  } catch {
+    return null
+  }
+}
+
+export async function saveUserRole(uid, role) {
+  await restUpdate('users', uid, { role })
+}
+
+// ── Shared worksheets ──────────────────────────────────────────────────────────
+
+export async function createShareToken(uid, worksheetId, worksheetHtml, name) {
+  const token = Array.from(crypto.getRandomValues(new Uint8Array(12)))
+    .map(b => b.toString(36).padStart(2, '0')).join('').slice(0, 16)
+  await restSet('sharedWorksheets', token, {
+    teacherUid: uid,
+    worksheetId,
+    worksheetHtml,
+    name,
+    createdAt: new Date(),
+  })
+  return token
+}
+
+export async function getSharedWorksheet(token) {
+  return restGetPublic('sharedWorksheets', token)
+}
+
+// ── Classrooms ─────────────────────────────────────────────────────────────────
+
+export async function createClassroom(uid) {
+  const code = Array.from(crypto.getRandomValues(new Uint8Array(3)))
+    .map(b => b.toString(36).padStart(2, '0')).join('').toUpperCase().slice(0, 6)
+  await restSet('classrooms', code, { teacherUid: uid, code, createdAt: new Date() })
+  return code
+}
+
+export async function getClassroom(code) {
+  return restGetPublic('classrooms', code.toUpperCase())
+}
+
+export async function submitToClassroom(code, studentUid, name, worksheetHtml) {
+  return restAdd(`classrooms/${code.toUpperCase()}/submissions`, {
+    studentUid,
+    name,
+    worksheetHtml,
+    submittedAt: new Date(),
+  })
 }
 
 // ── Gemini API key ─────────────────────────────────────────────────────────────
