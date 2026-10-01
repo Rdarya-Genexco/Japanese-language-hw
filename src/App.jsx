@@ -9,6 +9,7 @@ import SettingsPage from './pages/SettingsPage'
 import RoleSelectPage from './pages/RoleSelectPage'
 import SharedViewPage from './pages/SharedViewPage'
 import ClassesPage from './pages/ClassesPage'
+import SquirrelMascot from './components/SquirrelMascot'
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
@@ -35,16 +36,19 @@ function AppRoutes() {
   )
 
   return (
-    <Routes>
-      <Route path="/login"            element={user ? <Navigate to="/" replace /> : <LoginPage />} />
-      <Route path="/role-select"      element={!user ? <Navigate to="/login" replace /> : role ? <Navigate to="/" replace /> : <RoleSelectPage />} />
-      <Route path="/s/:token"         element={<SharedViewPage />} />
-      <Route path="/settings"         element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
-      <Route path="/classes"          element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
-      <Route path="/folder/:folderId" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-      <Route path="/"                 element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-      <Route path="*"                 element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/login"            element={user ? <Navigate to="/" replace /> : <LoginPage />} />
+        <Route path="/role-select"      element={!user ? <Navigate to="/login" replace /> : role ? <Navigate to="/" replace /> : <RoleSelectPage />} />
+        <Route path="/s/:token"         element={<SharedViewPage />} />
+        <Route path="/settings"         element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+        <Route path="/classes"          element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
+        <Route path="/folder/:folderId" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="/"                 element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="*"                 element={<Navigate to="/" replace />} />
+      </Routes>
+      <SquirrelMascot />
+    </>
   )
 }
 
