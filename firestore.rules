@@ -1,8 +1,41 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // User profiles — only the owner can read/write
     match /users/{userId}/{document=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Classrooms — any authenticated user can read (to verify join codes)
+    // Any authenticated user can create/update (teacher creates, students join)
+    match /classrooms/{code} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // General submissions — any authenticated user can create or read
+    match /classrooms/{code}/submissions/{subId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+    }
+
+    // Assignments — any authenticated user can read; authenticated users can write
+    match /classrooms/{code}/assignments/{assignmentId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // Assignment submissions — authenticated students can create, all authenticated can read
+    match /classrooms/{code}/assignments/{assignmentId}/submissions/{subId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+    }
+
+    // Shared worksheets — publicly readable, authenticated write
+    match /sharedWorksheets/{token} {
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }
