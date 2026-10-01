@@ -115,9 +115,9 @@ export default function SquirrelMascot() {
     setAnimClass('squeaky-idle')
   }, [])
 
-  // First tip after 15–25s
+  // First tip immediately on mount
   useEffect(() => {
-    const t = setTimeout(showTip, 15000 + Math.random() * 10000)
+    const t = setTimeout(showTip, 300)
     return () => clearTimeout(t)
   }, [showTip])
 
