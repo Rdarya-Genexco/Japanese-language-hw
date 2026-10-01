@@ -115,14 +115,29 @@ export async function getClassroomSubmissions(code) {
 
 // ── Assignments ─────────────────────────────────────────────────────────────────
 
-export async function createAssignment(code, teacherUid, title, description, dueDate) {
+export async function createAssignment(code, teacherUid, title, description, dueDate, attachedWorksheet = null) {
   return restAdd(`classrooms/${code.toUpperCase()}/assignments`, {
     teacherUid,
     title,
     description: description || '',
     dueDate: dueDate || null,
     createdAt: new Date(),
+    ...(attachedWorksheet ? {
+      attachedWorksheetName: attachedWorksheet.name,
+      attachedWorksheetHtml: attachedWorksheet.worksheetHtml || '',
+    } : {}),
   })
+}
+
+export async function getAllWorksheets(uid) {
+  try {
+    const docs = await restList(`users/${uid}/worksheets`)
+    return docs
+      .map(d => ({ id: d.id, name: d.name || d.originalFileName || 'Untitled' }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  } catch {
+    return []
+  }
 }
 
 export async function getAssignments(code) {

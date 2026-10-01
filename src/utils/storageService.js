@@ -38,4 +38,5 @@ export {
   createShareToken, getSharedWorksheet,
   createClassroom, getClassroom, submitToClassroom, getClassroomSubmissions,
   createAssignment, getAssignments, getAssignmentSubmissions, submitToAssignment,
+  getAllWorksheets,
 } from './firestoreService'
