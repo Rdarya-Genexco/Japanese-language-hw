@@ -40,5 +40,45 @@
 ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 .dark ::-webkit-scrollbar-thumb:hover { background: #64748B; }
 
+/* Role-based theme tokens */
+:root {
+  --role-from: #4f46e5;
+  --role-to: #7c3aed;
+}
+:root[data-role="student"] {
+  --role-from: #7c3aed;
+  --role-to: #ec4899;
+}
+:root[data-role="teacher"] {
+  --role-from: #1d4ed8;
+  --role-to: #0891b2;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --role-from: #4338ca;
+    --role-to: #6d28d9;
+  }
+  :root:not([data-theme="light"])[data-role="student"] {
+    --role-from: #6d28d9;
+    --role-to: #be185d;
+  }
+  :root:not([data-theme="light"])[data-role="teacher"] {
+    --role-from: #1e40af;
+    --role-to: #0e7490;
+  }
+}
+:root[data-theme="dark"] {
+  --role-from: #4338ca;
+  --role-to: #6d28d9;
+}
+:root[data-theme="dark"][data-role="student"] {
+  --role-from: #6d28d9;
+  --role-to: #be185d;
+}
+:root[data-theme="dark"][data-role="teacher"] {
+  --role-from: #1e40af;
+  --role-to: #0e7490;
+}
+
 /* Print styles */
-@media print { .no-print { display: none !important; } }
+@media print { .no-print { display: none; } }

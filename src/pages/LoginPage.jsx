@@ -8,12 +8,19 @@ export default function LoginPage() {
   const { langCode, setLangCode, t } = useLang()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [pendingRole, setPendingRole] = useState(null)
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (role = null) => {
+    if (role) {
+      sessionStorage.setItem('pendingRole', role)
+      setPendingRole(role)
+    }
     setLoading(true); setError('')
     try {
       await signInWithGoogle()
     } catch {
+      sessionStorage.removeItem('pendingRole')
+      setPendingRole(null)
       setError(t('loginError'))
     } finally {
       setLoading(false)
@@ -66,6 +73,32 @@ export default function LoginPage() {
             {t('loginTitle')}
           </h2>
 
+          {/* Role pill buttons */}
+          <div className="flex gap-2 mb-3">
+            <button
+              onClick={() => handleSignIn('student')}
+              disabled={loading}
+              className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold border-2 rounded-xl px-3 py-2 transition-all disabled:opacity-50 ${
+                pendingRole === 'student'
+                  ? 'bg-violet-600 border-violet-600 text-white'
+                  : 'border-violet-300 dark:border-violet-600 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-900/20'
+              }`}
+            >
+              📚 I'm a Student
+            </button>
+            <button
+              onClick={() => handleSignIn('teacher')}
+              disabled={loading}
+              className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold border-2 rounded-xl px-3 py-2 transition-all disabled:opacity-50 ${
+                pendingRole === 'teacher'
+                  ? 'bg-blue-600 border-blue-600 text-white'
+                  : 'border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+              }`}
+            >
+              🎓 I'm a Teacher
+            </button>
+          </div>
+
           {error && (
             <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3 mb-4 text-rose-600 dark:text-rose-400 text-sm text-center font-medium">
               {error}
@@ -73,7 +106,7 @@ export default function LoginPage() {
           )}
 
           <button
-            onClick={handleSignIn}
+            onClick={() => handleSignIn(null)}
             disabled={loading}
             className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 hover:border-violet-400 dark:hover:border-violet-500 hover:shadow-lg rounded-2xl px-4 py-3.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
           >

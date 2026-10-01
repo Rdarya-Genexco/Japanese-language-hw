@@ -1,12 +1,20 @@
 import { useRef, useState } from 'react'
-import { X, Printer, FileDown, Trash2, Loader2 } from 'lucide-react'
+import { X, Printer, FileDown, Trash2, Loader2, Share2, Send } from 'lucide-react'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import { useLang } from '../contexts/LanguageContext'
+import { useRole } from '../contexts/RoleContext'
+import { useAuth } from '../contexts/AuthContext'
+import ShareModal from './ShareModal'
+import SubmitModal from './SubmitModal'
 
 export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   const { t, langCode } = useLang()
+  const { role } = useRole()
+  const { user } = useAuth()
   const iframeRef = useRef(null)
   const [busy, setBusy] = useState(null) // 'pdf' | 'docx' | 'print' | null
+  const [showShare, setShowShare] = useState(false)
+  const [showSubmit, setShowSubmit] = useState(false)
 
   const { name, worksheetData, worksheetHtml, originalImageUri, createdAt } = worksheet
   const isHtml = !!worksheetHtml
@@ -148,7 +156,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-2 mt-4 flex-wrap">
             <button
               onClick={handlePdf}
               disabled={!!busy}
@@ -173,6 +181,26 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
               {busy === 'print' ? <Loader2 size={13} className="animate-spin" /> : <Printer size={13} />}
               {t('print')}
             </button>
+            {role === 'teacher' && isHtml && (
+              <button
+                onClick={() => setShowShare(true)}
+                disabled={!!busy}
+                className="flex items-center gap-1.5 text-xs font-semibold bg-emerald-500/80 hover:bg-emerald-500 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors border border-emerald-400/30"
+                title="Share"
+              >
+                <Share2 size={13} /> Share
+              </button>
+            )}
+            {role === 'student' && isHtml && (
+              <button
+                onClick={() => setShowSubmit(true)}
+                disabled={!!busy}
+                className="flex items-center gap-1.5 text-xs font-semibold bg-cyan-500/80 hover:bg-cyan-500 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors border border-cyan-400/30"
+                title="Submit to Teacher"
+              >
+                <Send size={13} /> Submit
+              </button>
+            )}
             <button
               onClick={onDelete}
               disabled={!!busy}
@@ -185,6 +213,23 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
         </div>
 
         {/* Content area */}
+        {showShare && (
+          <ShareModal
+            worksheetId={worksheet.id}
+            worksheetHtml={hydratedHtml}
+            name={displayTitle}
+            onClose={() => setShowShare(false)}
+          />
+        )}
+        {showSubmit && (
+          <SubmitModal
+            worksheetId={worksheet.id}
+            worksheetHtml={hydratedHtml}
+            name={displayTitle}
+            onClose={() => setShowSubmit(false)}
+          />
+        )}
+
         {isHtml ? (
           // ── New: render Gemini-generated HTML in a sandboxed iframe ─────────
           <iframe

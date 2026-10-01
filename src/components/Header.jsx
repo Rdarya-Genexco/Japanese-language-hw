@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../contexts/ThemeContext'
 import { useLang } from '../contexts/LanguageContext'
+import { useRole } from '../contexts/RoleContext'
 import { LANGUAGES } from '../utils/languages'
 import { LogOut, Sun, Moon, Settings, ChevronDown } from 'lucide-react'
 
-export default function Header() {
+export default function Header({ streak = 0 }) {
   const { user, logout } = useAuth()
   const { dark, toggle } = useTheme()
   const { langCode, setLangCode, t } = useLang()
+  const { role } = useRole()
   const navigate = useNavigate()
   const [langOpen, setLangOpen] = useState(false)
   const langRef = useRef(null)
@@ -47,6 +49,18 @@ export default function Header() {
 
         {/* Right side */}
         <div className="flex items-center gap-1.5">
+          {/* Student streak badge */}
+          {role === 'student' && streak > 0 && (
+            <div className="flex items-center gap-1 bg-amber-400/20 border border-amber-400/40 text-amber-200 px-2.5 py-1 rounded-full text-xs font-bold">
+              🔥 {streak}
+            </div>
+          )}
+          {/* Teacher role chip */}
+          {role === 'teacher' && (
+            <div className="hidden sm:flex items-center gap-1 bg-cyan-400/20 border border-cyan-400/40 text-cyan-200 px-2.5 py-1 rounded-full text-xs font-medium">
+              🎓 Teacher
+            </div>
+          )}
 
           {/* Language picker dropdown */}
           <div className="relative" ref={langRef}>
