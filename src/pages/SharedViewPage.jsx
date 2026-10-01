@@ -105,7 +105,7 @@ export default function SharedViewPage() {
       {/* Worksheet iframe */}
       <iframe
         srcDoc={worksheet.worksheetHtml}
-        sandbox="allow-same-origin"
+        sandbox="allow-scripts"
         className="flex-1 w-full bg-white border-0"
         title="Shared Worksheet"
         style={{ minHeight: '80vh' }}

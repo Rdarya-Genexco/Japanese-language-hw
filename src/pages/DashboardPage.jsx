@@ -7,7 +7,7 @@ import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet, getAllFolders,
-  createClassroom, getAssignments,
+  getAssignments,
 } from '../utils/storageService'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
@@ -22,12 +22,10 @@ import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 
-const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
-
 export default function DashboardPage() {
   const { user }              = useAuth()
   const { t }                 = useLang()
-  const { role, classroomCode, saveClassroomCode } = useRole()
+  const { role } = useRole()
   const { folderId = 'root' } = useParams()
   const navigate              = useNavigate()
 
@@ -47,7 +45,6 @@ export default function DashboardPage() {
   const [touchPos,         setTouchPos]         = useState(null)
   const [moveToWorksheet,  setMoveToWorksheet]  = useState(null) // {id, name}
   const [listView,         setListView]         = useState(false)
-  const [creatingClass,    setCreatingClass]    = useState(false)
   const [assignments,      setAssignments]      = useState([])
   const streak = worksheets.length > 0 ? Math.min(worksheets.length, 7) : 0
 
@@ -77,6 +74,7 @@ export default function DashboardPage() {
   }, [load, user.uid, folderId, t])
 
   // Load assignments for students who have a classroom code
+  const { classroomCode } = useRole()
   useEffect(() => {
     if (role !== 'student' || !classroomCode || folderId !== 'root') return
     getAssignments(classroomCode).then(list => {
@@ -242,18 +240,6 @@ export default function DashboardPage() {
   // Error help text (kept in English for technical content)
   const driveHelp = driveError ? buildDriveHelp(driveError.code) : null
 
-  const handleCreateClassroom = async () => {
-    setCreatingClass(true)
-    try {
-      const code = await createClassroom(user.uid)
-      await saveClassroomCode(code)
-    } catch (err) {
-      alert('Failed to create classroom: ' + err.message)
-    } finally {
-      setCreatingClass(false)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-violet-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex flex-col">
       <Header streak={streak} />
@@ -355,31 +341,19 @@ export default function DashboardPage() {
                 <p className="text-xs text-slate-500 dark:text-slate-400">Folders</p>
               </div>
               <button
-                onClick={classroomCode ? () => navigate('/classes') : handleCreateClassroom}
-                disabled={creatingClass}
-                className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-cyan-300 dark:hover:border-cyan-600 transition-colors disabled:opacity-60"
+                onClick={() => navigate('/classes')}
+                className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-cyan-300 dark:hover:border-cyan-600 transition-colors"
               >
-                {classroomCode ? (
-                  <>
-                    <p className="text-sm font-black text-cyan-600 dark:text-cyan-400 tracking-widest font-mono">{classroomCode}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">My class ↗</p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-2xl">{creatingClass ? '⏳' : '🏫'}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">{creatingClass ? '...' : 'Create class'}</p>
-                  </>
-                )}
+                <p className="text-2xl">🏫</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Classes ↗</p>
               </button>
             </div>
-            {classroomCode && (
-              <button
-                onClick={() => navigate('/classes')}
-                className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
-              >
-                <School size={15} /> Manage Classes &amp; Assignments
-              </button>
-            )}
+            <button
+              onClick={() => navigate('/classes')}
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
+            >
+              <School size={15} /> Manage Classes &amp; Assignments
+            </button>
           </div>
         )}
 
