@@ -22,61 +22,85 @@ const TIPS = [
 function SquirrelSVG({ animClass }) {
   return (
     <svg
-      width="68" height="80" viewBox="0 0 68 80" fill="none"
+      width="92" height="102" viewBox="0 0 92 102" fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`drop-shadow-xl ${animClass}`}
+      className={`drop-shadow-2xl ${animClass}`}
     >
-      {/* Tail — big fluffy curve behind body */}
-      <path d="M46 52 Q72 36 66 60 Q62 76 48 70 Q38 64 46 52Z" fill="#A85A18"/>
-      <path d="M47 54 Q68 40 64 62 Q60 72 49 68 Q41 63 47 54Z" fill="#D07830"/>
-      <path d="M48 57 Q64 46 62 63 Q59 70 50 66 Q44 62 48 57Z" fill="#F0A050"/>
+      {/* ── TAIL (drawn first — sits behind head and body) ── */}
+      {/* Outer dark silhouette */}
+      <path d="M57,88 C82,70 93,33 74,10 C62,-3 30,1 23,21 C16,38 28,48 40,50 C47,54 53,70 57,88 Z" fill="#8B4D0C"/>
+      {/* Main warm layer */}
+      <path d="M55,88 C79,69 88,32 69,11 C57,0 32,4 26,23 C20,39 31,47 40,50 C47,54 50,69 55,88 Z" fill="#CC6E1A"/>
+      {/* Bright orange highlight */}
+      <path d="M52,86 C75,66 83,30 65,13 C54,4 36,8 30,25 C25,40 34,46 40,49 C47,53 48,66 52,86 Z" fill="#EA9438"/>
+      {/* Cream fluffy stroke along the outer edge */}
+      <path d="M50,82 C72,62 79,28 61,15 C51,7 38,11 33,26 C29,38 36,44 40,48"
+            stroke="#F9D488" strokeWidth="7" fill="none" strokeLinecap="round" opacity="0.5"/>
+      {/* Fluffy tip puff at the very end of the tail */}
+      <ellipse cx="69" cy="11" rx="11" ry="7" fill="#F4B85A" transform="rotate(-38 69 11)" opacity="0.75"/>
+      <ellipse cx="69" cy="11" rx="6"  ry="4" fill="#FDDFA0" transform="rotate(-38 69 11)" opacity="0.6"/>
 
-      {/* Body */}
-      <ellipse cx="28" cy="57" rx="16" ry="18" fill="#C4721C"/>
-      {/* Belly */}
-      <ellipse cx="28" cy="60" rx="10" ry="13" fill="#F2C880"/>
+      {/* ── BODY ── */}
+      <ellipse cx="41" cy="78" rx="20" ry="21" fill="#D57A26"/>
+      <ellipse cx="41" cy="81" rx="13" ry="16" fill="#F9DA88"/>
 
-      {/* Head */}
-      <circle cx="28" cy="26" r="19" fill="#C4721C"/>
-      {/* Face patch */}
-      <ellipse cx="28" cy="30" rx="13" ry="11" fill="#F2C880"/>
+      {/* ── HEAD (large and round) ── */}
+      <circle cx="41" cy="43" r="28" fill="#D57A26"/>
+      {/* Muzzle / face patch */}
+      <ellipse cx="41" cy="50" rx="20" ry="15" fill="#F9DA88"/>
 
-      {/* Left ear */}
-      <ellipse cx="12" cy="10" rx="7" ry="8" fill="#C4721C"/>
-      <ellipse cx="12" cy="10.5" rx="4" ry="5" fill="#F0A0A0"/>
-      {/* Right ear */}
-      <ellipse cx="44" cy="10" rx="7" ry="8" fill="#C4721C"/>
-      <ellipse cx="44" cy="10.5" rx="4" ry="5" fill="#F0A0A0"/>
+      {/* ── EARS ── */}
+      <ellipse cx="19" cy="20" rx="12" ry="14" fill="#D57A26"/>
+      <ellipse cx="19" cy="21" rx="7"  ry="9"  fill="#FFB8C8"/>
+      <ellipse cx="63" cy="20" rx="12" ry="14" fill="#D57A26"/>
+      <ellipse cx="63" cy="21" rx="7"  ry="9"  fill="#FFB8C8"/>
 
-      {/* Eyes */}
-      <circle cx="20" cy="22" r="5" fill="white"/>
-      <circle cx="36" cy="22" r="5" fill="white"/>
-      <circle cx="21" cy="22.5" r="3.2" fill="#1a0800"/>
-      <circle cx="37" cy="22.5" r="3.2" fill="#1a0800"/>
-      {/* Eye shine */}
-      <circle cx="22.4" cy="21" r="1.3" fill="white"/>
-      <circle cx="38.4" cy="21" r="1.3" fill="white"/>
+      {/* ── EYES — very large and sparkly ── */}
+      {/* Left */}
+      <circle cx="29" cy="39" r="11" fill="white"/>
+      <circle cx="30.5" cy="40.5" r="7.5" fill="#140300"/>
+      <circle cx="33.5" cy="37"   r="3.2" fill="white"/>
+      <circle cx="30"   cy="44.5" r="1.5" fill="white"/>
+      <circle cx="27.5" cy="38.5" r="0.9" fill="white"/>
+      {/* Right */}
+      <circle cx="53" cy="39" r="11" fill="white"/>
+      <circle cx="54.5" cy="40.5" r="7.5" fill="#140300"/>
+      <circle cx="57.5" cy="37"   r="3.2" fill="white"/>
+      <circle cx="54"   cy="44.5" r="1.5" fill="white"/>
+      <circle cx="51.5" cy="38.5" r="0.9" fill="white"/>
 
-      {/* Nose */}
-      <ellipse cx="28" cy="30.5" rx="2.8" ry="2.2" fill="#D83030"/>
-      {/* Mouth */}
-      <path d="M25 34 Q28 37.5 31 34" stroke="#B02020" strokeWidth="1.4" strokeLinecap="round" fill="none"/>
+      {/* ── NOSE ── */}
+      <ellipse cx="41" cy="51" rx="3.8" ry="3" fill="#E02424"/>
+      <ellipse cx="39.8" cy="50.1" rx="1.5" ry="1.1" fill="#FF8888" opacity="0.65"/>
 
-      {/* Blush */}
-      <ellipse cx="15" cy="29" rx="5" ry="3" fill="#FF7777" opacity="0.3"/>
-      <ellipse cx="41" cy="29" rx="5" ry="3" fill="#FF7777" opacity="0.3"/>
+      {/* ── MOUTH (happy W-curve) ── */}
+      <path d="M36,55.5 Q39.5,60.5 41,57 Q42.5,60.5 46,55.5"
+            stroke="#C01616" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
 
-      {/* Left arm */}
-      <ellipse cx="12" cy="55" rx="6" ry="4.5" fill="#C4721C" transform="rotate(-20 12 55)"/>
-      {/* Right arm */}
-      <ellipse cx="44" cy="55" rx="6" ry="4.5" fill="#C4721C" transform="rotate(20 44 55)"/>
+      {/* ── ROSY BLUSH ── */}
+      <circle cx="15" cy="50" r="9"  fill="#FF5888" opacity="0.28"/>
+      <circle cx="67" cy="50" r="9"  fill="#FF5888" opacity="0.28"/>
 
-      {/* Acorn body */}
-      <ellipse cx="28" cy="74" rx="6" ry="5" fill="#8B6010"/>
-      {/* Acorn cap */}
-      <ellipse cx="28" cy="69" rx="7.5" ry="3.5" fill="#4A3008"/>
-      {/* Acorn stem */}
-      <line x1="28" y1="65.5" x2="28" y2="62" stroke="#3A2406" strokeWidth="2" strokeLinecap="round"/>
+      {/* ── ARMS ── */}
+      <ellipse cx="21" cy="74" rx="10" ry="7" fill="#C96E1A" transform="rotate(-28 21 74)"/>
+      <ellipse cx="61" cy="74" rx="10" ry="7" fill="#C96E1A" transform="rotate(28 61 74)"/>
+
+      {/* ── ACORN ── */}
+      <ellipse cx="41" cy="95" rx="8"   ry="6"   fill="#7A5206"/>
+      <ellipse cx="41" cy="89" rx="10"  ry="4.5" fill="#4A2E06"/>
+      <line x1="41" y1="84.5" x2="41" y2="80" stroke="#38220A" strokeWidth="2.4" strokeLinecap="round"/>
+
+      {/* ── SPARKLES ── */}
+      {/* Gold 4-point star — top left */}
+      <path d="M7,15 L9,9.5 L11,15 L16.5,17 L11,19 L9,24.5 L7,19 L1.5,17 Z" fill="#FBBF24"/>
+      {/* Purple small star — upper right */}
+      <path d="M76,24 L77.4,20.5 L78.8,24 L82.3,25.4 L78.8,26.8 L77.4,30.3 L76,26.8 L72.5,25.4 Z" fill="#A78BFA"/>
+      {/* Tiny blue circles — left side */}
+      <circle cx="5"  cy="57" r="3"   fill="#60A5FA" opacity="0.8"/>
+      <circle cx="8"  cy="66" r="1.8" fill="#60A5FA" opacity="0.5"/>
+      {/* Tiny gold circles — right side */}
+      <circle cx="82" cy="54" r="2.5" fill="#FBBF24" opacity="0.75"/>
+      <circle cx="80" cy="63" r="1.5" fill="#F59E0B" opacity="0.5"/>
     </svg>
   )
 }
@@ -124,7 +148,7 @@ export default function SquirrelMascot() {
   // Re-schedule after each dismiss
   useEffect(() => {
     if (!visible) {
-      const delay = 45000 + Math.random() * 55000 // 45–100s
+      const delay = 45000 + Math.random() * 55000
       nextTimerRef.current = setTimeout(showTip, delay)
     }
     return () => clearTimeout(nextTimerRef.current)
@@ -143,7 +167,6 @@ export default function SquirrelMascot() {
         }`}
       >
         <div className="relative bg-white dark:bg-slate-800 rounded-2xl rounded-br-sm shadow-2xl border-2 border-violet-300 dark:border-violet-600 px-3.5 py-3 max-w-[200px]">
-          {/* Dismiss button */}
           <button
             onClick={dismiss}
             className="absolute -top-2 -right-2 w-5 h-5 bg-violet-100 dark:bg-violet-900 hover:bg-violet-200 dark:hover:bg-violet-800 border border-violet-300 dark:border-violet-600 rounded-full text-violet-500 dark:text-violet-400 text-xs flex items-center justify-center transition-colors"
@@ -153,7 +176,7 @@ export default function SquirrelMascot() {
           <p className="text-xs text-slate-700 dark:text-slate-200 leading-relaxed">
             <span className="mr-1">{tip.emoji}</span>{tip.text}
           </p>
-          <p className="text-[10px] text-violet-500 dark:text-violet-400 font-bold mt-1.5 flex items-center gap-1">
+          <p className="text-[10px] text-violet-500 dark:text-violet-400 font-bold mt-1.5">
             — Squeaky 🐿️
           </p>
         </div>
@@ -163,7 +186,7 @@ export default function SquirrelMascot() {
         </div>
       </div>
 
-      {/* Squirrel — always visible, click to show/dismiss tip */}
+      {/* Squeaky — click to summon/dismiss */}
       <button
         onClick={() => visible ? dismiss() : showTip()}
         title={visible ? 'Dismiss Squeaky' : 'Ask Squeaky for a tip!'}
