@@ -33,7 +33,9 @@ export default function Header({ streak = 0 }) {
   }
 
   return (
-    <header className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 dark:from-indigo-900 dark:via-blue-900 dark:to-violet-900 sticky top-0 z-40 shadow-lg">
+    <header
+      className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 dark:from-indigo-900 dark:via-blue-900 dark:to-violet-900 sticky top-0 z-40 shadow-lg safe-top"
+    >
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
 
         {/* Logo */}
@@ -105,10 +107,10 @@ export default function Header({ streak = 0 }) {
             {dark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
-          {/* Settings */}
+          {/* Settings — hidden on mobile (use bottom nav) */}
           <button
             onClick={() => navigate('/settings')}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white/80 hover:text-white"
+            className="hidden md:block p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white/80 hover:text-white"
             title={t('settings')}
           >
             <Settings size={16} />
@@ -124,7 +126,7 @@ export default function Header({ streak = 0 }) {
 
           <button
             onClick={handleLogout}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white/80 hover:text-white"
+            className="hidden md:block p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white/80 hover:text-white"
             title={t('signOut')}
           >
             <LogOut size={16} />

@@ -125,7 +125,10 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden" style={{ width: '95vw', height: '80vh' }}>
+      <div
+        className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden w-full sm:w-[95vw]"
+        style={{ height: 'calc(90dvh - env(safe-area-inset-bottom, 0px))', maxHeight: '90dvh' }}
+      >
 
         {/* Gradient header */}
         <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 px-5 pt-5 pb-4 flex-shrink-0">
@@ -156,11 +159,11 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2 mt-4 flex-wrap">
+          <div className="flex gap-2 mt-4 overflow-x-auto pb-0.5 -mb-0.5 no-scrollbar">
             <button
               onClick={handlePdf}
               disabled={!!busy}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-white text-violet-700 hover:bg-violet-50 disabled:opacity-60 px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center shadow-sm"
+              className="flex items-center gap-1.5 text-xs font-semibold bg-white text-violet-700 hover:bg-violet-50 disabled:opacity-60 px-3 py-1.5 rounded-lg transition-colors flex-shrink-0 justify-center shadow-sm"
             >
               {busy === 'pdf' ? <Loader2 size={13} className="animate-spin" /> : <FileDown size={13} />}
               PDF
@@ -168,7 +171,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
             <button
               onClick={handleDocx}
               disabled={!!busy}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center border border-white/20"
+              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors flex-shrink-0 justify-center border border-white/20"
             >
               {busy === 'docx' ? <Loader2 size={13} className="animate-spin" /> : <FileDown size={13} />}
               Word
@@ -176,7 +179,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
             <button
               onClick={handlePrint}
               disabled={!!busy}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors flex-1 justify-center border border-white/20"
+              className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors flex-shrink-0 justify-center border border-white/20"
             >
               {busy === 'print' ? <Loader2 size={13} className="animate-spin" /> : <Printer size={13} />}
               {t('print')}

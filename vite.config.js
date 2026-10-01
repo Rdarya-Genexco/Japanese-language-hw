@@ -1,21 +1,43 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg', 'icon-192.png', 'icon-512.png'],
+      manifest: false, // use our own public/manifest.json
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
+      },
+    }),
+  ],
   build: {
     rollupOptions: {
       output: {
-        // Give library chunks stable names based on their package, not content hash.
-        // This means vendor chunks (React, firebase, mammoth…) keep the same URL
-        // across deploys when the library version hasn't changed — fewer stale-chunk
-        // errors for users who already have those chunks cached.
         manualChunks(id) {
-          // Pin these two library chunks to stable names so their URLs don't
-          // change between deploys when the library version hasn't changed.
-          // mammoth: loaded via dynamic import() for DOCX — must be stable.
-          // lucide: large icon set, never changes between app deploys.
           if (id.includes('node_modules/mammoth'))  return 'mammoth'
           if (id.includes('node_modules/lucide'))   return 'lucide'
         },

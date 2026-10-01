@@ -20,6 +20,7 @@ import WorksheetViewer from '../components/WorksheetViewer'
 import MoveToModal from '../components/MoveToModal'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
+import BottomNav from '../components/BottomNav'
 
 const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
 
@@ -256,8 +257,9 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-violet-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex flex-col">
       <Header streak={streak} />
+      <BottomNav onUpload={() => setShowUpload(true)} />
 
-      <div className="max-w-6xl mx-auto w-full px-4 py-4 flex-1">
+      <div className="max-w-6xl mx-auto w-full px-4 py-4 flex-1 with-bottom-nav">
 
         {/* Student motivational banner */}
         {role === 'student' && folderId === 'root' && !loading && (

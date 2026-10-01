@@ -6,6 +6,7 @@ import { useRole } from '../contexts/RoleContext'
 import { LANGUAGES } from '../utils/languages'
 import { ArrowLeft, Globe, BookOpen, GraduationCap, Check, Loader2 } from 'lucide-react'
 import { getClassroom } from '../utils/firestoreService'
+import BottomNav from '../components/BottomNav'
 
 export default function SettingsPage() {
   const { user, logout } = useAuth()
@@ -46,8 +47,9 @@ export default function SettingsPage() {
 
   return (
     <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-950 overflow-hidden">
+      <BottomNav />
       {/* Header */}
-      <header className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 dark:from-indigo-900 dark:via-blue-900 dark:to-violet-900 flex-shrink-0">
+      <header className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 dark:from-indigo-900 dark:via-blue-900 dark:to-violet-900 flex-shrink-0 safe-top">
         <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
           <button onClick={() => navigate('/')} className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
             <ArrowLeft size={18} className="text-white" />
@@ -56,7 +58,7 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <div className="max-w-lg mx-auto w-full flex-1 overflow-y-auto p-4 space-y-3">
+      <div className="max-w-lg mx-auto w-full flex-1 overflow-y-auto p-4 space-y-3 with-bottom-nav">
 
         {/* User + sign out */}
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3 flex items-center gap-3">

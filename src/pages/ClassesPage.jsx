@@ -7,6 +7,7 @@ import {
 } from '../utils/firestoreService'
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
+import BottomNav from '../components/BottomNav'
 import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, ChevronRight, Eye } from 'lucide-react'
 
 export default function ClassesPage() {
@@ -97,8 +98,9 @@ export default function ClassesPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <Header />
+      <BottomNav />
 
-      <div className="max-w-2xl mx-auto px-4 py-6">
+      <div className="max-w-2xl mx-auto px-4 py-6 with-bottom-nav">
 
         {/* Page header */}
         <div className="flex items-center gap-3 mb-6">
