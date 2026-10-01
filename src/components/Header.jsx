@@ -5,7 +5,8 @@ import { useTheme } from '../contexts/ThemeContext'
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
 import { LANGUAGES } from '../utils/languages'
-import { LogOut, Sun, Moon, Settings, ChevronDown } from 'lucide-react'
+import { LogOut, Sun, Moon, Settings, ChevronDown, School } from 'lucide-react'
+import Logo from './Logo'
 
 export default function Header({ streak = 0 }) {
   const { user, logout } = useAuth()
@@ -40,9 +41,7 @@ export default function Header({ streak = 0 }) {
           onClick={() => navigate('/')}
           className="flex items-center gap-2.5 hover:opacity-90 transition-opacity"
         >
-          <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30 shadow-sm">
-            <span className="text-lg leading-none">🌉</span>
-          </div>
+          <Logo size={32} />
           <span className="font-bold text-white tracking-tight">Doc Translate</span>
           <span className="text-white/50 text-xs font-medium hidden md:block">— Every worksheet in your language!</span>
         </button>
@@ -55,11 +54,14 @@ export default function Header({ streak = 0 }) {
               🔥 {streak}
             </div>
           )}
-          {/* Teacher role chip */}
+          {/* Teacher classes nav */}
           {role === 'teacher' && (
-            <div className="hidden sm:flex items-center gap-1 bg-cyan-400/20 border border-cyan-400/40 text-cyan-200 px-2.5 py-1 rounded-full text-xs font-medium">
-              🎓 Teacher
-            </div>
+            <button
+              onClick={() => navigate('/classes')}
+              className="hidden sm:flex items-center gap-1.5 bg-cyan-400/20 border border-cyan-400/40 hover:bg-cyan-400/30 text-cyan-200 px-2.5 py-1 rounded-full text-xs font-medium transition-colors"
+            >
+              <School size={12} /> Classes
+            </button>
           )}
 
           {/* Language picker dropdown */}

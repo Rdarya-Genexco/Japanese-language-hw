@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { LANGUAGES } from '../utils/languages'
+import Logo from '../components/Logo'
 
 export default function LoginPage() {
   const { signInWithGoogle } = useAuth()
@@ -37,8 +38,8 @@ export default function LoginPage() {
       <div className="w-full max-w-sm relative z-10">
         {/* Logo */}
         <div className="text-center mb-6">
-          <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-2xl border border-white/30">
-            <span className="text-6xl leading-none">🌉</span>
+          <div className="flex justify-center mb-5">
+            <Logo size={80} className="drop-shadow-2xl" />
           </div>
           <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-sm">
             Doc Translate

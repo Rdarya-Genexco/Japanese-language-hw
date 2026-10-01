@@ -7,7 +7,7 @@ import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet, getAllFolders,
-  createClassroom,
+  createClassroom, getAssignments,
 } from '../utils/storageService'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
@@ -19,14 +19,14 @@ import NewFolderModal from '../components/NewFolderModal'
 import WorksheetViewer from '../components/WorksheetViewer'
 import MoveToModal from '../components/MoveToModal'
 import EmptyState from '../components/EmptyState'
-import { FolderPlus, Upload, RefreshCw, LayoutGrid, List } from 'lucide-react'
+import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 
 const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
 
 export default function DashboardPage() {
   const { user }              = useAuth()
   const { t }                 = useLang()
-  const { role }              = useRole()
+  const { role, classroomCode, saveClassroomCode } = useRole()
   const { folderId = 'root' } = useParams()
   const navigate              = useNavigate()
 
@@ -46,8 +46,8 @@ export default function DashboardPage() {
   const [touchPos,         setTouchPos]         = useState(null)
   const [moveToWorksheet,  setMoveToWorksheet]  = useState(null) // {id, name}
   const [listView,         setListView]         = useState(false)
-  const [classroomCode,    setClassroomCode]    = useState(null)
   const [creatingClass,    setCreatingClass]    = useState(false)
+  const [assignments,      setAssignments]      = useState([])
   const streak = worksheets.length > 0 ? Math.min(worksheets.length, 7) : 0
 
   // ── Load folder contents ──────────────────────────────────────────────────
@@ -74,6 +74,14 @@ export default function DashboardPage() {
       setBreadcrumb([{ id: 'root', name: t('drive') }, ...bc.slice(1)])
     }).catch(() => {})
   }, [load, user.uid, folderId, t])
+
+  // Load assignments for students who have a classroom code
+  useEffect(() => {
+    if (role !== 'student' || !classroomCode || folderId !== 'root') return
+    getAssignments(classroomCode).then(list => {
+      setAssignments(list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)))
+    }).catch(() => {})
+  }, [role, classroomCode, folderId])
 
   // ── Retry connectivity ────────────────────────────────────────────────────
   const handleRetryTest = async () => {
@@ -237,7 +245,7 @@ export default function DashboardPage() {
     setCreatingClass(true)
     try {
       const code = await createClassroom(user.uid)
-      setClassroomCode(code)
+      await saveClassroomCode(code)
     } catch (err) {
       alert('Failed to create classroom: ' + err.message)
     } finally {
@@ -253,22 +261,80 @@ export default function DashboardPage() {
 
         {/* Student motivational banner */}
         {role === 'student' && folderId === 'root' && !loading && (
-          <div className="mb-4 bg-gradient-to-r from-violet-500 to-pink-500 rounded-2xl p-4 flex items-center gap-4">
-            <span className="text-4xl flex-shrink-0">🎒</span>
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-white text-sm">
-                {user?.displayName ? `Welcome back, ${user.displayName.split(' ')[0]}!` : 'Welcome back!'}
-              </p>
-              <p className="text-white/80 text-xs mt-0.5">
-                {worksheets.length > 0
-                  ? `You have ${worksheets.length} worksheet${worksheets.length !== 1 ? 's' : ''} — keep it up! 🔥`
-                  : 'Upload your first worksheet to get started!'}
-              </p>
+          <div className="mb-4 space-y-3">
+            {/* Main welcome banner */}
+            <div className="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 rounded-2xl p-4 relative overflow-hidden">
+              {/* Decorative circles */}
+              <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full" />
+              <div className="absolute -bottom-2 right-12 w-12 h-12 bg-white/10 rounded-full" />
+              <div className="flex items-center gap-4 relative">
+                <span className="text-4xl flex-shrink-0 animate-bounce" style={{ animationDuration: '2s' }}>🎒</span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-white text-base">
+                    {user?.displayName ? `Hey ${user.displayName.split(' ')[0]}! 👋` : 'Welcome back!'}
+                  </p>
+                  <p className="text-white/80 text-xs mt-0.5">
+                    {worksheets.length === 0
+                      ? '🌟 Upload your first worksheet to get started!'
+                      : worksheets.length < 3
+                      ? `You have ${worksheets.length} worksheet${worksheets.length !== 1 ? 's' : ''}. Keep going! 💪`
+                      : `${worksheets.length} worksheets done! You're on a roll! 🚀`}
+                  </p>
+                </div>
+                {streak > 0 && (
+                  <div className="flex-shrink-0 bg-white/20 rounded-2xl px-3 py-2 text-center border border-white/30">
+                    <p className="text-2xl font-black text-white leading-none">{streak}</p>
+                    <p className="text-white/80 text-xs mt-0.5">🔥 streak</p>
+                  </div>
+                )}
+              </div>
             </div>
-            {streak > 0 && (
-              <div className="flex-shrink-0 text-center">
-                <p className="text-2xl font-black text-white">{streak}</p>
-                <p className="text-white/70 text-xs">streak</p>
+
+            {/* Achievement badges */}
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {[
+                { icon: '🌱', label: 'Started', done: worksheets.length >= 1 },
+                { icon: '📚', label: '3 sheets', done: worksheets.length >= 3 },
+                { icon: '⭐', label: '5 sheets', done: worksheets.length >= 5 },
+                { icon: '🏆', label: '10 sheets', done: worksheets.length >= 10 },
+              ].map(badge => (
+                <div
+                  key={badge.label}
+                  className={`flex-shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-xl border text-center transition-all ${
+                    badge.done
+                      ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700'
+                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 opacity-40'
+                  }`}
+                >
+                  <span className="text-xl leading-none">{badge.done ? badge.icon : '🔒'}</span>
+                  <span className={`text-xs font-semibold ${badge.done ? 'text-amber-700 dark:text-amber-400' : 'text-slate-400'}`}>
+                    {badge.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Assignments from teacher */}
+            {assignments.length > 0 && (
+              <div className="bg-white dark:bg-slate-800 rounded-2xl border border-blue-200 dark:border-blue-700 p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <ClipboardList size={15} className="text-blue-500" />
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Assignments</span>
+                  <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold px-2 py-0.5 rounded-full">
+                    {assignments.length}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {assignments.slice(0, 3).map(a => (
+                    <div key={a.id} className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl px-3 py-2.5">
+                      <span className="text-lg flex-shrink-0">📋</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{a.title}</p>
+                        {a.dueDate && <p className="text-xs text-amber-600 dark:text-amber-400">Due: {a.dueDate}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -276,32 +342,42 @@ export default function DashboardPage() {
 
         {/* Teacher stats row */}
         {role === 'teacher' && folderId === 'root' && !loading && (
-          <div className="mb-4 grid grid-cols-3 gap-3">
-            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
-              <p className="text-2xl font-black text-blue-600 dark:text-blue-400">{worksheets.length}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Worksheets</p>
+          <div className="mb-4 space-y-3">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
+                <p className="text-2xl font-black text-blue-600 dark:text-blue-400">{worksheets.length}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Worksheets</p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
+                <p className="text-2xl font-black text-violet-600 dark:text-violet-400">{folders.length}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Folders</p>
+              </div>
+              <button
+                onClick={classroomCode ? () => navigate('/classes') : handleCreateClassroom}
+                disabled={creatingClass}
+                className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-cyan-300 dark:hover:border-cyan-600 transition-colors disabled:opacity-60"
+              >
+                {classroomCode ? (
+                  <>
+                    <p className="text-sm font-black text-cyan-600 dark:text-cyan-400 tracking-widest font-mono">{classroomCode}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">My class ↗</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-2xl">{creatingClass ? '⏳' : '🏫'}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{creatingClass ? '...' : 'Create class'}</p>
+                  </>
+                )}
+              </button>
             </div>
-            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
-              <p className="text-2xl font-black text-violet-600 dark:text-violet-400">{folders.length}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Folders</p>
-            </div>
-            <button
-              onClick={classroomCode ? undefined : handleCreateClassroom}
-              disabled={creatingClass}
-              className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-cyan-300 transition-colors disabled:opacity-60"
-            >
-              {classroomCode ? (
-                <>
-                  <p className="text-base font-black text-cyan-600 dark:text-cyan-400 tracking-widest font-mono">{classroomCode}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Class code</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-2xl">{creatingClass ? '⏳' : '🏫'}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">{creatingClass ? '...' : 'Create class'}</p>
-                </>
-              )}
-            </button>
+            {classroomCode && (
+              <button
+                onClick={() => navigate('/classes')}
+                className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
+              >
+                <School size={15} /> Manage Classes &amp; Assignments
+              </button>
+            )}
           </div>
         )}
 

@@ -37,15 +37,23 @@ export async function testFirestoreConnection(uid) {
   }
 }
 
-// ── User profile (role) ────────────────────────────────────────────────────────
+// ── User profile ───────────────────────────────────────────────────────────────
 
-export async function getUserRole(uid) {
+export async function getUserData(uid) {
   try {
-    const doc = await restGet('users', uid)
-    return doc?.role || null
+    return await restGet('users', uid)
   } catch {
     return null
   }
+}
+
+export async function saveUserData(uid, data) {
+  await restUpdate('users', uid, data)
+}
+
+export async function getUserRole(uid) {
+  const doc = await getUserData(uid)
+  return doc?.role || null
 }
 
 export async function saveUserRole(uid, role) {
@@ -76,7 +84,10 @@ export async function getSharedWorksheet(token) {
 export async function createClassroom(uid) {
   const code = Array.from(crypto.getRandomValues(new Uint8Array(3)))
     .map(b => b.toString(36).padStart(2, '0')).join('').toUpperCase().slice(0, 6)
-  await restSet('classrooms', code, { teacherUid: uid, code, createdAt: new Date() })
+  await Promise.all([
+    restSet('classrooms', code, { teacherUid: uid, code, createdAt: new Date() }),
+    restUpdate('users', uid, { classroomCode: code }),
+  ])
   return code
 }
 
@@ -84,10 +95,57 @@ export async function getClassroom(code) {
   return restGetPublic('classrooms', code.toUpperCase())
 }
 
-export async function submitToClassroom(code, studentUid, name, worksheetHtml) {
+export async function submitToClassroom(code, studentUid, studentName, worksheetName, worksheetHtml) {
   return restAdd(`classrooms/${code.toUpperCase()}/submissions`, {
     studentUid,
-    name,
+    studentName: studentName || '',
+    worksheetName: worksheetName || '',
+    worksheetHtml,
+    submittedAt: new Date(),
+  })
+}
+
+export async function getClassroomSubmissions(code) {
+  try {
+    return await restList(`classrooms/${code.toUpperCase()}/submissions`)
+  } catch {
+    return []
+  }
+}
+
+// ── Assignments ─────────────────────────────────────────────────────────────────
+
+export async function createAssignment(code, teacherUid, title, description, dueDate) {
+  return restAdd(`classrooms/${code.toUpperCase()}/assignments`, {
+    teacherUid,
+    title,
+    description: description || '',
+    dueDate: dueDate || null,
+    createdAt: new Date(),
+  })
+}
+
+export async function getAssignments(code) {
+  try {
+    return await restList(`classrooms/${code.toUpperCase()}/assignments`)
+  } catch {
+    return []
+  }
+}
+
+export async function getAssignmentSubmissions(code, assignmentId) {
+  try {
+    return await restList(`classrooms/${code.toUpperCase()}/assignments/${assignmentId}/submissions`)
+  } catch {
+    return []
+  }
+}
+
+export async function submitToAssignment(code, assignmentId, studentUid, studentName, worksheetName, worksheetHtml) {
+  return restAdd(`classrooms/${code.toUpperCase()}/assignments/${assignmentId}/submissions`, {
+    studentUid,
+    studentName: studentName || '',
+    worksheetName,
     worksheetHtml,
     submittedAt: new Date(),
   })

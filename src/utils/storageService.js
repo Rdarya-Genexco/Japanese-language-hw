@@ -33,4 +33,9 @@ export const deleteWorksheet= (...a) => svc().deleteWorksheet(...a)
 export const moveWorksheet  = (...a) => svc().moveWorksheet(...a)
 export const buildBreadcrumb= (...a) => svc().buildBreadcrumb(...a)
 
-export { getUserRole, saveUserRole, createShareToken, getSharedWorksheet, createClassroom, getClassroom, submitToClassroom } from './firestoreService'
+export {
+  getUserRole, saveUserRole, getUserData, saveUserData,
+  createShareToken, getSharedWorksheet,
+  createClassroom, getClassroom, submitToClassroom, getClassroomSubmissions,
+  createAssignment, getAssignments, getAssignmentSubmissions, submitToAssignment,
+} from './firestoreService'

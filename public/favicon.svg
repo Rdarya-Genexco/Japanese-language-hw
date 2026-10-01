@@ -1,24 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="18" fill="#4F46E5"/>
-  <!-- Road deck -->
-  <rect x="6" y="60" width="88" height="8" rx="2" fill="white"/>
-  <!-- Left tower -->
-  <rect x="18" y="26" width="10" height="40" rx="2" fill="white"/>
-  <!-- Right tower -->
-  <rect x="72" y="26" width="10" height="40" rx="2" fill="white"/>
-  <!-- Left tower cap -->
-  <rect x="13" y="22" width="20" height="7" rx="2" fill="white"/>
-  <!-- Right tower cap -->
-  <rect x="67" y="22" width="20" height="7" rx="2" fill="white"/>
-  <!-- Cables: left tower to far left -->
-  <line x1="23" y1="26" x2="6"  y2="60" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Cables: left tower to center -->
-  <line x1="23" y1="26" x2="50" y2="59" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Cables: right tower to far right -->
-  <line x1="77" y1="26" x2="94" y2="60" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Cables: right tower to center -->
-  <line x1="77" y1="26" x2="50" y2="59" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Suspenders -->
-  <line x1="36" y1="43" x2="36" y2="59" stroke="white" stroke-width="1.5"/>
-  <line x1="64" y1="43" x2="64" y2="59" stroke="white" stroke-width="1.5"/>
+<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="11" fill="#6366f1"/>
+  <rect x="7" y="6" width="17" height="21" rx="3" fill="white"/>
+  <rect x="10.5" y="11" width="10" height="2" rx="1" fill="#6366f1" fill-opacity="0.5"/>
+  <rect x="10.5" y="15" width="8" height="2" rx="1" fill="#6366f1" fill-opacity="0.4"/>
+  <rect x="10.5" y="19" width="9" height="2" rx="1" fill="#6366f1" fill-opacity="0.4"/>
+  <path d="M27 19.5 L34 19.5 M31.5 16.5 L34.5 19.5 L31.5 22.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="7" y="29.5" width="26" height="4" rx="2" fill="white" fill-opacity="0.2"/>
+  <rect x="10.5" y="30.5" width="19" height="2" rx="1" fill="white" fill-opacity="0.55"/>
 </svg>
