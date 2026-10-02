@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { FileText, MoreVertical, Download, Printer, Trash2, Eye, FolderInput } from 'lucide-react'
+import { FileText, MoreVertical, Download, Printer, Trash2, Eye } from 'lucide-react'
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
 
@@ -109,9 +109,6 @@ export default function WorksheetCard({
               <button onClick={() => { onPdf?.(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
                 <Download size={13} className="text-rose-500" /> {t('downloadPdf')}
               </button>
-              <button onClick={() => { onMoveTo?.(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
-                <FolderInput size={13} className="text-violet-500" /> Move to…
-              </button>
               <button onClick={() => { onDelete(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30">
                 <Trash2 size={13} /> {t('delete')}
               </button>
@@ -197,12 +194,6 @@ export default function WorksheetCard({
                 <Printer size={13} className="text-emerald-500" /> {t('print')}
               </button>
               <div className="border-t border-slate-100 dark:border-slate-700 my-1" />
-              <button
-                onClick={() => { onMoveTo?.(); setMenuOpen(false) }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
-              >
-                <FolderInput size={13} className="text-violet-500" /> Move to…
-              </button>
               <button
                 onClick={() => { onDelete(); setMenuOpen(false) }}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30"
