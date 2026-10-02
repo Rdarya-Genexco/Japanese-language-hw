@@ -144,31 +144,12 @@ export async function restDelete(collection, id) {
   if (!res.ok && res.status !== 404) throw new Error(`Delete failed: ${res.status}`)
 }
 
-/** List ALL documents in a collection (no filter), following pagination. */
+/**
+ * List ALL documents in a collection. Uses runQuery (what the Firebase SDKs send) rather than a
+ * collection GET (ListDocuments), which production rejected for signed-in users on subcollections.
+ */
 export async function restList(collection) {
-  const tok = await token()
-  const docs = []
-  let pageToken = null
-
-  do {
-    const url = pageToken
-      ? `${BASE}/${collection}?pageToken=${encodeURIComponent(pageToken)}`
-      : `${BASE}/${collection}`
-    const res = await fetch(url, { headers: { Authorization: `Bearer ${tok}` } })
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}))
-      const msg = err?.error?.message || `List failed: ${res.status}`
-      const code = (err?.error?.status || 'UNKNOWN').toLowerCase().replace(/_/g, '-')
-      const e = new Error(msg)
-      e.code = code
-      throw e
-    }
-    const data = await res.json()
-    docs.push(...(data.documents || []).map(fromDoc))
-    pageToken = data.nextPageToken || null
-  } while (pageToken)
-
-  return docs
+  return runQuery(collection, null)
 }
 
 /** Get a single document without authentication (for public collections). */
@@ -186,6 +167,10 @@ export async function restGetPublic(collection, id) {
 
 /** Query a collection by a single field equality filter. */
 export async function restQuery(collection, field, value) {
+  return runQuery(collection, { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value: toValue(value) } })
+}
+
+async function runQuery(collection, where) {
   const parts = collection.split('/')
   const collectionId = parts[parts.length - 1]
   const parent = parts.slice(0, -1).join('/')
@@ -198,10 +183,7 @@ export async function restQuery(collection, field, value) {
       method: 'POST',
       headers: { Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        structuredQuery: {
-          from: [{ collectionId }],
-          where: { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value: toValue(value) } },
-        },
+        structuredQuery: { from: [{ collectionId }], ...(where ? { where } : {}) },
       }),
     }
   )
