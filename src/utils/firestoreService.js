@@ -148,12 +148,8 @@ export async function removeClassroomMember(code, uid) {
 }
 
 export async function getClassroomMembers(code) {
-  try {
-    const docs = (await restList(`classrooms/${code.toUpperCase()}/members`)).filter(m => !m.removed)
-    return docs.sort((a, b) => (a.name || a.email || '').localeCompare(b.name || b.email || ''))
-  } catch {
-    return []
-  }
+  const docs = (await restList(`classrooms/${code.toUpperCase()}/members`)).filter(m => !m.removed)
+  return docs.sort((a, b) => (a.name || a.email || '').localeCompare(b.name || b.email || ''))
 }
 
 export async function submitToClassroom(code, studentUid, studentName, worksheetName, worksheetHtml) {

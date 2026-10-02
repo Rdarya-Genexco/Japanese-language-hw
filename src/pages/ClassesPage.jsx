@@ -108,7 +108,12 @@ export default function ClassesPage() {
     setActiveCode(code)
     if (fetchedCodesRef.current.has(code)) return
     fetchedCodesRef.current.add(code)
-    getClassroomMembers(code).then(list => setMembers(p => ({ ...p, [code]: list })))
+    getClassroomMembers(code)
+      .then(list => setMembers(p => ({ ...p, [code]: list })))
+      .catch(err => {
+        console.error('[Classes] could not load students', err)
+        setMembers(p => ({ ...p, [code]: null }))
+      })
     setLoadingAssignments(p => ({ ...p, [code]: true }))
     try {
       const list = await getAssignments(code)
@@ -278,7 +283,7 @@ function ClassroomCard({
             <p className="text-xs text-slate-400 dark:text-slate-500">
               {assignments !== undefined
                 ? [
-                    members !== undefined && `${members.length} student${members.length !== 1 ? 's' : ''}`,
+                    members && `${members.length} student${members.length !== 1 ? 's' : ''}`,
                     `${assignments.length} assignment${assignments.length !== 1 ? 's' : ''}`,
                   ].filter(Boolean).join(' · ')
                 : 'Tap to view'}
@@ -322,6 +327,10 @@ function ClassroomCard({
               <div className="flex items-center gap-2 text-xs text-slate-400 py-3 justify-center">
                 <Loader2 size={13} className="animate-spin" /> Loading…
               </div>
+            ) : members === null ? (
+              <p className="text-xs text-rose-500 text-center py-3">
+                Couldn't load students. Check that the latest Firestore rules are published to the "lang" database.
+              </p>
             ) : members.length === 0 ? (
               <p className="text-xs text-slate-400 text-center py-3">
                 No students yet. Share the code <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">{cls.code}</span> so they can join from Settings.
