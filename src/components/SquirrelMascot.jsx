@@ -1,81 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRole } from '../contexts/RoleContext'
 import { useLang } from '../contexts/LanguageContext'
-
-const GENERAL_TIPS = [
-  { emoji: '🧠', text: 'Review vocabulary right before sleep — your brain locks in memories overnight!' },
-  { emoji: '⭐', text: '3 new words per day = 1,000+ words in a year. Tiny steps, huge results!' },
-  { emoji: '📖', text: 'After you get a translation, read the original worksheet out loud too. Your ears learn as well as your eyes!' },
-  { emoji: '🗣️', text: 'Say new words out loud. Speaking them makes them stick much faster than just reading.' },
-  { emoji: '📝', text: 'Writing words by hand beats typing for memory. Try just 5 minutes a day!' },
-  { emoji: '🎬', text: "Watch shows with subtitles in the language you're learning — fun AND practice!" },
-  { emoji: '🃏', text: 'Put a picture on your flashcards. Linking words to images beats memorising lists.' },
-  { emoji: '🔁', text: 'Mistakes are progress! Each one shows you exactly what to practise next.' },
-  { emoji: '🦝', text: "You're doing amazing! Every worksheet you complete is one step closer to fluency!" },
-]
-
-const LANGUAGE_TIPS = {
-  'en': [
-    { emoji: '📏', text: 'English spelling is tricky: "though", "through" and "tough" all sound different!' },
-    { emoji: '⏳', text: 'Most past tenses add -ed (walk → walked), but common verbs are irregular: go → went.' },
-    { emoji: '🔤', text: 'Adjectives come before nouns in English: "a red car", not "a car red".' },
-    { emoji: '🧩', text: 'Phrasal verbs change meaning with one small word: "look up", "look after", "look out".' },
-  ],
-  'zh-CN': [
-    { emoji: '🎶', text: 'Mandarin has 4 tones. mā (mother) and mǎ (horse) differ only by tone — say them out loud!' },
-    { emoji: '🧩', text: 'Characters are built from pieces: 好 (good) = 女 (woman) + 子 (child).' },
-    { emoji: '⏰', text: "Chinese verbs don't change for past or future. Words like 了 (le) and 明天 (tomorrow) do the work." },
-    { emoji: '🔤', text: 'Pinyin is your friend: it spells out how each character sounds using Latin letters.' },
-  ],
-  'ja': [
-    { emoji: '🌸', text: 'Hiragana first! Master all 46 characters and Japanese starts clicking fast.' },
-    { emoji: '🎯', text: 'は (wa) marks the topic, を (wo) the object, に (ni) the direction. Master these!' },
-    { emoji: '💬', text: 'Japanese puts the verb last: "りんごを食べる" = "apple [object] eat".' },
-    { emoji: '🌍', text: 'Katakana is for borrowed words: テレビ = TV, パン = bread. Listen for them!' },
-  ],
-  'fr': [
-    { emoji: '🌹', text: 'Every French noun is masculine or feminine. Learn le/la with the word: la table, le livre.' },
-    { emoji: '🤫', text: 'Many final letters are silent: "petit" sounds like "puh-tee".' },
-    { emoji: '🔗', text: 'Liaison: "les amis" sounds like "lay-zah-mee" — the s joins the next vowel.' },
-    { emoji: '👋', text: 'Use "vous" with teachers and adults, "tu" with friends.' },
-  ],
-  'de': [
-    { emoji: '🏗️', text: 'German glues words together: Hand + Schuh = Handschuh (glove, literally "hand shoe")!' },
-    { emoji: '🔠', text: 'Every German noun starts with a capital letter: der Hund, die Katze, das Buch.' },
-    { emoji: '🎯', text: 'In a main sentence the verb comes second: "Heute spiele ich Fußball."' },
-    { emoji: '🎨', text: 'Learn der/die/das with each noun — the article tells you its gender.' },
-  ],
-  'it': [
-    { emoji: '🎵', text: "Italian is read the way it's written. Learn the sounds and you can read almost anything aloud." },
-    { emoji: '🍕', text: 'Nouns ending in -o are usually masculine, -a usually feminine: il libro, la pizza.' },
-    { emoji: '✌️', text: 'Plurals change the last vowel: libro → libri, pizza → pizze.' },
-    { emoji: '👀', text: 'Watch double consonants: "pala" (shovel) vs "palla" (ball) — hold the sound longer!' },
-  ],
-  'pt': [
-    { emoji: '👃', text: 'Portuguese has nasal vowels, often marked with ~: "pão" (bread), "mãe" (mother).' },
-    { emoji: '🔀', text: 'Two verbs for "to be": ser for lasting things, estar for temporary ones.' },
-    { emoji: '🌎', text: 'Brazilian and European Portuguese sound different, but both are correct!' },
-    { emoji: '🍫', text: 'Many words ending in -ção match English "-tion": informação = information.' },
-  ],
-  'es': [
-    { emoji: '🔀', text: 'Two verbs for "to be": ser (what something is) and estar (how or where it is).' },
-    { emoji: '🔤', text: 'Spanish is very phonetic: once you know the sounds, you can read most words aloud.' },
-    { emoji: '❓', text: 'Questions start with an upside-down mark: ¿Cómo estás?' },
-    { emoji: '🌐', text: 'Many English "-tion" words become "-ción": nación, información.' },
-  ],
-  'ko': [
-    { emoji: '🧱', text: 'Hangul has just 24 basic letters, stacked into syllable blocks: ㅎ + ㅏ + ㄴ = 한.' },
-    { emoji: '🎯', text: 'Korean puts the verb at the end: "저는 사과를 먹어요" = "I apple eat".' },
-    { emoji: '🙇', text: 'Adding 요 (-yo) to the end makes speech polite — perfect for talking to teachers.' },
-    { emoji: '🏷️', text: 'Particles mark each word\'s job: 은/는 for the topic, 을/를 for the object.' },
-  ],
-  'ru': [
-    { emoji: '🔡', text: 'Cyrillic has 33 letters. Some look English but sound different: Р = "r", Н = "n".' },
-    { emoji: '🧩', text: 'Russian nouns change their ending by role: книга (book) becomes книгу as an object.' },
-    { emoji: '🎯', text: 'Stress can fall on any syllable and changes the sound — note it when you learn a word.' },
-    { emoji: '✨', text: 'Russian has no words for "the" or "a" — one less thing to remember!' },
-  ],
-}
+import { getTanuTips, TANU_UI } from '../utils/tanuTips'
 
 // Tanuki — Japanese raccoon dog, iconic folklore creature 🍃
 function TanukiSVG({ animClass }) {
@@ -176,9 +102,10 @@ function TanukiSVG({ animClass }) {
 export default function SquirrelMascot() {
   const { role } = useRole()
   const { langCode } = useLang()
-  const tips = useMemo(() => [...GENERAL_TIPS, ...(LANGUAGE_TIPS[langCode] || [])], [langCode])
+  const tips = useMemo(() => getTanuTips(langCode), [langCode])
+  const ui = TANU_UI[langCode] || TANU_UI.en
   const [visible, setVisible] = useState(false)
-  const [tip, setTip] = useState(GENERAL_TIPS[0])
+  const [tip, setTip] = useState(tips[0])
   const [animClass, setAnimClass] = useState('squeaky-idle')
   const seenRef = useRef(new Set())
   const nextTimerRef = useRef(null)
@@ -261,7 +188,7 @@ export default function SquirrelMascot() {
       {/* Tanu — click to summon/dismiss */}
       <button
         onClick={() => visible ? dismiss() : showTip()}
-        title={visible ? 'Dismiss Tanu' : 'Ask Tanu for a tip!'}
+        title={visible ? ui.dismiss : ui.ask}
         className="select-none"
       >
         <TanukiSVG animClass={animClass} />
