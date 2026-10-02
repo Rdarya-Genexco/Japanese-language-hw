@@ -1,5 +1,5 @@
 rules_version = '2';
-// Rules revision v4. Firestore only supports rules_version '1' and '2'.
+// Rules revision v5. Firestore only supports rules_version '1' and '2'.
 // Publish at: Firebase Console → Firestore → "lang" database → Rules.
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -47,11 +47,21 @@ service cloud.firestore {
         allow read: if signedIn();
         allow create, update, delete: if isTeacherOf(code);
 
+        // Open until closesAt (due date + 10 days); assignments without closesAt never close
+        function submissionsOpen() {
+          let a = get(/databases/$(database)/documents/classrooms/$(code)/assignments/$(assignmentId)).data;
+          return a.get('closesAt', null) == null || request.time <= a.closesAt;
+        }
+
+        // One submission per student, stored at their uid; no edits — unsubmit (delete) to redo it
         match /submissions/{subId} {
           allow read: if isTeacherOf(code) ||
             (signedIn() && resource.data.studentUid == request.auth.uid);
-          allow create: if signedIn() && request.resource.data.studentUid == request.auth.uid;
-          allow delete: if isTeacherOf(code);
+          allow create: if signedIn() && subId == request.auth.uid
+                        && request.resource.data.studentUid == request.auth.uid
+                        && submissionsOpen();
+          allow delete: if isTeacherOf(code) ||
+            (signedIn() && resource.data.studentUid == request.auth.uid && submissionsOpen());
         }
       }
 

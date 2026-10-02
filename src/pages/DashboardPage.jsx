@@ -7,7 +7,7 @@ import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
-  getAssignments,
+  getAssignments, getMyAssignmentSubmissions, unsubmitAssignment,
 } from '../utils/storageService'
 import { openPrintView, printWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
@@ -18,6 +18,7 @@ import UploadModal from '../components/UploadModal'
 import NewFolderModal from '../components/NewFolderModal'
 import WorksheetViewer from '../components/WorksheetViewer'
 import SubmitModal from '../components/SubmitModal'
+import { dueStatus, overdueText } from '../utils/dueDates'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
@@ -47,6 +48,8 @@ export default function DashboardPage() {
   const [assignments,      setAssignments]      = useState([])
   const [viewAssignment,   setViewAssignment]   = useState(null)
   const [submitAssignment, setSubmitAssignment] = useState(null)
+  const [submitted,        setSubmitted]        = useState({}) // assignmentId → true/false; missing = still checking
+  const [unsubmittingId,   setUnsubmittingId]   = useState(null)
   const [showAllAssignments, setShowAllAssignments] = useState(false)
   const streak = worksheets.length > 0 ? Math.min(worksheets.length, 7) : 0
 
@@ -78,10 +81,31 @@ export default function DashboardPage() {
   // Load assignments for students who have a classroom code
   useEffect(() => {
     if (role !== 'student' || !classroomCode || folderId !== 'root') return
-    getAssignments(classroomCode).then(list => {
-      setAssignments(list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)))
+    getAssignments(classroomCode).then(async list => {
+      const sorted = list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
+      setAssignments(sorted)
+      const entries = await Promise.all(sorted.map(a =>
+        getMyAssignmentSubmissions(classroomCode, a.id, user.uid)
+          .then(subs => [a.id, subs.length > 0])
+          .catch(() => [a.id, false])))
+      setSubmitted(Object.fromEntries(entries))
     }).catch(() => {})
-  }, [role, classroomCode, folderId])
+  }, [role, classroomCode, folderId, user.uid])
+
+  const handleUnsubmit = (a) => {
+    setTimeout(async () => {
+      if (!window.confirm(`Unsubmit "${a.title}"?\nYour teacher will no longer see it, and you can submit again.`)) return
+      setUnsubmittingId(a.id)
+      try {
+        await unsubmitAssignment(classroomCode, a.id, user.uid)
+        setSubmitted(p => ({ ...p, [a.id]: false }))
+      } catch (err) {
+        alert('Failed to unsubmit: ' + err.message)
+      } finally {
+        setUnsubmittingId(null)
+      }
+    }, 0)
+  }
 
   // ── Retry connectivity ────────────────────────────────────────────────────
   const handleRetryTest = async () => {
@@ -308,7 +332,10 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div className="space-y-2">
-                  {(showAllAssignments ? assignments : assignments.slice(0, 3)).map(a => (
+                  {(showAllAssignments ? assignments : assignments.slice(0, 3)).map(a => {
+                    const due = dueStatus(a)
+                    const closed = due.state === 'closed'
+                    return (
                     <div
                       key={a.id}
                       onClick={() => a.attachedWorksheetHtml && setViewAssignment(a)}
@@ -325,18 +352,38 @@ export default function DashboardPage() {
                           <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{a.description}</p>
                         )}
                         {a.dueDate && <p className="text-xs text-amber-600 dark:text-amber-400">Due: {a.dueDate}</p>}
+                        {!submitted[a.id] && overdueText(due) && (
+                          <p className={`text-xs font-semibold ${closed ? 'text-rose-600 dark:text-rose-400' : 'text-orange-600 dark:text-orange-400'}`}>
+                            ⚠️ {overdueText(due)}
+                          </p>
+                        )}
                       </div>
                       {a.attachedWorksheetHtml && (
                         <span className="flex-shrink-0 text-xs text-blue-500 dark:text-blue-400 font-semibold">View ›</span>
                       )}
-                      <button
-                        onClick={(e) => { e.stopPropagation(); setSubmitAssignment(a) }}
-                        className="flex-shrink-0 text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 text-white px-2.5 py-1.5 rounded-lg transition-colors"
-                      >
-                        Submit
-                      </button>
+                      {submitted[a.id] ? (
+                        <div className="flex-shrink-0 flex items-center gap-1.5">
+                          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Submitted ✓</span>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleUnsubmit(a) }}
+                            disabled={unsubmittingId === a.id || closed}
+                            title={closed ? 'The deadline has passed' : undefined}
+                            className="text-xs font-semibold border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 px-2.5 py-1.5 rounded-lg transition-colors"
+                          >
+                            {unsubmittingId === a.id ? '…' : 'Unsubmit'}
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setSubmitAssignment(a) }}
+                          disabled={submitted[a.id] === undefined || closed}
+                          className="flex-shrink-0 text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white px-2.5 py-1.5 rounded-lg transition-colors"
+                        >
+                          {closed ? 'Closed' : 'Submit'}
+                        </button>
+                      )}
                     </div>
-                  ))}
+                  )})}
                 </div>
                 {assignments.length > 3 && (
                   <button
@@ -569,7 +616,11 @@ export default function DashboardPage() {
         />
       )}
       {submitAssignment && (
-        <SubmitModal assignment={submitAssignment} onClose={() => setSubmitAssignment(null)} />
+        <SubmitModal
+          assignment={submitAssignment}
+          onSubmitted={(id) => setSubmitted(p => ({ ...p, [id]: true }))}
+          onClose={() => setSubmitAssignment(null)}
+        />
       )}
     </div>
   )

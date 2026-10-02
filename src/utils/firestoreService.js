@@ -7,8 +7,9 @@
  *   users/{uid}/config/settings   — per-user config (Gemini API key etc.)
  */
 import {
-  restAdd, restGet, restSet, restUpdate, restDelete, restQuery, restList, restGetPublic,
+  restAdd, restCreate, restGet, restSet, restUpdate, restDelete, restQuery, restList, restGetPublic,
 } from './firestoreREST'
+import { dueDateToTimes } from './dueDates'
 
 // ── Connectivity test ──────────────────────────────────────────────────────────
 
@@ -180,6 +181,8 @@ export async function createAssignment(code, teacherUid, title, description, due
     title,
     description: description || '',
     dueDate: dueDate || null,
+    // Exact times so the rules can close submissions GRACE_DAYS after the due date
+    ...(dueDateToTimes(dueDate) || {}),
     createdAt: new Date(),
     ...(attachedWorksheet ? {
       attachedWorksheetName: attachedWorksheet.name,
@@ -215,15 +218,34 @@ export async function getAssignmentSubmissions(code, assignmentId) {
   }
 }
 
+const assignmentSubsPath = (code, assignmentId) =>
+  `classrooms/${code.toUpperCase()}/assignments/${assignmentId}/submissions`
+
+/** One submission per student: the doc ID is their uid, so a second submit fails until they unsubmit. */
 export async function submitToAssignment(code, assignmentId, studentUid, studentName, worksheetName, worksheetHtml, feedback = '') {
-  return restAdd(`classrooms/${code.toUpperCase()}/assignments/${assignmentId}/submissions`, {
-    studentUid,
-    studentName: studentName || '',
-    worksheetName: worksheetName || '',
-    worksheetHtml: worksheetHtml || '',
-    feedback,
-    submittedAt: new Date(),
-  })
+  try {
+    await restCreate(assignmentSubsPath(code, assignmentId), studentUid, {
+      studentUid,
+      studentName: studentName || '',
+      worksheetName: worksheetName || '',
+      worksheetHtml: worksheetHtml || '',
+      feedback,
+      submittedAt: new Date(),
+    })
+  } catch (err) {
+    if (err.code === 'already-exists') throw new Error('You already submitted this assignment. Unsubmit it first to submit again.')
+    throw err
+  }
+}
+
+/** Includes submissions made before one-per-student IDs, which used random IDs. */
+export async function getMyAssignmentSubmissions(code, assignmentId, studentUid) {
+  return restQuery(assignmentSubsPath(code, assignmentId), 'studentUid', studentUid)
+}
+
+export async function unsubmitAssignment(code, assignmentId, studentUid) {
+  const mine = await getMyAssignmentSubmissions(code, assignmentId, studentUid)
+  await Promise.all(mine.map(s => restDelete(assignmentSubsPath(code, assignmentId), s.id)))
 }
 
 // ── Gemini API key ─────────────────────────────────────────────────────────────

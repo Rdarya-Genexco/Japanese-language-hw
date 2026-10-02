@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { X, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import {
   submitToClassroom, submitToAssignment, getClassroom, getAssignments, getAllWorksheets, getWorksheet,
+  getMyAssignmentSubmissions,
 } from '../utils/firestoreService'
 import { hydrateWorksheetHtml } from '../utils/worksheetGenerator'
+import { dueStatus, overdueText } from '../utils/dueDates'
 import { useAuth } from '../contexts/AuthContext'
 import { useRole } from '../contexts/RoleContext'
 
@@ -11,7 +13,7 @@ import { useRole } from '../contexts/RoleContext'
  * Opened from a worksheet (worksheetHtml + name given) or from an assignment (assignment given,
  * attaching a worksheet optional). A submission needs a worksheet, feedback, or both.
  */
-export default function SubmitModal({ worksheetHtml, name, assignment = null, onClose }) {
+export default function SubmitModal({ worksheetHtml, name, assignment = null, onSubmitted, onClose }) {
   const { user } = useAuth()
   const { classroomCode: savedCode } = useRole()
   const hasWorksheet = !!worksheetHtml
@@ -19,6 +21,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
   const [code, setCode] = useState(savedCode || '')
   const [assignments, setAssignments] = useState([])
   const [selectedAssignment, setSelectedAssignment] = useState(assignment)
+  const [alreadySubmitted, setAlreadySubmitted] = useState(new Set())
   const [loadingAssignments, setLoadingAssignments] = useState(false)
   const [feedback, setFeedback] = useState('')
   const [myWorksheets, setMyWorksheets] = useState([])
@@ -37,19 +40,24 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
     if (!savedCode || assignment) return
     setLoadingAssignments(true)
     getAssignments(savedCode)
-      .then(list => {
+      .then(async list => {
         setAssignments(list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)))
+        const done = await Promise.all(list.map(a =>
+          getMyAssignmentSubmissions(savedCode, a.id, user.uid).then(s => s.length > 0 ? a.id : null).catch(() => null)))
+        setAlreadySubmitted(new Set(done.filter(Boolean)))
       })
       .catch(() => {})
       .finally(() => setLoadingAssignments(false))
-  }, [savedCode, assignment])
+  }, [savedCode, assignment, user.uid])
 
   const trimmedFeedback = feedback.trim()
-  const canSubmit = !!code.trim() && (hasWorksheet || !!attachId || !!trimmedFeedback)
+  const selectedStatus = selectedAssignment ? dueStatus(selectedAssignment) : { state: 'none' }
+  const canSubmit = !!code.trim() && (hasWorksheet || !!attachId || !!trimmedFeedback) && selectedStatus.state !== 'closed'
 
   const handleSubmit = async () => {
     const trimmed = code.trim().toUpperCase()
     if (!trimmed) { setError('Please enter a classroom code.'); return }
+    if (selectedStatus.state === 'closed') { setError('This assignment is closed — the deadline has passed.'); return }
     if (!canSubmit) { setError('Attach a worksheet or write some feedback.'); return }
     setSubmitting(true); setError('')
     try {
@@ -68,6 +76,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
       const args = [user.uid, user.displayName || '', wsName, wsHtml, trimmedFeedback]
       if (selectedAssignment) {
         await submitToAssignment(trimmed, selectedAssignment.id, ...args)
+        onSubmitted?.(selectedAssignment.id)
       } else {
         await submitToClassroom(trimmed, ...args)
       }
@@ -134,6 +143,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
                 <div className="mb-4 px-3 py-2 rounded-xl border border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-xs text-blue-700 dark:text-blue-300">
                   <div className="font-semibold">{assignment.title}</div>
                   {assignment.dueDate && <div className="text-slate-400 mt-0.5">Due: {assignment.dueDate}</div>}
+                  <DueWarning status={selectedStatus} />
                 </div>
               ) : loadingAssignments ? (
                 <div className="flex items-center gap-2 text-xs text-slate-400 mb-4">
@@ -156,20 +166,27 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
                     >
                       General submission
                     </button>
-                    {assignments.map(a => (
-                      <button
-                        key={a.id}
-                        onClick={() => setSelectedAssignment(a)}
-                        className={`w-full text-left px-3 py-2 rounded-xl border text-xs transition-colors ${
-                          selectedAssignment?.id === a.id
-                            ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-                            : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-slate-300'
-                        }`}
-                      >
-                        <div className="font-semibold">{a.title}</div>
-                        {a.dueDate && <div className="text-slate-400 mt-0.5">Due: {a.dueDate}</div>}
-                      </button>
-                    ))}
+                    {assignments.map(a => {
+                      const status = dueStatus(a)
+                      const submittedAlready = alreadySubmitted.has(a.id)
+                      const unavailable = submittedAlready || status.state === 'closed'
+                      return (
+                        <button
+                          key={a.id}
+                          onClick={() => !unavailable && setSelectedAssignment(a)}
+                          disabled={unavailable}
+                          className={`w-full text-left px-3 py-2 rounded-xl border text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                            selectedAssignment?.id === a.id
+                              ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                              : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-slate-300'
+                          }`}
+                        >
+                          <div className="font-semibold">{a.title}{submittedAlready ? ' · Submitted ✓' : ''}</div>
+                          {a.dueDate && <div className="text-slate-400 mt-0.5">Due: {a.dueDate}</div>}
+                          {!submittedAlready && <DueWarning status={status} />}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               )}
@@ -232,6 +249,16 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+function DueWarning({ status }) {
+  const text = overdueText(status)
+  if (!text) return null
+  return (
+    <div className={`mt-1 font-semibold ${status.state === 'closed' ? 'text-rose-600 dark:text-rose-400' : 'text-amber-600 dark:text-amber-400'}`}>
+      ⚠️ {text}
     </div>
   )
 }

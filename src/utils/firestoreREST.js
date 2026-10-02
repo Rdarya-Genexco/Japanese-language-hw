@@ -97,6 +97,11 @@ export async function restAdd(collection, data) {
   return result.name.split('/').pop()
 }
 
+/** Create a document at a specific ID; fails with code 'already-exists' if it's already there. */
+export async function restCreate(collection, id, data) {
+  await req('POST', `${collection}?documentId=${encodeURIComponent(id)}`, { fields: toFields(data) })
+}
+
 /** Set (overwrite) a document at a specific ID. */
 export async function restSet(collection, id, data) {
   await req('PATCH', `${collection}/${id}`, { fields: toFields(data) })

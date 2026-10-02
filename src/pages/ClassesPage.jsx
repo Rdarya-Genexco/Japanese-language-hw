@@ -10,6 +10,7 @@ import {
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
 import WorksheetViewer from '../components/WorksheetViewer'
+import { dueStatus } from '../utils/dueDates'
 import BottomNav from '../components/BottomNav'
 import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, ChevronRight, Eye, UserMinus, Trash2 } from 'lucide-react'
 
@@ -431,7 +432,11 @@ function ClassroomCard({
                           <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">{a.description}</p>
                         )}
                         {a.dueDate && (
-                          <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-0.5">Due: {a.dueDate}</p>
+                          <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-0.5">
+                            Due: {a.dueDate}
+                            {dueStatus(a).state === 'overdue' && <span className="ml-1.5 font-semibold text-orange-600 dark:text-orange-400">· Overdue, closes in {dueStatus(a).daysLeft}d</span>}
+                            {dueStatus(a).state === 'closed' && <span className="ml-1.5 font-semibold text-rose-600 dark:text-rose-400">· Closed</span>}
+                          </p>
                         )}
                         {a.attachedWorksheetName && (
                           <p className="text-[10px] text-blue-500 dark:text-blue-400 mt-0.5 truncate">📎 {a.attachedWorksheetName}</p>
@@ -456,7 +461,7 @@ function ClassroomCard({
                               {submissions[a.id].length} submission{submissions[a.id].length !== 1 ? 's' : ''}
                             </p>
                             {submissions[a.id].map(s => (
-                              <SubmissionRow key={s.id} s={s} icon="👤" onView={onViewSubmission}
+                              <SubmissionRow key={s.id} s={s} icon="👤" onView={onViewSubmission} dueMs={dueStatus(a).dueMs}
                                 className="bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1.5" />
                             ))}
                           </div>
@@ -519,8 +524,9 @@ function ClassroomCard({
   )
 }
 
-function SubmissionRow({ s, icon, onView, className }) {
+function SubmissionRow({ s, icon, onView, className, dueMs }) {
   const canView = !!s.worksheetHtml
+  const late = dueMs && s.submittedAt?.seconds && s.submittedAt.seconds * 1000 > dueMs
   return (
     <button
       type="button"
@@ -541,6 +547,7 @@ function SubmissionRow({ s, icon, onView, className }) {
       {s.submittedAt?.seconds && (
         <span className="text-slate-400 flex-shrink-0">{new Date(s.submittedAt.seconds * 1000).toLocaleDateString()}</span>
       )}
+      {late && <span className="flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">Late</span>}
       {canView && <span className="text-blue-500 dark:text-blue-400 font-semibold flex-shrink-0">View ›</span>}
     </button>
   )
