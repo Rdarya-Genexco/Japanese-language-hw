@@ -204,14 +204,16 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
                 <Send size={13} /> Submit
               </button>
             )}
-            <button
-              onClick={onDelete}
-              disabled={!!busy}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-rose-500/80 hover:bg-rose-500 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors border border-rose-400/30"
-              title={t('delete')}
-            >
-              <Trash2 size={13} />
-            </button>
+            {onDelete && (
+              <button
+                onClick={onDelete}
+                disabled={!!busy}
+                className="flex items-center gap-1.5 text-xs font-semibold bg-rose-500/80 hover:bg-rose-500 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors border border-rose-400/30"
+                title={t('delete')}
+              >
+                <Trash2 size={13} />
+              </button>
+            )}
           </div>
         </div>
 
