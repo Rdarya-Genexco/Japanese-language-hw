@@ -9,6 +9,7 @@ import {
 } from '../utils/firestoreService'
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
+import WorksheetViewer from '../components/WorksheetViewer'
 import BottomNav from '../components/BottomNav'
 import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, ChevronRight, Eye, UserMinus, Trash2 } from 'lucide-react'
 
@@ -30,6 +31,7 @@ export default function ClassesPage() {
 
   const [members, setMembers] = useState({})
   const [removingUid, setRemovingUid] = useState(null)
+  const [viewSubmission, setViewSubmission] = useState(null)
   const [deletingCode, setDeletingCode] = useState(null)
   const [assignments, setAssignments] = useState({})
   const [loadingAssignments, setLoadingAssignments] = useState({})
@@ -138,7 +140,10 @@ export default function ClassesPage() {
     setLoadingSubs(p => ({ ...p, [a.id]: true }))
     try {
       const subs = await getAssignmentSubmissions(code, a.id)
-      setSubmissions(p => ({ ...p, [a.id]: subs }))
+      setSubmissions(p => ({
+        ...p,
+        [a.id]: subs.sort((x, y) => (y.submittedAt?.seconds || 0) - (x.submittedAt?.seconds || 0)),
+      }))
     } catch {
       setSubmissions(p => ({ ...p, [a.id]: [] }))
     } finally {
@@ -223,6 +228,7 @@ export default function ClassesPage() {
                 removingUid={removingUid}
                 deleting={deletingCode === cls.code}
                 onRemoveMember={(m) => handleRemoveMember(cls.code, m)}
+                onViewSubmission={setViewSubmission}
                 onDeleteClass={() => handleDeleteClass(cls.code)}
                 assignments={assignments[cls.code]}
                 loadingAssignments={loadingAssignments[cls.code]}
@@ -243,6 +249,21 @@ export default function ClassesPage() {
         )}
       </div>
 
+      {viewSubmission && (
+        <WorksheetViewer
+          worksheet={{
+            name: `${viewSubmission.studentName || 'Student'} — ${viewSubmission.worksheetName || 'Submission'}`,
+            worksheetHtml: viewSubmission.worksheetHtml,
+            worksheetData: null,
+            originalImageUri: null,
+            createdAt: viewSubmission.submittedAt?.seconds
+              ? { toDate: () => new Date(viewSubmission.submittedAt.seconds * 1000) }
+              : null,
+          }}
+          onClose={() => setViewSubmission(null)}
+        />
+      )}
+
       {showAssignmentModal && modalCode && (
         <AssignmentModal
           classroomCode={modalCode}
@@ -261,7 +282,7 @@ export default function ClassesPage() {
 }
 
 function ClassroomCard({
-  cls, active, copied, members, removingUid, deleting, onRemoveMember, onDeleteClass,
+  cls, active, copied, members, removingUid, deleting, onRemoveMember, onDeleteClass, onViewSubmission,
   assignments, loadingAssignments,
   expandedAssignment, submissions, loadingSubs,
   generalSubs, loadingGeneralSubs, expandedGeneral,
@@ -435,15 +456,8 @@ function ClassroomCard({
                               {submissions[a.id].length} submission{submissions[a.id].length !== 1 ? 's' : ''}
                             </p>
                             {submissions[a.id].map(s => (
-                              <div key={s.id} className="flex items-center gap-2 text-[10px] bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1.5 border border-slate-200 dark:border-slate-700">
-                                <span className="text-sm flex-shrink-0">👤</span>
-                                <div className="flex-1 min-w-0">
-                                  <p className="font-medium text-slate-700 dark:text-slate-200 truncate">
-                                    {s.studentName || 'Student'}
-                                  </p>
-                                  <p className="text-slate-400 truncate">{s.worksheetName}</p>
-                                </div>
-                              </div>
+                              <SubmissionRow key={s.id} s={s} icon="👤" onView={onViewSubmission}
+                                className="bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1.5" />
                             ))}
                           </div>
                         )}
@@ -479,15 +493,8 @@ function ClassroomCard({
               ) : (
                 <div className="space-y-1.5">
                   {generalSubs.map(s => (
-                    <div key={s.id} className="flex items-center gap-2 text-[10px] bg-slate-50 dark:bg-slate-900/30 rounded-xl px-2.5 py-2 border border-slate-200 dark:border-slate-700">
-                      <span className="text-sm flex-shrink-0">📄</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-slate-700 dark:text-slate-200 truncate">
-                          {s.studentName || 'Student'}
-                        </p>
-                        <p className="text-slate-400 truncate">{s.worksheetName || s.name}</p>
-                      </div>
-                    </div>
+                    <SubmissionRow key={s.id} s={s} icon="📄" onView={onViewSubmission}
+                      className="bg-slate-50 dark:bg-slate-900/30 rounded-xl px-2.5 py-2" />
                   ))}
                 </div>
               )
@@ -509,5 +516,27 @@ function ClassroomCard({
         </div>
       )}
     </div>
+  )
+}
+
+function SubmissionRow({ s, icon, onView, className }) {
+  const canView = !!s.worksheetHtml
+  return (
+    <button
+      type="button"
+      onClick={() => canView && onView(s)}
+      disabled={!canView}
+      className={`w-full flex items-center gap-2 text-[10px] text-left border border-slate-200 dark:border-slate-700 transition-colors enabled:hover:border-blue-300 dark:enabled:hover:border-blue-600 enabled:hover:bg-blue-50 dark:enabled:hover:bg-blue-900/20 ${className}`}
+    >
+      <span className="text-sm flex-shrink-0">{icon}</span>
+      <div className="flex-1 min-w-0">
+        <p className="font-medium text-slate-700 dark:text-slate-200 truncate">{s.studentName || 'Student'}</p>
+        <p className="text-slate-400 truncate">{s.worksheetName || s.name}</p>
+      </div>
+      {s.submittedAt?.seconds && (
+        <span className="text-slate-400 flex-shrink-0">{new Date(s.submittedAt.seconds * 1000).toLocaleDateString()}</span>
+      )}
+      {canView && <span className="text-blue-500 dark:text-blue-400 font-semibold flex-shrink-0">View ›</span>}
+    </button>
   )
 }
