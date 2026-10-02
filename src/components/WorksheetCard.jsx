@@ -8,7 +8,7 @@ const SUBJECT_EMOJI = {
 }
 
 export default function WorksheetCard({
-  worksheet, onClick, onDelete, onPrint, onDocx, onPdf, onMoveTo,
+  worksheet, onClick, onDelete, onPrint, onDocx, onPdf,
   onDragStart, onDragEnd,
   onTouchDragStart, onTouchDragMove, onTouchDragEnd,
   listView = false,

@@ -10,9 +10,9 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    # unsafe-eval is required by jsPDF for font processing
-    # unsafe-inline is required by Tailwind CSS inline styles
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://generativelanguage.googleapis.com; img-src 'self' data: blob: https:; frame-src 'self' blob:; worker-src 'self' blob:;"
+    # Google sign-in needs apis.google.com scripts and the *.firebaseapp.com auth iframe.
+    # Wildcards keep the project ID out of this file (Netlify's secret scanner flags it).
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://accounts.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.googleapis.com https://apis.google.com https://accounts.google.com; img-src 'self' data: blob: https:; frame-src 'self' blob: https://*.firebaseapp.com https://accounts.google.com https://apis.google.com; worker-src 'self' blob:;"
 
 # Never cache HTML so browsers always pick up new asset hashes
 [[headers]]

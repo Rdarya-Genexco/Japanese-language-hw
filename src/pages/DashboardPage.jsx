@@ -6,7 +6,7 @@ import { useRole } from '../contexts/RoleContext'
 import {
   getFolders, getWorksheets, getWorksheet,
   createFolder, deleteFolder, deleteWorksheet,
-  renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet, getAllFolders,
+  renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
   getAssignments,
 } from '../utils/storageService'
 import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
@@ -17,7 +17,6 @@ import WorksheetCard from '../components/WorksheetCard'
 import UploadModal from '../components/UploadModal'
 import NewFolderModal from '../components/NewFolderModal'
 import WorksheetViewer from '../components/WorksheetViewer'
-import MoveToModal from '../components/MoveToModal'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
@@ -43,7 +42,6 @@ export default function DashboardPage() {
   const [isDragging,      setIsDragging]      = useState(false)
   const [dragOverFolderId, setDragOverFolderId] = useState(null)
   const [touchPos,         setTouchPos]         = useState(null)
-  const [moveToWorksheet,  setMoveToWorksheet]  = useState(null) // {id, name}
   const [listView,         setListView]         = useState(false)
   const [assignments,      setAssignments]      = useState([])
   const [viewAssignment,   setViewAssignment]   = useState(null)
@@ -505,7 +503,6 @@ export default function DashboardPage() {
                       onTouchDragStart={handleTouchDragStart}
                       onTouchDragMove={handleTouchDragMove}
                       onTouchDragEnd={handleTouchDragEnd}
-                      onMoveTo={() => setMoveToWorksheet({ id: ws.id, name: ws.name })}
                     />
                   ))}
                 </div>
@@ -535,15 +532,6 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {moveToWorksheet && (
-        <MoveToModal
-          uid={user.uid}
-          worksheetName={moveToWorksheet.name}
-          currentFolderId={folderId}
-          onMove={(targetFolderId) => handleMoveWorksheet(moveToWorksheet.id, targetFolderId)}
-          onClose={() => setMoveToWorksheet(null)}
-        />
-      )}
 
       {showUpload && (
         <UploadModal

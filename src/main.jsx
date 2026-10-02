@@ -23,18 +23,17 @@ window.test = async function () {
 // Netlify's SPA redirect returns HTML for missing /assets/*.js → browser throws
 // "Failed to fetch dynamically imported module". Catch it and force a reload so
 // the user gets the fresh bundle automatically.
-window.addEventListener('error', (e) => {
-  const msg = e?.message || ''
-  if (msg.includes('dynamically imported module') || msg.includes('Failed to fetch')) {
-    window.location.reload()
-  }
-})
-window.addEventListener('unhandledrejection', (e) => {
-  const msg = String(e?.reason?.message || e?.reason || '')
-  if (msg.includes('dynamically imported module') || msg.includes('Failed to fetch')) {
-    window.location.reload()
-  }
-})
+// Only chunk-load errors — a bare "Failed to fetch" is any network failure and would reload-loop offline.
+const CHUNK_ERROR = /dynamically imported module|Importing a module script failed/i
+function reloadOnChunkError(msg) {
+  if (!CHUNK_ERROR.test(msg)) return
+  const last = Number(sessionStorage.getItem('chunkReloadAt') || 0)
+  if (Date.now() - last < 10000) return
+  sessionStorage.setItem('chunkReloadAt', String(Date.now()))
+  window.location.reload()
+}
+window.addEventListener('error', (e) => reloadOnChunkError(e?.message || ''))
+window.addEventListener('unhandledrejection', (e) => reloadOnChunkError(String(e?.reason?.message || e?.reason || '')))
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
