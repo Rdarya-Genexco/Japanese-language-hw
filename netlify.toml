@@ -7,6 +7,13 @@
   to = "/index.html"
   status = 200
 
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # unsafe-eval is required by jsPDF for font processing
+    # unsafe-inline is required by Tailwind CSS inline styles
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://generativelanguage.googleapis.com; img-src 'self' data: blob: https:; frame-src 'self' blob:; worker-src 'self' blob:;"
+
 # Never cache HTML so browsers always pick up new asset hashes
 [[headers]]
   for = "/*.html"
