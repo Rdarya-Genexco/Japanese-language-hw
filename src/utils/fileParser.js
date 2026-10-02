@@ -171,13 +171,5 @@ export async function parseFile(file) {
     }
   }
 
-  if (ext === 'ppt') {
-    // Legacy OLE binary format — cannot convert in browser, send as-is
-    return {
-      data: await file.arrayBuffer(),
-      mimeType: 'application/vnd.ms-powerpoint',
-    }
-  }
-
-  throw new Error('Unsupported file type. Please upload a PDF, DOCX, PPT, PPTX, PNG or JPG.')
+  throw new Error('Unsupported file type. Please upload a PDF, DOCX, PPTX, PNG or JPG.')
 }

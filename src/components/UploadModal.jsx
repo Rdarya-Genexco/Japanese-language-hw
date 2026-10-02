@@ -27,8 +27,8 @@ function compressImage(file, maxPx = 800, quality = 0.72) {
 }
 
 const STEP_COLORS = ['bg-blue-500', 'bg-violet-500', 'bg-emerald-500']
-const ACCEPTED_TYPES = ['.pdf', '.docx', '.ppt', '.pptx', '.png', '.jpg', '.jpeg']
-const ACCEPTED_EXTS  = ['pdf', 'docx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg']
+const ACCEPTED_TYPES = ['.pdf', '.docx', '.pptx', '.png', '.jpg', '.jpeg']
+const ACCEPTED_EXTS  = ['pdf', 'docx', 'pptx', 'png', 'jpg', 'jpeg']
 
 export default function UploadModal({ uid, folderId, onClose, onComplete }) {
   const { langCode, lang, t } = useLang()

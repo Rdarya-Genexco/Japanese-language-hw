@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:proxy": "node tests/gemini-proxy.test.mjs"
   },
   "dependencies": {
     "docx": "^9.0.0",
@@ -14,6 +15,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^11.0.0",
     "html2canvas": "^1.4.1",
+    "jose": "^5.10.0",
     "jspdf": "^4.2.1",
     "lucide-react": "^0.462.0",
     "mammoth": "^1.8.0",

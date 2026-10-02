@@ -1,4 +1,6 @@
 import { getLang } from './languages'
+import { MODEL_CHAIN } from './geminiModels'
+import { auth } from '../firebase/config'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -247,39 +249,68 @@ function reInjectDocxImages(html, imageUris) {
 
 // ── Gemini API ────────────────────────────────────────────────────────────────
 
-const DEFAULT_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ''
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models'
-
-// Models in priority order — first available wins
-const MODEL_CHAIN = [
-  'gemini-3.6-flash',
-  'gemini-3.5-flash',
-  'gemini-3.5-flash-lite',
-  'gemini-3.1-pro',
-]
-
 const TIMEOUT_MS = 300_000 // 5 min — PDF+HTML is heavier than JSON; large files need extra headroom
+const TIMEOUT_MESSAGE = 'AI processing timed out. Please try again.'
+const SIGN_IN_MESSAGE = 'Please sign in to use AI.'
 
-async function callGemini(model, body, apiKey) {
-  const url = `${GEMINI_BASE}/${model}:generateContent?key=${apiKey}`
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
+/** The answer can arrive split across several parts; thought parts aren't part of it. */
+function partsText(data) {
+  return (data?.candidates?.[0]?.content?.parts || [])
+    .filter(p => typeof p.text === 'string' && !p.thought)
+    .map(p => p.text)
+    .join('')
+}
 
-  let response
-  try {
-    response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    })
-  } catch (err) {
-    clearTimeout(timer)
-    if (err.name === 'AbortError') throw new Error('AI processing timed out. Please try again.')
-    throw err
+/** Read Gemini's server-sent-event stream and join the text of every chunk. */
+async function readSseText(response) {
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder()
+  let buffer = ''
+  let text = ''
+  const takeLine = (line) => {
+    if (!line.startsWith('data:')) return
+    const chunk = JSON.parse(line.slice(5).trim())
+    if (chunk.error) throw new Error(`Gemini: ${chunk.error.message || 'stream error'}`)
+    text += partsText(chunk)
   }
-  clearTimeout(timer)
-  return response
+  for (;;) {
+    const { value, done } = await reader.read()
+    if (done) break
+    buffer += decoder.decode(value, { stream: true })
+    let nl
+    while ((nl = buffer.indexOf('\n')) >= 0) {
+      takeLine(buffer.slice(0, nl).replace(/\r$/, ''))
+      buffer = buffer.slice(nl + 1)
+    }
+  }
+  takeLine((buffer + decoder.decode()).trim())
+  return text
+}
+
+/**
+ * With the user's own key (saved in Settings), call Gemini directly. Otherwise go through the
+ * /api/gemini Netlify Edge Function, which holds the app's key so it never reaches the browser.
+ */
+async function callGemini(model, body, userKey, signal) {
+  if (userKey) {
+    const response = await fetch(`${GEMINI_BASE}/${model}:generateContent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': userKey },
+      body: JSON.stringify(body),
+      signal,
+    })
+    return { response, readText: async () => partsText(await response.json()) }
+  }
+  const idToken = await auth.currentUser?.getIdToken()
+  if (!idToken) throw new Error(SIGN_IN_MESSAGE)
+  const response = await fetch('/api/gemini', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+    body: JSON.stringify({ model, request: body }),
+    signal,
+  })
+  return { response, readText: () => readSseText(response) }
 }
 
 /**
@@ -287,12 +318,11 @@ async function callGemini(model, body, apiKey) {
  *
  * @param {ArrayBuffer|string} fileData  Raw PDF bytes (ArrayBuffer) or extracted text (string)
  * @param {string} mimeType             'application/pdf' or 'text/plain'
- * @param {string|null} apiKey          Gemini API key (falls back to env var)
+ * @param {string|null} apiKey          The user's own Gemini key; empty → the server proxy is used
  * @param {string} langCode             Target language code, e.g. 'ja', 'en', 'fr'
  * @returns {Promise<string>}           Self-contained HTML document
  */
 export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja', thumbnailDataUri = null) {
-  if (!apiKey) apiKey = DEFAULT_API_KEY
 
   const lang = getLang(langCode)
   const IMAGE_MIME_TYPES_INPUT = ['image/png', 'image/jpeg']
@@ -329,7 +359,6 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
   const BINARY_MIME_TYPES = [
     'application/pdf',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    'application/vnd.ms-powerpoint',
   ]
 
   if (isPptxSlides) {
@@ -376,50 +405,51 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
   let lastErr = 'unknown error'
 
   for (const model of MODEL_CHAIN) {
-    let response
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
+    let rawText
     try {
-      response = await callGemini(model, body, apiKey)
-    } catch (err) {
-      if (err.message === 'AI processing timed out. Please try again.') throw err
-      throw new Error(`Network error: ${err.message}`)
-    }
+      let call
+      try {
+        call = await callGemini(model, body, apiKey, controller.signal)
+      } catch (err) {
+        if (err.name === 'AbortError') throw new Error(TIMEOUT_MESSAGE)
+        if (err.message === SIGN_IN_MESSAGE) throw err
+        throw new Error(`Network error: ${err.message}`)
+      }
+      const { response } = call
 
-    // Overloaded / rate-limited → try next model
-    if (response.status === 503 || response.status === 429) {
-      const errBody = await response.json().catch(() => ({}))
-      lastErr = errBody?.error?.message || `HTTP ${response.status}`
-      console.warn(`[Gemini] ${model} unavailable (${response.status}), trying next…`)
-      continue
-    }
+      // Overloaded / rate-limited / model doesn't exist → try next model
+      if (response.status === 503 || response.status === 429 || response.status === 404) {
+        const errBody = await response.json().catch(() => ({}))
+        lastErr = errBody?.error?.message || `HTTP ${response.status}`
+        console.warn(`[Gemini] ${model} unavailable (${response.status}), trying next…`)
+        continue
+      }
 
-    // Model doesn't exist → try next
-    if (response.status === 404) {
-      const errBody = await response.json().catch(() => ({}))
-      lastErr = errBody?.error?.message || `HTTP ${response.status}`
-      console.warn(`[Gemini] ${model} not available (${response.status}), trying next…`)
-      continue
-    }
+      // Sign-in problems from the /api/gemini proxy: show its message as is
+      if (response.status === 401 || (response.status === 403 && !apiKey)) {
+        const errBody = await response.json().catch(() => ({}))
+        throw new Error(errBody?.error?.message || SIGN_IN_MESSAGE)
+      }
 
-    // 400 Bad Request — invalid request body (bad API key format, bad payload, etc.)
-    // This is a caller error, not a model-availability issue; throwing immediately is correct.
-    if (response.status === 400) {
-      const errBody = await response.json().catch(() => ({}))
-      const msg = errBody?.error?.message || 'Bad request'
-      throw new Error(`Gemini: ${msg}`)
-    }
+      // 400 Bad Request — invalid request body (bad API key format, bad payload, etc.)
+      // This is a caller error, not a model-availability issue; throwing immediately is correct.
+      if (!response.ok) {
+        const errBody = await response.json().catch(() => ({}))
+        const msg = errBody?.error?.message || (response.status === 400 ? 'Bad request' : `API error (${response.status})`)
+        throw new Error(`Gemini: ${msg}`)
+      }
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}))
-      const msg = err?.error?.message || `API error (${response.status})`
-      throw new Error(`Gemini: ${msg}`)
+      try {
+        rawText = await call.readText()
+      } catch (err) {
+        if (err.name === 'AbortError') throw new Error(TIMEOUT_MESSAGE)
+        throw err
+      }
+    } finally {
+      clearTimeout(timer)
     }
-
-    const data = await response.json()
-    // The answer can arrive split across several parts; thought parts aren't part of it.
-    let rawText = (data?.candidates?.[0]?.content?.parts || [])
-      .filter(p => typeof p.text === 'string' && !p.thought)
-      .map(p => p.text)
-      .join('')
 
     if (!rawText) throw new Error('No response from AI. Please try again.')
 
