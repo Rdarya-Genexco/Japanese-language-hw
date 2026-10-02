@@ -5,7 +5,7 @@ import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
 import { LANGUAGES } from '../utils/languages'
 import { ArrowLeft, Globe, BookOpen, GraduationCap, Check, Loader2 } from 'lucide-react'
-import { getClassroom } from '../utils/firestoreService'
+import { getClassroom, getClassroomMember } from '../utils/firestoreService'
 import BottomNav from '../components/BottomNav'
 
 export default function SettingsPage() {
@@ -35,7 +35,10 @@ export default function SettingsPage() {
     setJoinStatus('verifying')
     try {
       const room = await getClassroom(code)
-      if (room) {
+      const member = room ? await getClassroomMember(code, user.uid).catch(() => null) : null
+      if (member?.removed) {
+        setJoinStatus('removed')
+      } else if (room) {
         setJoinStatus('ok')
         setChangingCode(false)
         await saveClassroomCode(code)
@@ -155,6 +158,9 @@ export default function SettingsPage() {
             )}
             {joinStatus === 'not-found' && (
               <p className="text-xs text-rose-500 mt-1">Classroom not found.</p>
+            )}
+            {joinStatus === 'removed' && (
+              <p className="text-xs text-rose-500 mt-1">Your teacher removed you from this class. Ask them for help.</p>
             )}
           </div>
         )}

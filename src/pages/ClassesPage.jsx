@@ -5,15 +5,16 @@ import { useRole } from '../contexts/RoleContext'
 import {
   createClassroom, getTeacherClassrooms, getAssignments,
   getAssignmentSubmissions, getClassroomSubmissions, getClassroomMembers,
+  removeClassroomMember, deleteClassroom,
 } from '../utils/firestoreService'
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
 import BottomNav from '../components/BottomNav'
-import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, ChevronRight, Eye } from 'lucide-react'
+import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, ChevronRight, Eye, UserMinus, Trash2 } from 'lucide-react'
 
 export default function ClassesPage() {
   const { user } = useAuth()
-  const { role, saveClassroomCode } = useRole()
+  const { role, classroomCode, saveClassroomCode } = useRole()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -28,6 +29,8 @@ export default function ClassesPage() {
   const [copiedCode, setCopiedCode] = useState(null)
 
   const [members, setMembers] = useState({})
+  const [removingUid, setRemovingUid] = useState(null)
+  const [deletingCode, setDeletingCode] = useState(null)
   const [assignments, setAssignments] = useState({})
   const [loadingAssignments, setLoadingAssignments] = useState({})
   const [expandedAssignment, setExpandedAssignment] = useState(null)
@@ -60,6 +63,35 @@ export default function ClassesPage() {
       alert('Failed to create classroom: ' + err.message)
     } finally {
       setCreating(false)
+    }
+  }
+
+  const handleRemoveMember = async (code, m) => {
+    if (!window.confirm(`Remove ${m.name || m.email || 'this student'} from class ${code}?\nThey won't be able to rejoin with this code.`)) return
+    setRemovingUid(m.id)
+    try {
+      await removeClassroomMember(code, m.id)
+      setMembers(p => ({ ...p, [code]: (p[code] || []).filter(x => x.id !== m.id) }))
+    } catch (err) {
+      alert('Failed to remove student: ' + err.message)
+    } finally {
+      setRemovingUid(null)
+    }
+  }
+
+  const handleDeleteClass = async (code) => {
+    if (!window.confirm(`Delete class ${code}?\nThis permanently deletes its assignments, submissions and student list.`)) return
+    setDeletingCode(code)
+    try {
+      await deleteClassroom(code)
+      const remaining = classrooms.filter(c => c.code !== code)
+      setClassrooms(remaining)
+      setActiveCode(null)
+      if (classroomCode === code) saveClassroomCode(remaining[0]?.code || null).catch(() => {})
+    } catch (err) {
+      alert('Failed to delete class: ' + err.message)
+    } finally {
+      setDeletingCode(null)
     }
   }
 
@@ -183,6 +215,10 @@ export default function ClassesPage() {
                 active={activeCode === cls.code}
                 copied={copiedCode === cls.code}
                 members={members[cls.code]}
+                removingUid={removingUid}
+                deleting={deletingCode === cls.code}
+                onRemoveMember={(m) => handleRemoveMember(cls.code, m)}
+                onDeleteClass={() => handleDeleteClass(cls.code)}
                 assignments={assignments[cls.code]}
                 loadingAssignments={loadingAssignments[cls.code]}
                 expandedAssignment={expandedAssignment}
@@ -220,7 +256,7 @@ export default function ClassesPage() {
 }
 
 function ClassroomCard({
-  cls, active, copied, members,
+  cls, active, copied, members, removingUid, deleting, onRemoveMember, onDeleteClass,
   assignments, loadingAssignments,
   expandedAssignment, submissions, loadingSubs,
   generalSubs, loadingGeneralSubs, expandedGeneral,
@@ -310,6 +346,15 @@ function ClassroomCard({
                         Joined {new Date(m.joinedAt.seconds * 1000).toLocaleDateString()}
                       </p>
                     )}
+                    <button
+                      onClick={() => onRemoveMember(m)}
+                      disabled={removingUid === m.id}
+                      title="Remove from class"
+                      aria-label={`Remove ${m.name || m.email || 'student'} from class`}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 disabled:opacity-50 transition-colors flex-shrink-0"
+                    >
+                      {removingUid === m.id ? <Loader2 size={14} className="animate-spin" /> : <UserMinus size={14} />}
+                    </button>
                   </div>
                 ))}
               </div>
@@ -438,6 +483,18 @@ function ClassroomCard({
                 </div>
               )
             )}
+          </div>
+
+          {/* Danger zone */}
+          <div className="px-4 pb-4">
+            <button
+              onClick={onDeleteClass}
+              disabled={deleting}
+              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 hover:bg-rose-50 dark:hover:bg-rose-900/20 disabled:opacity-60 py-2 rounded-xl transition-colors"
+            >
+              {deleting ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
+              {deleting ? 'Deleting…' : 'Delete class'}
+            </button>
           </div>
 
         </div>

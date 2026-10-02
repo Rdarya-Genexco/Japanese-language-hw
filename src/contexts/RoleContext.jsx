@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext'
-import { getUserData, saveUserData, upsertClassroomMember, leaveClassroom } from '../utils/firestoreService'
+import {
+  getUserData, saveUserData, upsertClassroomMember, leaveClassroom, getClassroom, getClassroomMember,
+} from '../utils/firestoreService'
 
 const RoleContext = createContext(null)
 
@@ -40,14 +42,27 @@ export function RoleProvider({ children }) {
 
         setRole(r)
         setClassroomCode(savedCode)
-        // Backfills students who joined before member records existed; also refreshes their name/photo.
-        if (r === 'student' && savedCode) {
-          upsertClassroomMember(savedCode, user).catch(() => {})
-        }
+        if (r === 'student' && savedCode) syncMembership(user, savedCode)
       })
       .catch(() => setRole(null))
       .finally(() => setRoleLoading(false))
   }, [user?.uid, user?.isAnonymous])
+
+  // Drops the code if the class was deleted or the teacher removed this student;
+  // otherwise backfills/refreshes the member record. Errors (e.g. offline) leave everything as is.
+  async function syncMembership(u, code) {
+    try {
+      const [room, member] = await Promise.all([getClassroom(code), getClassroomMember(code, u.uid)])
+      if (!room || member?.removed) {
+        await saveUserData(u.uid, { classroomCode: null })
+        setClassroomCode(null)
+        return
+      }
+      await upsertClassroomMember(code, u)
+    } catch (err) {
+      console.warn('[Role] class membership sync skipped', err)
+    }
+  }
 
   useEffect(() => {
     if (role) {

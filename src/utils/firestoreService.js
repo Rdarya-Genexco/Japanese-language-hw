@@ -92,7 +92,28 @@ export async function createClassroom(uid) {
 }
 
 export async function getClassroom(code) {
-  return restGetPublic('classrooms', code.toUpperCase())
+  return restGet('classrooms', code.toUpperCase())
+}
+
+/** Deletes subcollections first: rules check the class doc's teacherUid, and Firestore doesn't cascade. */
+export async function deleteClassroom(code) {
+  const base = `classrooms/${code.toUpperCase()}`
+  const [assignments, members, submissions] = await Promise.all([
+    restList(`${base}/assignments`),
+    restList(`${base}/members`),
+    restList(`${base}/submissions`),
+  ])
+  const assignmentSubs = await Promise.all(
+    assignments.map(a => restList(`${base}/assignments/${a.id}/submissions`))
+  )
+  await Promise.all([
+    ...assignments.flatMap((a, i) =>
+      assignmentSubs[i].map(s => restDelete(`${base}/assignments/${a.id}/submissions`, s.id))),
+    ...members.map(m => restDelete(`${base}/members`, m.id)),
+    ...submissions.map(s => restDelete(`${base}/submissions`, s.id)),
+  ])
+  await Promise.all(assignments.map(a => restDelete(`${base}/assignments`, a.id)))
+  await restDelete('classrooms', code.toUpperCase())
 }
 
 export async function getTeacherClassrooms(uid) {
@@ -117,9 +138,18 @@ export async function leaveClassroom(code, uid) {
   return restDelete(`classrooms/${code.toUpperCase()}/members`, uid)
 }
 
+export async function getClassroomMember(code, uid) {
+  return restGet(`classrooms/${code.toUpperCase()}/members`, uid)
+}
+
+/** Marks rather than deletes, so the student can't silently rejoin with the same code. */
+export async function removeClassroomMember(code, uid) {
+  return restUpdate(`classrooms/${code.toUpperCase()}/members`, uid, { removed: true, removedAt: new Date() })
+}
+
 export async function getClassroomMembers(code) {
   try {
-    const docs = await restList(`classrooms/${code.toUpperCase()}/members`)
+    const docs = (await restList(`classrooms/${code.toUpperCase()}/members`)).filter(m => !m.removed)
     return docs.sort((a, b) => (a.name || a.email || '').localeCompare(b.name || b.email || ''))
   } catch {
     return []

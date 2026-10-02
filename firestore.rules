@@ -1,50 +1,73 @@
 rules_version = '2';
+// Rules revision v3. Firestore only supports rules_version '1' and '2'.
+// Publish at: Firebase Console → Firestore → "lang" database → Rules.
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // User profiles — only the owner can read/write
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isTeacherOf(code) {
+      return signedIn() &&
+        get(/databases/$(database)/documents/classrooms/$(code)).data.teacherUid == request.auth.uid;
+    }
+
+    // Each user's own drive, profile and settings
     match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if signedIn() && request.auth.uid == userId;
     }
 
-    // Classrooms — any authenticated user can read (to verify join codes)
-    // Any authenticated user can create/update (teacher creates, students join)
     match /classrooms/{code} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
+      // Any signed-in user can look up a class code to join it
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.teacherUid == request.auth.uid;
+      allow update: if signedIn() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.teacherUid == request.auth.uid;
+      allow delete: if signedIn() && resource.data.teacherUid == request.auth.uid;
+
+      // Class roster. A student manages only their own record; the teacher can see,
+      // remove (removed: true) or delete everyone. A removed student cannot undo it.
+      match /members/{memberUid} {
+        function isSelf() {
+          return signedIn() && request.auth.uid == memberUid;
+        }
+        function notRemoved(data) {
+          return data.get('removed', false) != true;
+        }
+        allow read: if isSelf() || isTeacherOf(code);
+        allow create: if isSelf() && notRemoved(request.resource.data);
+        allow update: if isTeacherOf(code) ||
+          (isSelf() && notRemoved(resource.data) && notRemoved(request.resource.data));
+        allow delete: if isTeacherOf(code) || (isSelf() && notRemoved(resource.data));
+      }
+
+      // Assignments: everyone signed in can read; only the class's teacher can change them
+      match /assignments/{assignmentId} {
+        allow read: if signedIn();
+        allow create, update, delete: if isTeacherOf(code);
+
+        match /submissions/{subId} {
+          allow read: if isTeacherOf(code) ||
+            (signedIn() && resource.data.studentUid == request.auth.uid);
+          allow create: if signedIn() && request.resource.data.studentUid == request.auth.uid;
+          allow delete: if isTeacherOf(code);
+        }
+      }
+
+      // General (non-assignment) submissions
+      match /submissions/{subId} {
+        allow read: if isTeacherOf(code) ||
+          (signedIn() && resource.data.studentUid == request.auth.uid);
+        allow create: if signedIn() && request.resource.data.studentUid == request.auth.uid;
+        allow delete: if isTeacherOf(code);
+      }
     }
 
-    // Class roster — students add/remove only themselves; only the class's teacher can list everyone
-    match /classrooms/{code}/members/{memberUid} {
-      allow read: if request.auth != null && (
-        request.auth.uid == memberUid ||
-        get(/databases/$(database)/documents/classrooms/$(code)).data.teacherUid == request.auth.uid
-      );
-      allow write: if request.auth != null && request.auth.uid == memberUid;
-    }
-
-    // General submissions — any authenticated user can create or read
-    match /classrooms/{code}/submissions/{subId} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null;
-    }
-
-    // Assignments — any authenticated user can read; authenticated users can write
-    match /classrooms/{code}/assignments/{assignmentId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
-    }
-
-    // Assignment submissions — authenticated students can create, all authenticated can read
-    match /classrooms/{code}/assignments/{assignmentId}/submissions/{subId} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null;
-    }
-
-    // Shared worksheets — publicly readable, authenticated write
+    // Shared worksheet links are public to view
     match /sharedWorksheets/{token} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if signedIn();
     }
   }
 }
