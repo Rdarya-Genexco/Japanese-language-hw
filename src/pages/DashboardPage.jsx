@@ -431,10 +431,7 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : isEmpty ? (
-          <EmptyState
-            onUpload={() => setShowUpload(true)}
-            onNewFolder={() => setShowNewFolder(true)}
-          />
+          <EmptyState />
         ) : (
           <div className="space-y-6">
             {folders.length > 0 && (
