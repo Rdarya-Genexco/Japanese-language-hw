@@ -98,22 +98,23 @@ export async function getClassroom(code) {
 /** Deletes subcollections first: rules check the class doc's teacherUid, and Firestore doesn't cascade. */
 export async function deleteClassroom(code) {
   const base = `classrooms/${code.toUpperCase()}`
+  const step = (label, p) => p.catch(err => { throw new Error(`${label}: ${err.message}`) })
   const [assignments, members, submissions] = await Promise.all([
-    restList(`${base}/assignments`),
-    restList(`${base}/members`),
-    restList(`${base}/submissions`),
+    step('listing assignments', restList(`${base}/assignments`)),
+    step('listing students', restList(`${base}/members`)),
+    step('listing submissions', restList(`${base}/submissions`)),
   ])
-  const assignmentSubs = await Promise.all(
+  const assignmentSubs = await step('listing assignment submissions', Promise.all(
     assignments.map(a => restList(`${base}/assignments/${a.id}/submissions`))
-  )
+  ))
   await Promise.all([
-    ...assignments.flatMap((a, i) =>
-      assignmentSubs[i].map(s => restDelete(`${base}/assignments/${a.id}/submissions`, s.id))),
-    ...members.map(m => restDelete(`${base}/members`, m.id)),
-    ...submissions.map(s => restDelete(`${base}/submissions`, s.id)),
+    step('deleting assignment submissions', Promise.all(assignments.flatMap((a, i) =>
+      assignmentSubs[i].map(s => restDelete(`${base}/assignments/${a.id}/submissions`, s.id))))),
+    step('removing students', Promise.all(members.map(m => restDelete(`${base}/members`, m.id)))),
+    step('deleting submissions', Promise.all(submissions.map(s => restDelete(`${base}/submissions`, s.id)))),
   ])
-  await Promise.all(assignments.map(a => restDelete(`${base}/assignments`, a.id)))
-  await restDelete('classrooms', code.toUpperCase())
+  await step('deleting assignments', Promise.all(assignments.map(a => restDelete(`${base}/assignments`, a.id))))
+  await step('deleting the class', restDelete('classrooms', code.toUpperCase()))
 }
 
 export async function getTeacherClassrooms(uid) {
