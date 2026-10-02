@@ -14,6 +14,15 @@ service cloud.firestore {
       allow write: if request.auth != null;
     }
 
+    // Class roster — students add/remove only themselves; only the class's teacher can list everyone
+    match /classrooms/{code}/members/{memberUid} {
+      allow read: if request.auth != null && (
+        request.auth.uid == memberUid ||
+        get(/databases/$(database)/documents/classrooms/$(code)).data.teacherUid == request.auth.uid
+      );
+      allow write: if request.auth != null && request.auth.uid == memberUid;
+    }
+
     // General submissions — any authenticated user can create or read
     match /classrooms/{code}/submissions/{subId} {
       allow read: if request.auth != null;

@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useRole } from '../contexts/RoleContext'
 import {
   createClassroom, getTeacherClassrooms, getAssignments,
-  getAssignmentSubmissions, getClassroomSubmissions,
+  getAssignmentSubmissions, getClassroomSubmissions, getClassroomMembers,
 } from '../utils/firestoreService'
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
@@ -27,6 +27,7 @@ export default function ClassesPage() {
   const [activeCode, setActiveCode] = useState(null)
   const [copiedCode, setCopiedCode] = useState(null)
 
+  const [members, setMembers] = useState({})
   const [assignments, setAssignments] = useState({})
   const [loadingAssignments, setLoadingAssignments] = useState({})
   const [expandedAssignment, setExpandedAssignment] = useState(null)
@@ -53,6 +54,7 @@ export default function ClassesPage() {
       const code = await createClassroom(user.uid)
       saveClassroomCode(code).catch(() => {})
       setClassrooms(prev => [{ code, teacherUid: user.uid, createdAt: { seconds: Date.now() / 1000 } }, ...prev])
+      setMembers(p => ({ ...p, [code]: [] }))
       setActiveCode(code)
     } catch (err) {
       alert('Failed to create classroom: ' + err.message)
@@ -74,6 +76,7 @@ export default function ClassesPage() {
     setActiveCode(code)
     if (fetchedCodesRef.current.has(code)) return
     fetchedCodesRef.current.add(code)
+    getClassroomMembers(code).then(list => setMembers(p => ({ ...p, [code]: list })))
     setLoadingAssignments(p => ({ ...p, [code]: true }))
     try {
       const list = await getAssignments(code)
@@ -179,6 +182,7 @@ export default function ClassesPage() {
                 cls={cls}
                 active={activeCode === cls.code}
                 copied={copiedCode === cls.code}
+                members={members[cls.code]}
                 assignments={assignments[cls.code]}
                 loadingAssignments={loadingAssignments[cls.code]}
                 expandedAssignment={expandedAssignment}
@@ -216,7 +220,7 @@ export default function ClassesPage() {
 }
 
 function ClassroomCard({
-  cls, active, copied,
+  cls, active, copied, members,
   assignments, loadingAssignments,
   expandedAssignment, submissions, loadingSubs,
   generalSubs, loadingGeneralSubs, expandedGeneral,
@@ -237,7 +241,10 @@ function ClassroomCard({
             </p>
             <p className="text-xs text-slate-400 dark:text-slate-500">
               {assignments !== undefined
-                ? `${assignments.length} assignment${assignments.length !== 1 ? 's' : ''}`
+                ? [
+                    members !== undefined && `${members.length} student${members.length !== 1 ? 's' : ''}`,
+                    `${assignments.length} assignment${assignments.length !== 1 ? 's' : ''}`,
+                  ].filter(Boolean).join(' · ')
                 : 'Tap to view'}
             </p>
           </div>
@@ -263,6 +270,51 @@ function ClassroomCard({
       {/* Expanded content */}
       {active && (
         <div className="border-t border-slate-100 dark:border-slate-700">
+
+          {/* Students */}
+          <div className="p-4 border-b border-slate-100 dark:border-slate-700">
+            <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mb-3">
+              <Users size={13} className="text-cyan-500" />
+              Students
+              {members?.length > 0 && (
+                <span className="bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-400 px-1.5 py-0.5 rounded-full text-[10px] font-bold">
+                  {members.length}
+                </span>
+              )}
+            </h3>
+            {members === undefined ? (
+              <div className="flex items-center gap-2 text-xs text-slate-400 py-3 justify-center">
+                <Loader2 size={13} className="animate-spin" /> Loading…
+              </div>
+            ) : members.length === 0 ? (
+              <p className="text-xs text-slate-400 text-center py-3">
+                No students yet. Share the code <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">{cls.code}</span> so they can join from Settings.
+              </p>
+            ) : (
+              <div className="space-y-1.5">
+                {members.map(m => (
+                  <div key={m.id} className="flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/30 rounded-xl px-3 py-2 border border-slate-200 dark:border-slate-700">
+                    {m.photoURL ? (
+                      <img src={m.photoURL} alt="" referrerPolicy="no-referrer" className="w-7 h-7 rounded-full flex-shrink-0 object-cover" />
+                    ) : (
+                      <div className="w-7 h-7 rounded-full flex-shrink-0 bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-300 text-xs font-bold flex items-center justify-center">
+                        {(m.name || m.email || '?').charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate">{m.name || 'Student'}</p>
+                      {m.email && <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{m.email}</p>}
+                    </div>
+                    {m.joinedAt?.seconds && (
+                      <p className="text-[10px] text-slate-400 flex-shrink-0">
+                        Joined {new Date(m.joinedAt.seconds * 1000).toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Assignments */}
           <div className="p-4 border-b border-slate-100 dark:border-slate-700">

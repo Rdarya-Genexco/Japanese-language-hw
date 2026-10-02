@@ -104,6 +104,28 @@ export async function getTeacherClassrooms(uid) {
   }
 }
 
+export async function upsertClassroomMember(code, user, { joined = false } = {}) {
+  return restUpdate(`classrooms/${code.toUpperCase()}/members`, user.uid, {
+    name: user.displayName || '',
+    email: user.email || '',
+    photoURL: user.photoURL || '',
+    ...(joined ? { joinedAt: new Date() } : {}),
+  })
+}
+
+export async function leaveClassroom(code, uid) {
+  return restDelete(`classrooms/${code.toUpperCase()}/members`, uid)
+}
+
+export async function getClassroomMembers(code) {
+  try {
+    const docs = await restList(`classrooms/${code.toUpperCase()}/members`)
+    return docs.sort((a, b) => (a.name || a.email || '').localeCompare(b.name || b.email || ''))
+  } catch {
+    return []
+  }
+}
+
 export async function submitToClassroom(code, studentUid, studentName, worksheetName, worksheetHtml) {
   return restAdd(`classrooms/${code.toUpperCase()}/submissions`, {
     studentUid,

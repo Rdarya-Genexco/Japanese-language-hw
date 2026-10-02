@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext'
-import { getUserData, saveUserData } from '../utils/firestoreService'
+import { getUserData, saveUserData, upsertClassroomMember, leaveClassroom } from '../utils/firestoreService'
 
 const RoleContext = createContext(null)
 
@@ -40,6 +40,10 @@ export function RoleProvider({ children }) {
 
         setRole(r)
         setClassroomCode(savedCode)
+        // Backfills students who joined before member records existed; also refreshes their name/photo.
+        if (r === 'student' && savedCode) {
+          upsertClassroomMember(savedCode, user).catch(() => {})
+        }
       })
       .catch(() => setRole(null))
       .finally(() => setRoleLoading(false))
@@ -63,6 +67,13 @@ export function RoleProvider({ children }) {
   const saveClassroomCode = async (code) => {
     if (user && !user.isAnonymous) {
       await saveUserData(user.uid, { classroomCode: code })
+      if (role === 'student') {
+        if (classroomCode && classroomCode !== code) {
+          await leaveClassroom(classroomCode, user.uid).catch(() => {})
+        }
+        await upsertClassroomMember(code, user, { joined: true })
+          .catch(err => console.error('[Role] could not register class membership', err))
+      }
     }
     setClassroomCode(code)
   }
