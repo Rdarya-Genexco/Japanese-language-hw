@@ -228,7 +228,6 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
         )}
         {showSubmit && (
           <SubmitModal
-            worksheetId={worksheet.id}
             worksheetHtml={hydratedHtml}
             name={displayTitle}
             onClose={() => setShowSubmit(false)}

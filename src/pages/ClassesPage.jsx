@@ -531,7 +531,12 @@ function SubmissionRow({ s, icon, onView, className }) {
       <span className="text-sm flex-shrink-0">{icon}</span>
       <div className="flex-1 min-w-0">
         <p className="font-medium text-slate-700 dark:text-slate-200 truncate">{s.studentName || 'Student'}</p>
-        <p className="text-slate-400 truncate">{s.worksheetName || s.name}</p>
+        <p className="text-slate-400 truncate">{s.worksheetName || s.name || (canView ? 'Worksheet' : 'Feedback only')}</p>
+        {s.feedback && (
+          <p className="mt-1 text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md px-2 py-1">
+            💬 {s.feedback}
+          </p>
+        )}
       </div>
       {s.submittedAt?.seconds && (
         <span className="text-slate-400 flex-shrink-0">{new Date(s.submittedAt.seconds * 1000).toLocaleDateString()}</span>

@@ -17,6 +17,7 @@ import WorksheetCard from '../components/WorksheetCard'
 import UploadModal from '../components/UploadModal'
 import NewFolderModal from '../components/NewFolderModal'
 import WorksheetViewer from '../components/WorksheetViewer'
+import SubmitModal from '../components/SubmitModal'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
@@ -45,6 +46,7 @@ export default function DashboardPage() {
   const [listView,         setListView]         = useState(false)
   const [assignments,      setAssignments]      = useState([])
   const [viewAssignment,   setViewAssignment]   = useState(null)
+  const [submitAssignment, setSubmitAssignment] = useState(null)
   const [showAllAssignments, setShowAllAssignments] = useState(false)
   const streak = worksheets.length > 0 ? Math.min(worksheets.length, 7) : 0
 
@@ -333,6 +335,12 @@ export default function DashboardPage() {
                       {a.attachedWorksheetHtml && (
                         <span className="flex-shrink-0 text-xs text-blue-500 dark:text-blue-400 font-semibold">View ›</span>
                       )}
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setSubmitAssignment(a) }}
+                        className="flex-shrink-0 text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 text-white px-2.5 py-1.5 rounded-lg transition-colors"
+                      >
+                        Submit
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -565,6 +573,9 @@ export default function DashboardPage() {
           }}
           onClose={() => setViewAssignment(null)}
         />
+      )}
+      {submitAssignment && (
+        <SubmitModal assignment={submitAssignment} onClose={() => setSubmitAssignment(null)} />
       )}
     </div>
   )

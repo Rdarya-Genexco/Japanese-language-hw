@@ -153,12 +153,13 @@ export async function getClassroomMembers(code) {
   return docs.sort((a, b) => (a.name || a.email || '').localeCompare(b.name || b.email || ''))
 }
 
-export async function submitToClassroom(code, studentUid, studentName, worksheetName, worksheetHtml) {
+export async function submitToClassroom(code, studentUid, studentName, worksheetName, worksheetHtml, feedback = '') {
   return restAdd(`classrooms/${code.toUpperCase()}/submissions`, {
     studentUid,
     studentName: studentName || '',
     worksheetName: worksheetName || '',
-    worksheetHtml,
+    worksheetHtml: worksheetHtml || '',
+    feedback,
     submittedAt: new Date(),
   })
 }
@@ -214,12 +215,13 @@ export async function getAssignmentSubmissions(code, assignmentId) {
   }
 }
 
-export async function submitToAssignment(code, assignmentId, studentUid, studentName, worksheetName, worksheetHtml) {
+export async function submitToAssignment(code, assignmentId, studentUid, studentName, worksheetName, worksheetHtml, feedback = '') {
   return restAdd(`classrooms/${code.toUpperCase()}/assignments/${assignmentId}/submissions`, {
     studentUid,
     studentName: studentName || '',
-    worksheetName,
-    worksheetHtml,
+    worksheetName: worksheetName || '',
+    worksheetHtml: worksheetHtml || '',
+    feedback,
     submittedAt: new Date(),
   })
 }

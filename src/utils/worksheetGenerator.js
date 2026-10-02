@@ -305,6 +305,15 @@ function escHtml(str) {
 
 // ── Print view ────────────────────────────────────────────────────────────────
 
+/** Replace the [WORKSHEET_IMAGE] placeholder with the stored image URI, or drop it if there is none. */
+export function hydrateWorksheetHtml(html, imageUri) {
+  if (!html || !html.includes('[WORKSHEET_IMAGE]')) return html
+  if (imageUri) return html.replace(/\[WORKSHEET_IMAGE\]/g, imageUri)
+  return html
+    .replace(/<img\b[^>]*\[WORKSHEET_IMAGE\][^>]*>/gi, '')
+    .replace(/\[WORKSHEET_IMAGE\]/g, '')
+}
+
 export function openPrintView(worksheetData) {
   const html = generatePrintableHTML(worksheetData)
   const win = window.open('', '_blank')
