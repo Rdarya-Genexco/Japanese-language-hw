@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { X, Plus, Loader2, Paperclip, ChevronDown, ChevronUp, Check } from 'lucide-react'
 import { createAssignment, getAllWorksheets, getWorksheet } from '../utils/firestoreService'
 import { useAuth } from '../contexts/AuthContext'
+import { hydrateWorksheetHtml } from '../utils/worksheetGenerator'
 
 export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
   const { user } = useAuth()
@@ -32,7 +33,7 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
       let attachedWorksheet = null
       if (selectedWs) {
         const full = await getWorksheet(user.uid, selectedWs.id)
-        attachedWorksheet = { name: full.name, worksheetHtml: full.worksheetHtml || '' }
+        attachedWorksheet = { name: full.name, worksheetHtml: hydrateWorksheetHtml(full.worksheetHtml || '', full.originalImageUri) }
       }
       const id = await createAssignment(
         classroomCode,

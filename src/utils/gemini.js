@@ -415,7 +415,11 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     }
 
     const data = await response.json()
-    let rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
+    // The answer can arrive split across several parts; thought parts aren't part of it.
+    let rawText = (data?.candidates?.[0]?.content?.parts || [])
+      .filter(p => typeof p.text === 'string' && !p.thought)
+      .map(p => p.text)
+      .join('')
 
     if (!rawText) throw new Error('No response from AI. Please try again.')
 

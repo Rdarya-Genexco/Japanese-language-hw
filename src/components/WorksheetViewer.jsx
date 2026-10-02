@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { X, Printer, FileDown, Trash2, Loader2, Share2, Send } from 'lucide-react'
-import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
+import { openPrintView, printWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -34,12 +34,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
     setBusy('print')
     try {
       if (isHtml) {
-        const win = window.open('', '_blank')
-        if (!win) { alert('Please allow popups for this site and try again.'); return }
-        win.document.write(hydratedHtml)
-        win.document.close()
-        win.focus()
-        setTimeout(() => win.print(), 800)
+        printWorksheetHtml(hydratedHtml)
       } else {
         openPrintView(worksheetData)
       }

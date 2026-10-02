@@ -3,6 +3,7 @@ import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun } from 'docx'
 import { saveAs } from 'file-saver'
+import DOMPurify from 'dompurify'
 
 /**
  * Generates a print-ready bilingual HTML string from worksheet JSON.
@@ -314,6 +315,28 @@ export function hydrateWorksheetHtml(html, imageUri) {
     .replace(/\[WORKSHEET_IMAGE\]/g, '')
 }
 
+/**
+ * Worksheet HTML can come from other users (shared links, student submissions), so strip scripts,
+ * event handlers and javascript: URLs before it touches a same-origin window or the app's DOM.
+ */
+export function sanitizeWorksheetHtml(html, { wholeDocument = true } = {}) {
+  return DOMPurify.sanitize(html || '', {
+    WHOLE_DOCUMENT: wholeDocument,
+    ADD_TAGS: ['link', 'meta', 'style'],
+    FORBID_TAGS: ['script', 'iframe', 'object', 'embed', 'base', 'form'],
+  })
+}
+
+/** Print worksheet HTML from a popup; window.open('') shares the app's origin, hence the sanitizing. */
+export function printWorksheetHtml(html) {
+  const win = window.open('', '_blank')
+  if (!win) { alert('Please allow popups for this site and try again.'); return }
+  win.document.write('<!DOCTYPE html>' + sanitizeWorksheetHtml(html))
+  win.document.close()
+  win.focus()
+  setTimeout(() => win.print(), 800)
+}
+
 export function openPrintView(worksheetData) {
   const html = generatePrintableHTML(worksheetData)
   const win = window.open('', '_blank')
@@ -367,7 +390,7 @@ export async function downloadAsPdfFromHtml(html, filename = 'worksheet') {
 
   const wrap = document.createElement('div')
   wrap.id = '__pdf-html-wrap__'
-  wrap.innerHTML = body.innerHTML
+  wrap.innerHTML = sanitizeWorksheetHtml(body.innerHTML, { wholeDocument: false })
   document.body.appendChild(wrap)
 
   // Wait for fonts and layout — CJK/Russian Noto fonts can take 2-3 s on slow connections

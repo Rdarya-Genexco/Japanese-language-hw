@@ -198,7 +198,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                   </div>
                 )}
                 <input ref={fileInputRef} type="file" accept={ACCEPTED_TYPES.join(',')} className="hidden"
-                  onChange={e => e.target.files[0] && handleFile(e.target.files[0])} />
+                  onChange={e => { if (e.target.files[0]) handleFile(e.target.files[0]); e.target.value = '' }} />
               </div>
 
               {error && (

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getSharedWorksheet } from '../utils/firestoreService'
 import { FileDown, Printer, ExternalLink } from 'lucide-react'
-import { downloadAsPdfFromHtml } from '../utils/worksheetGenerator'
+import { downloadAsPdfFromHtml, printWorksheetHtml } from '../utils/worksheetGenerator'
 
 export default function SharedViewPage() {
   const { token } = useParams()
@@ -36,12 +36,7 @@ export default function SharedViewPage() {
 
   const handlePrint = () => {
     if (!worksheet) return
-    const win = window.open('', '_blank')
-    if (!win) { alert('Please allow popups and try again.'); return }
-    win.document.write(worksheet.worksheetHtml)
-    win.document.close()
-    win.focus()
-    setTimeout(() => win.print(), 800)
+    printWorksheetHtml(worksheet.worksheetHtml)
   }
 
   if (loading) {

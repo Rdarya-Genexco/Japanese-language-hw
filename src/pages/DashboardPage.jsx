@@ -9,7 +9,7 @@ import {
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
   getAssignments,
 } from '../utils/storageService'
-import { openPrintView, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
+import { openPrintView, printWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
 import Breadcrumb from '../components/Breadcrumb'
 import FolderCard from '../components/FolderCard'
@@ -122,13 +122,7 @@ export default function DashboardPage() {
     try {
       const full = await getWorksheet(user.uid, ws.id)
       if (full.worksheetHtml) {
-        const html = hydrateHtml(full.worksheetHtml, full.originalImageUri)
-        const win = window.open('', '_blank')
-        if (!win) { alert('Please allow popups for this site and try again.'); return }
-        win.document.write(html)
-        win.document.close()
-        win.focus()
-        setTimeout(() => win.print(), 800)
+        printWorksheetHtml(hydrateHtml(full.worksheetHtml, full.originalImageUri))
       } else {
         openPrintView(full.worksheetData)
       }
