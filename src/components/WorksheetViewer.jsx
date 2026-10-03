@@ -1,16 +1,14 @@
 import { useRef, useState } from 'react'
 import { X, Printer, FileDown, Trash2, Loader2, Share2, Send } from 'lucide-react'
-import { openPrintView, printWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
+import { openPrintView, printWorksheetHtml, hydrateWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
-import { useAuth } from '../contexts/AuthContext'
 import ShareModal from './ShareModal'
 import SubmitModal from './SubmitModal'
 
 export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   const { t, langCode } = useLang()
   const { role } = useRole()
-  const { user } = useAuth()
   const iframeRef = useRef(null)
   const [busy, setBusy] = useState(null) // 'pdf' | 'docx' | 'print' | null
   const [showShare, setShowShare] = useState(false)
@@ -83,19 +81,6 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
 
   // ── Inject original image + suppress print page-break artifacts ──────────
 
-  /** Replace [WORKSHEET_IMAGE] placeholder with the stored data URI (or remove it). */
-  function injectImage(html, imageUri) {
-    if (!html) return html
-    if (!html.includes('[WORKSHEET_IMAGE]')) return html
-    if (imageUri) {
-      return html.replace(/\[WORKSHEET_IMAGE\]/g, imageUri)
-    }
-    // No image URI — remove the broken placeholder tag entirely
-    return html
-      .replace(/<img\b[^>]*\[WORKSHEET_IMAGE\][^>]*>/gi, '')
-      .replace(/\[WORKSHEET_IMAGE\]/g, '')
-  }
-
   const NO_PAGEBREAK_CSS = `<style>
     @media screen {
       * { page-break-before: auto; page-break-after: auto;
@@ -104,7 +89,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
     }
   </style>`
 
-  const hydratedHtml = injectImage(worksheetHtml, originalImageUri)
+  const hydratedHtml = hydrateWorksheetHtml(worksheetHtml, originalImageUri)
   const previewHtml = hydratedHtml
     ? hydratedHtml.replace('</head>', NO_PAGEBREAK_CSS + '</head>')
     : hydratedHtml

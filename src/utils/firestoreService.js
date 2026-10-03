@@ -4,7 +4,6 @@
  * Structure:
  *   users/{uid}/folders/{id}      — folder docs
  *   users/{uid}/worksheets/{id}   — worksheet docs (content stored as JSON string)
- *   users/{uid}/config/settings   — per-user config (Gemini API key etc.)
  */
 import {
   restAdd, restCreate, restGet, restSet, restUpdate, restDelete, restQuery, restList, restGetPublic,
@@ -50,15 +49,6 @@ export async function getUserData(uid) {
 
 export async function saveUserData(uid, data) {
   await restUpdate('users', uid, data)
-}
-
-export async function getUserRole(uid) {
-  const doc = await getUserData(uid)
-  return doc?.role || null
-}
-
-export async function saveUserRole(uid, role) {
-  await restUpdate('users', uid, { role })
 }
 
 // ── Shared worksheets ──────────────────────────────────────────────────────────
@@ -248,18 +238,6 @@ export async function unsubmitAssignment(code, assignmentId, studentUid) {
   await Promise.all(mine.map(s => restDelete(assignmentSubsPath(code, assignmentId), s.id)))
 }
 
-// ── Gemini API key ─────────────────────────────────────────────────────────────
-
-export async function saveGeminiApiKey(uid, apiKey) {
-  await restSet(`users/${uid}/config`, 'settings', { geminiApiKey: apiKey })
-}
-
-/** A query, not a GET: most users have no settings doc, and a GET logs a 404 in the console for them. */
-export async function getGeminiApiKey(uid) {
-  const docs = await restList(`users/${uid}/config`)
-  return docs.find(d => d.id === 'settings')?.geminiApiKey || null
-}
-
 // ── Folders ────────────────────────────────────────────────────────────────────
 
 export async function createFolder(uid, parentId, name) {
@@ -270,12 +248,6 @@ export async function createFolder(uid, parentId, name) {
 export async function getFolders(uid, parentId = 'root') {
   const pid = (!parentId || parentId === 'undefined') ? 'root' : parentId
   const docs = await restQuery(`users/${uid}/folders`, 'parentId', pid)
-  return docs.map(d => ({ ...d, createdAt: makeCreatedAt(d.createdAt) }))
-}
-
-/** Get ALL folders for a user (flat list, any depth) — used for Move To picker. */
-export async function getAllFolders(uid) {
-  const docs = await restList(`users/${uid}/folders`)
   return docs.map(d => ({ ...d, createdAt: makeCreatedAt(d.createdAt) }))
 }
 

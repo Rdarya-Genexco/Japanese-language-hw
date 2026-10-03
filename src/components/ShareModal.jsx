@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { X, Copy, Check, Loader2 } from 'lucide-react'
 import { createShareToken } from '../utils/firestoreService'
 import { useAuth } from '../contexts/AuthContext'
@@ -9,7 +9,6 @@ export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }
   const [creating, setCreating] = useState(false)
   const [copied, setCopied] = useState(false)
   const [qrDataUrl, setQrDataUrl] = useState(null)
-  const canvasRef = useRef(null)
 
   const shareUrl = token ? `${window.location.origin}/s/${token}` : null
 

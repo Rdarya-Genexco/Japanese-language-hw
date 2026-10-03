@@ -23,11 +23,6 @@ export async function testFirestoreConnection() {
   return { ok: true }
 }
 
-// ── Gemini API key ─────────────────────────────────────────────────────────────
-
-export async function saveGeminiApiKey() { /* no-op in test mode */ }
-export async function getGeminiApiKey()  { return null }
-
 // ── Folders ────────────────────────────────────────────────────────────────────
 
 export async function createFolder(_uid, parentId, name) {
@@ -40,10 +35,6 @@ export async function createFolder(_uid, parentId, name) {
 export async function getFolders(_uid, parentId = 'root') {
   const pid = (!parentId || parentId === 'undefined') ? 'root' : parentId
   return [..._folders.values()].filter(f => f.parentId === pid)
-}
-
-export async function getAllFolders() {
-  return [..._folders.values()]
 }
 
 export async function getFolder(_uid, folderId) {

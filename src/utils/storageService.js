@@ -16,12 +16,9 @@ function svc() {
 }
 
 export const testFirestoreConnection = (...a) => svc().testFirestoreConnection(...a)
-export const saveGeminiApiKey        = (...a) => svc().saveGeminiApiKey(...a)
-export const getGeminiApiKey         = (...a) => svc().getGeminiApiKey(...a)
 
 export const createFolder   = (...a) => svc().createFolder(...a)
 export const getFolders     = (...a) => svc().getFolders(...a)
-export const getAllFolders   = (...a) => svc().getAllFolders(...a)
 export const getFolder      = (...a) => svc().getFolder(...a)
 export const renameFolder   = (...a) => svc().renameFolder(...a)
 export const deleteFolder   = (...a) => svc().deleteFolder(...a)
@@ -34,7 +31,7 @@ export const moveWorksheet  = (...a) => svc().moveWorksheet(...a)
 export const buildBreadcrumb= (...a) => svc().buildBreadcrumb(...a)
 
 export {
-  getUserRole, saveUserRole, getUserData, saveUserData,
+  getUserData, saveUserData,
   createShareToken, getSharedWorksheet,
   createClassroom, getClassroom, getTeacherClassrooms, submitToClassroom, getClassroomSubmissions,
   createAssignment, getAssignments, getAssignmentSubmissions, submitToAssignment,

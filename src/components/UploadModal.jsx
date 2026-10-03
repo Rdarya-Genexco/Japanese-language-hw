@@ -1,8 +1,8 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 import { X, Upload, FileText, CheckCircle, AlertCircle, Sparkles } from 'lucide-react'
 import { parseFile } from '../utils/fileParser'
 import { processWorksheetWithGemini } from '../utils/gemini'
-import { saveWorksheet, getGeminiApiKey } from '../utils/storageService'
+import { saveWorksheet } from '../utils/storageService'
 import { useLang } from '../contexts/LanguageContext'
 
 /** Compress an image File to a JPEG data URI at max `maxPx` on the longest side. */
@@ -61,9 +61,9 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
     setFile(f)
   }
 
-  const onDrop      = useCallback((e) => { e.preventDefault(); setDragging(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f) }, [langCode])
-  const onDragOver  = useCallback((e) => { e.preventDefault(); setDragging(true) }, [])
-  const onDragLeave = useCallback(() => setDragging(false), [])
+  const onDrop      = (e) => { e.preventDefault(); setDragging(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f) }
+  const onDragOver  = (e) => { e.preventDefault(); setDragging(true) }
+  const onDragLeave = () => setDragging(false)
 
   const handleProcess = async () => {
     if (!file) return
@@ -75,7 +75,6 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
     try {
       const { data, mimeType } = await parseFile(file)
       setCurrentStep(1)
-      const apiKey = (await getGeminiApiKey(uid).catch(() => null)) || ''
 
       // For image files, generate two thumbnails:
       //  • geminiThumb  — small (500px, 60 %) sent to Gemini API to minimise request size and avoid timeouts
@@ -96,7 +95,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
       // The full-quality embedThumb is stored separately as originalImageUri so the
       // viewer can inject it client-side — this keeps the stored HTML lean and avoids
       // data-URI rendering issues inside the iframe.
-      const worksheetData = await processWorksheetWithGemini(data, mimeType, apiKey, langCode, geminiThumb)
+      const worksheetData = await processWorksheetWithGemini(data, mimeType, langCode, geminiThumb)
       // worksheetData is an HTML string (new pipeline) or a plain object (legacy)
       if (worksheetData && typeof worksheetData === 'object') {
         worksheetData.language = worksheetData.language || langCode

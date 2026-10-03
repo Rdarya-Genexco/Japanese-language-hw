@@ -138,7 +138,7 @@ ${isEnglish
 
 IMAGE RULE — CRITICAL:
 You have been provided with ${imageCount} images as inline parts (parts 2 through ${imageCount + 1}).
-The slide content marks each slide\'s images with [PPTX_IMAGE_N] where N is the 0-based image index.
+The slide content marks each slide's images with [PPTX_IMAGE_N] where N is the 0-based image index.
 • For EVERY [PPTX_IMAGE_N] marker in the slide content, insert this EXACT tag in the HTML at the correct position:
   <img src="[PPTX_IMAGE_N]" alt="" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:8pt auto;box-shadow:0 2px 6px rgba(0,0,0,0.12);">
   (replace N with the correct 0-based index)
@@ -249,7 +249,6 @@ function reInjectDocxImages(html, imageUris) {
 
 // ── Gemini API ────────────────────────────────────────────────────────────────
 
-const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models'
 const TIMEOUT_MS = 300_000 // 5 min — PDF+HTML is heavier than JSON; large files need extra headroom
 const TIMEOUT_MESSAGE = 'AI processing timed out. Please try again.'
 const SIGN_IN_MESSAGE = 'Please sign in to use AI.'
@@ -288,29 +287,16 @@ async function readSseText(response) {
   return text
 }
 
-/**
- * With the user's own key (saved in Settings), call Gemini directly. Otherwise go through the
- * /api/gemini Netlify Edge Function, which holds the app's key so it never reaches the browser.
- */
-async function callGemini(model, body, userKey, signal) {
-  if (userKey) {
-    const response = await fetch(`${GEMINI_BASE}/${model}:generateContent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': userKey },
-      body: JSON.stringify(body),
-      signal,
-    })
-    return { response, readText: async () => partsText(await response.json()) }
-  }
+/** Calls Gemini through the /api/gemini Netlify Edge Function, which holds the API key. */
+async function callGemini(model, body, signal) {
   const idToken = await auth.currentUser?.getIdToken()
   if (!idToken) throw new Error(SIGN_IN_MESSAGE)
-  const response = await fetch('/api/gemini', {
+  return fetch('/api/gemini', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
     body: JSON.stringify({ model, request: body }),
     signal,
   })
-  return { response, readText: () => readSseText(response) }
 }
 
 /**
@@ -318,11 +304,10 @@ async function callGemini(model, body, userKey, signal) {
  *
  * @param {ArrayBuffer|string} fileData  Raw PDF bytes (ArrayBuffer) or extracted text (string)
  * @param {string} mimeType             'application/pdf' or 'text/plain'
- * @param {string|null} apiKey          The user's own Gemini key; empty → the server proxy is used
  * @param {string} langCode             Target language code, e.g. 'ja', 'en', 'fr'
  * @returns {Promise<string>}           Self-contained HTML document
  */
-export async function processWorksheetWithGemini(fileData, mimeType, apiKey, langCode = 'ja', thumbnailDataUri = null) {
+export async function processWorksheetWithGemini(fileData, mimeType, langCode = 'ja', thumbnailDataUri = null) {
 
   const lang = getLang(langCode)
   const IMAGE_MIME_TYPES_INPUT = ['image/png', 'image/jpeg']
@@ -409,15 +394,14 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
     let rawText
     try {
-      let call
+      let response
       try {
-        call = await callGemini(model, body, apiKey, controller.signal)
+        response = await callGemini(model, body, controller.signal)
       } catch (err) {
         if (err.name === 'AbortError') throw new Error(TIMEOUT_MESSAGE)
         if (err.message === SIGN_IN_MESSAGE) throw err
         throw new Error(`Network error: ${err.message}`)
       }
-      const { response } = call
 
       // Overloaded / rate-limited / model doesn't exist → try next model
       if (response.status === 503 || response.status === 429 || response.status === 404) {
@@ -428,7 +412,7 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
       }
 
       // Sign-in problems from the /api/gemini proxy: show its message as is
-      if (response.status === 401 || (response.status === 403 && !apiKey)) {
+      if (response.status === 401 || response.status === 403) {
         const errBody = await response.json().catch(() => ({}))
         throw new Error(errBody?.error?.message || SIGN_IN_MESSAGE)
       }
@@ -442,7 +426,7 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
       }
 
       try {
-        rawText = await call.readText()
+        rawText = await readSseText(response)
       } catch (err) {
         if (err.name === 'AbortError') throw new Error(TIMEOUT_MESSAGE)
         throw err
@@ -465,9 +449,7 @@ export async function processWorksheetWithGemini(fileData, mimeType, apiKey, lan
       rawText = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:system-ui,sans-serif;max-width:800px;margin:0 auto;padding:24px 32px;color:#111}p{white-space:pre-wrap}</style></head><body>${rawText}</body></html>`
     }
 
-    // Strip any <script> blocks — the iframe preview uses sandbox="allow-same-origin"
-    // (no allow-scripts) so scripts would be blocked and Chrome logs a violation.
-    // Worksheets never need JS; removing it keeps the CSP clean.
+    // Worksheets never need JS. (Print/PDF also sanitize, since stored HTML can come from other users.)
     rawText = rawText.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
 
     // Re-inject DOCX embedded images — replace [DOCX_IMAGE_N] placeholders with

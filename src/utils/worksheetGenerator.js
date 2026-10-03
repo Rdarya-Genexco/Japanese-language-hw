@@ -618,7 +618,7 @@ export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
         break
       // Container elements — recurse
       case 'div': case 'section': case 'article': case 'main':
-      case 'header': case 'body': case 'span':
+      case 'header': case 'body': case 'span': {
         // For leaf-ish divs that contain only inline content (no block children), treat as paragraph
         const hasBlockChildren = Array.from(el.children).some(c =>
           ['div','p','h1','h2','h3','h4','h5','table','ul','ol','hr','section','img'].includes(c.tagName?.toLowerCase())
@@ -629,6 +629,7 @@ export async function downloadAsDocxFromHtml(html, filename = 'worksheet') {
           for (const child of el.children) processNode(child)
         }
         break
+      }
       case 'img': {
         const src = el.getAttribute('src') || ''
         // Only embed data URIs (base64-encoded images); skip external URLs

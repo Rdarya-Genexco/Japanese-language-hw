@@ -9,7 +9,7 @@ import {
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
   getAssignments, getMyAssignmentSubmissions, unsubmitAssignment,
 } from '../utils/storageService'
-import { openPrintView, printWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
+import { openPrintView, printWorksheetHtml, hydrateWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
 import Breadcrumb from '../components/Breadcrumb'
 import FolderCard from '../components/FolderCard'
@@ -132,21 +132,12 @@ export default function DashboardPage() {
   }
 
   // ── Print / download ──────────────────────────────────────────────────────
-  /** Replace [WORKSHEET_IMAGE] placeholder with the stored image URI, if present. */
-  function hydrateHtml(html, imageUri) {
-    if (!html || !html.includes('[WORKSHEET_IMAGE]')) return html
-    if (imageUri) return html.replace(/\[WORKSHEET_IMAGE\]/g, imageUri)
-    return html
-      .replace(/<img\b[^>]*\[WORKSHEET_IMAGE\][^>]*>/gi, '')
-      .replace(/\[WORKSHEET_IMAGE\]/g, '')
-  }
-
   const handlePrint = async (ws) => {
     setWsLoading(true)
     try {
       const full = await getWorksheet(user.uid, ws.id)
       if (full.worksheetHtml) {
-        printWorksheetHtml(hydrateHtml(full.worksheetHtml, full.originalImageUri))
+        printWorksheetHtml(hydrateWorksheetHtml(full.worksheetHtml, full.originalImageUri))
       } else {
         openPrintView(full.worksheetData)
       }
@@ -159,7 +150,7 @@ export default function DashboardPage() {
     try {
       const full = await getWorksheet(user.uid, ws.id)
       if (full.worksheetHtml) {
-        const html = hydrateHtml(full.worksheetHtml, full.originalImageUri)
+        const html = hydrateWorksheetHtml(full.worksheetHtml, full.originalImageUri)
         await downloadAsDocxFromHtml(html, (ws.name || 'worksheet').replace(/\.[^.]+$/, ''))
       } else {
         await downloadAsDocx(full.worksheetData)
@@ -173,7 +164,7 @@ export default function DashboardPage() {
     try {
       const full = await getWorksheet(user.uid, ws.id)
       if (full.worksheetHtml) {
-        const html = hydrateHtml(full.worksheetHtml, full.originalImageUri)
+        const html = hydrateWorksheetHtml(full.worksheetHtml, full.originalImageUri)
         await downloadAsPdfFromHtml(html, (ws.name || 'worksheet').replace(/\.[^.]+$/, ''))
       } else {
         await downloadAsPdf(full.worksheetData)
