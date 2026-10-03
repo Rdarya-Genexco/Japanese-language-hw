@@ -254,9 +254,10 @@ export async function saveGeminiApiKey(uid, apiKey) {
   await restSet(`users/${uid}/config`, 'settings', { geminiApiKey: apiKey })
 }
 
+/** A query, not a GET: most users have no settings doc, and a GET logs a 404 in the console for them. */
 export async function getGeminiApiKey(uid) {
-  const doc = await restGet(`users/${uid}/config`, 'settings')
-  return doc?.geminiApiKey || null
+  const docs = await restList(`users/${uid}/config`)
+  return docs.find(d => d.id === 'settings')?.geminiApiKey || null
 }
 
 // ── Folders ────────────────────────────────────────────────────────────────────
