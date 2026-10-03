@@ -19,6 +19,18 @@ window.test = async function () {
   console.log('%c✅ Test mode active — signed in anonymously. Data will NOT be saved.', 'color:#6366f1;font-weight:bold')
 }
 
+// A new deploy installs a new service worker, but this page keeps running the old JS until it
+// reloads. Reload once when the new worker takes over, so nobody runs stale code against new rules.
+// (Skipped on the very first visit, when there was no controller yet.)
+if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+  let reloading = false
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloading) return
+    reloading = true
+    window.location.reload()
+  })
+}
+
 // When a new deploy lands, old cached JS chunk URLs become invalid.
 // Netlify's SPA redirect returns HTML for missing /assets/*.js → browser throws
 // "Failed to fetch dynamically imported module". Catch it and force a reload so
