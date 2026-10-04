@@ -12,26 +12,17 @@ import { dueDateToTimes } from './dueDates'
 
 // ── Connectivity test ──────────────────────────────────────────────────────────
 
+/** A query, so an empty result is success; only a missing database or a real failure errors. */
 export async function testFirestoreConnection(uid) {
   try {
-    await restGet(`users/${uid}/config`, 'settings')
+    await restList(`users/${uid}/config`)
     return { ok: true }
   } catch (err) {
-    // "Document not found" is fine — DB exists, doc just hasn't been created yet
-    const isDocNotFound = err.code === 'not-found' &&
-      !err.message?.toLowerCase().includes('database') &&
-      !err.message?.toLowerCase().includes('does not exist')
-    if (isDocNotFound) return { ok: true }
-
-    // "Database does not exist" needs special code so the UI can show setup steps
-    if (err.message?.toLowerCase().includes('does not exist') ||
-        err.message?.toLowerCase().includes('database')) {
-      const e = new Error(err.message)
-      e.code = 'db-not-created'
-      console.error('[Firestore] database not created', err)
+    const msg = err.message?.toLowerCase() || ''
+    // "Database does not exist" gets its own code so the UI can show setup steps
+    if (msg.includes('database') && msg.includes('not exist')) {
       return { ok: false, code: 'db-not-created', message: err.message }
     }
-
     console.error('[Firestore] connection test failed', err)
     return { ok: false, code: err.code || 'unknown', message: err.message }
   }
@@ -39,12 +30,9 @@ export async function testFirestoreConnection(uid) {
 
 // ── User profile ───────────────────────────────────────────────────────────────
 
+/** null when the user has no profile yet; network/permission errors throw so they aren't mistaken for that. */
 export async function getUserData(uid) {
-  try {
-    return await restGet('users', uid)
-  } catch {
-    return null
-  }
+  return restGet('users', uid)
 }
 
 export async function saveUserData(uid, data) {

@@ -1,96 +1,46 @@
-# 📄 ワークシートジェネレーター / Worksheet Generator
+# Doc Translate
 
-English worksheets → Japanese worksheets, automatically.  
-英語のワークシートをAIで日本語に変換するWebアプリです。
+Translate worksheets into any of 10 languages with AI, keep them in a personal drive, and run classes with assignments.
 
----
+## Features
 
-## 機能 / Features
+- **Translate worksheets**: upload a PDF, DOCX, PPTX, PNG or JPG; Gemini returns a translated, printable worksheet.
+- **Drive**: folders, drag-and-drop, print, PDF and Word export, share links with QR codes.
+- **Classes (teachers)**: class codes, student roster (remove students, delete classes), assignments with due dates, viewing student submissions and feedback, Late/Overdue labels.
+- **Students**: join a class from Settings, submit once per assignment (with optional feedback and worksheet), unsubmit; submissions stay open 10 days past the due date, then close.
+- **10 languages** for the UI and translations: English, 简体中文, 日本語, Français, Deutsch, Italiano, Português, Español, 한국어, Русский.
 
-- 📁 **フォルダ管理** — Google Driveのようなフォルダ整理
-- 📄 **PDF・DOCX対応** — 両形式のアップロードに対応
-- 🤖 **AI自動変換** — Gemini AIが英語→日本語に自動翻訳
-- 💾 **ダウンロード** — PDF印刷またはWordとして保存
-- 🔒 **安全** — Googleアカウントでログイン、データは非公開
+## How it fits together
 
----
+- **App**: React + Vite + Tailwind, installable as a PWA. Hosted on Netlify (deploys `main`).
+- **Data**: Cloud Firestore database named **`lang`**, accessed over the REST API. Access is enforced by `firestore.rules`.
+- **AI**: the browser calls `/api/gemini`, a Netlify Edge Function (`netlify/edge-functions/gemini.js`). It checks the user's Firebase sign-in, allows only the app's Gemini models, and adds the API key on the server, so the key never reaches the browser.
+- **Sign-in**: Firebase Authentication with Google.
 
-## セットアップ / Setup
+## Setup
 
-### 1. Firebaseプロジェクトの設定
+1. **Firebase**: create a project with Google sign-in and a Firestore database named `lang`.
+2. **Firestore rules**: paste `firestore.rules` into Firebase Console → Firestore → `lang` → Rules, and publish. Re-publish whenever that file changes.
+3. **Netlify environment variables**:
 
-1. [Firebase Console](https://console.firebase.google.com) でプロジェクトを作成
-2. 以下を有効化:
-   - **Authentication** → Google認証を有効化
-   - **Cloud Firestore** → データベースを作成（本番モード推奨）
-   - **Storage** → ストレージバケットを作成
-3. プロジェクト設定 → Your apps → Webアプリ追加 → 設定をコピー
+   | Variable | Scope | Notes |
+   | --- | --- | --- |
+   | `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_STORAGE_BUCKET`, `VITE_FIREBASE_MESSAGING_SENDER_ID`, `VITE_FIREBASE_APP_ID` | Builds, Functions | Firebase web config (public by design) |
+   | `GEMINI_API_KEY` | Functions | Server-only. Never prefix it with `VITE_`: those are built into the public app. |
 
-### 2. 環境変数の設定
+   After changing variables, redeploy.
 
-`.env.example` をコピーして `.env` を作成:
-
-```bash
-cp .env.example .env
-```
-
-`.env` にFirebase設定を入力:
-
-```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-```
-
-### 3. Firestoreインデックスの設定
-
-Firebase Consoleでインデックスを設定するか、Firebase CLIを使用:
-
-```bash
-npm install -g firebase-tools
-firebase login
-firebase deploy --only firestore:indexes,firestore:rules,storage:rules
-```
-
-### 4. Gemini APIキーの設定
-
-1. [Google AI Studio](https://aistudio.google.com/app/apikey) でAPIキーを取得（無料）
-2. アプリにログイン後、設定ページでAPIキーを入力
-
----
-
-## 開発 / Development
+## Development
 
 ```bash
 npm install
-npm run dev
+cp .env.example .env.local   # fill in the Firebase values
+npm run dev                  # app only; AI needs the Edge Function:
+npx netlify dev              # app + /api/gemini (set GEMINI_API_KEY in .env.local)
 ```
 
-## ビルド・デプロイ / Build & Deploy
+Scripts:
 
-```bash
-npm run build
-firebase deploy --only hosting
-```
-
----
-
-## 技術スタック / Tech Stack
-
-- **Frontend**: React + Vite + Tailwind CSS
-- **Auth & DB**: Firebase (Google Auth, Firestore, Storage)
-- **AI**: Google Gemini 1.5 Flash
-- **Output**: Browser Print API (PDF), docx library (Word)
-
----
-
-## 使い方 / How to Use
-
-1. Googleアカウントでログイン
-2. 設定ページでGemini APIキーを入力
-3. 「アップロード」ボタンでPDFまたはDOCXをアップロード
-4. AIが自動的に日本語ワークシートを生成（1〜2分）
-5. 「PDFとして保存」または「Wordで保存」でダウンロード
+- `npm run build`: production build into `dist/`
+- `npm run lint`: lint with oxlint
+- `npm run test:proxy`: tests for the Gemini Edge Function's sign-in and model checks

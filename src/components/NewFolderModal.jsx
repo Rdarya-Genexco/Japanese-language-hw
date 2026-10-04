@@ -17,6 +17,8 @@ export default function NewFolderModal({ onCreate, onClose }) {
     try {
       await onCreate(name.trim())
       onClose()
+    } catch (err) {
+      alert('Failed to create folder: ' + err.message)
     } finally {
       setLoading(false)
     }

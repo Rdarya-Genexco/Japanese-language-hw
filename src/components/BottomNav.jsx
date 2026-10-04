@@ -29,7 +29,8 @@ export default function BottomNav({ onUpload }) {
       label: 'Upload',
       active: false,
       primary: true,
-      onClick: onUpload,
+      // Pages without their own upload dialog send the user home and open it there
+      onClick: onUpload || (() => navigate('/', { state: { openUpload: true } })),
     },
     {
       icon: Settings,

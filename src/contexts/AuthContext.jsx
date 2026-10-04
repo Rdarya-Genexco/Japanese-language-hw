@@ -27,16 +27,17 @@ export function AuthProvider({ children }) {
 
   const signInWithGoogle = async () => {
     try {
-      // Try popup first (faster UX); fall back to redirect if browser blocks it
       await signInWithPopup(auth, googleProvider)
     } catch (err) {
       const code = err?.code || ''
-      if (code === 'auth/popup-blocked' || code === 'auth/popup-closed-by-user' ||
-          code === 'auth/cancelled-popup-request') {
+      // Closing the popup is the user cancelling, not a failure
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return
+      // Browsers that block popups get the full-page redirect flow instead
+      if (code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment') {
         await signInWithRedirect(auth, googleProvider)
-      } else {
-        throw err
+        return
       }
+      throw err
     }
   }
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const { role, classroomCode } = useRole()
   const { folderId = 'root' } = useParams()
   const navigate              = useNavigate()
+  const location              = useLocation()
 
   const [folders,      setFolders]      = useState([])
   const [worksheets,   setWorksheets]   = useState([])
@@ -77,6 +78,14 @@ export default function DashboardPage() {
       setBreadcrumb([{ id: 'root', name: t('drive') }, ...bc.slice(1)])
     }).catch(() => {})
   }, [load, user.uid, folderId, t])
+
+  // Upload tapped in the bottom nav on another page: open the dialog here, then clear the
+  // request so Back doesn't reopen it
+  useEffect(() => {
+    if (!location.state?.openUpload) return
+    setShowUpload(true)
+    navigate(location.pathname, { replace: true, state: null })
+  }, [location.state, location.pathname, navigate])
 
   // Load assignments for students who have a classroom code
   useEffect(() => {
@@ -184,7 +193,11 @@ export default function DashboardPage() {
     // (Chrome Long Tasks API flags "click handler took Xms" otherwise)
     setTimeout(async () => {
       if (!window.confirm(`${t('confirmDeleteFolder')}\n「${folder.name}」`)) return
-      await deleteFolder(user.uid, folder.id)
+      try {
+        await deleteFolder(user.uid, folder.id)
+      } catch (err) {
+        alert('Failed to delete folder: ' + err.message)
+      }
       load()
     }, 0)
   }
@@ -194,8 +207,12 @@ export default function DashboardPage() {
       const raw = window.prompt(`${t('folderName')}:`, folder.name)
       const name = raw?.trim()
       if (!name || name === folder.name) return
-      await renameFolder(user.uid, folder.id, name)
-      load()
+      try {
+        await renameFolder(user.uid, folder.id, name)
+        load()
+      } catch (err) {
+        alert('Failed to rename folder: ' + err.message)
+      }
     }, 0)
   }
 
@@ -239,9 +256,13 @@ export default function DashboardPage() {
   const handleDeleteWorksheet = (ws) => {
     setTimeout(async () => {
       if (!window.confirm(`${t('confirmDeleteWorksheet')}\n「${ws.name}」`)) return
-      await deleteWorksheet(user.uid, ws.id)
-      if (viewWorksheet?.id === ws.id) setViewWorksheet(null)
-      load()
+      try {
+        await deleteWorksheet(user.uid, ws.id)
+        if (viewWorksheet?.id === ws.id) setViewWorksheet(null)
+        load()
+      } catch (err) {
+        alert('Failed to delete worksheet: ' + err.message)
+      }
     }, 0)
   }
 
