@@ -1,3 +1,5 @@
+import { UI } from './i18nUi.js'
+
 /**
  * UI string translations for all 10 supported languages.
  * Keys used throughout the app for full UI localisation.
@@ -666,8 +668,18 @@ const STRINGS = {
 }
 
 /** Get translation strings for a language code. Falls back to Japanese. */
+const merged = {}
+
+/** The original strings plus the newer UI phrases from i18nUi.js, which fall back to English. */
 export function getStrings(code) {
-  return STRINGS[code] ?? STRINGS['ja']
+  if (!STRINGS[code]) code = 'ja'
+  if (!merged[code]) {
+    merged[code] = {
+      ...Object.fromEntries(Object.entries(UI).map(([key, byLang]) => [key, byLang[code] ?? byLang.en])),
+      ...STRINGS[code],
+    }
+  }
+  return merged[code]
 }
 
 export default STRINGS

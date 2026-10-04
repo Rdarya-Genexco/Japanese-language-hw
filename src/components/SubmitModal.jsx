@@ -6,6 +6,8 @@ import {
 } from '../utils/firestoreService'
 import { hydrateWorksheetHtml } from '../utils/worksheetGenerator'
 import { dueStatus, overdueText } from '../utils/dueDates'
+import { useLang } from '../contexts/LanguageContext'
+import { errorText } from '../utils/appError'
 import { useAuth } from '../contexts/AuthContext'
 import { useRole } from '../contexts/RoleContext'
 
@@ -15,6 +17,7 @@ import { useRole } from '../contexts/RoleContext'
  */
 export default function SubmitModal({ worksheetHtml, name, assignment = null, onSubmitted, onClose }) {
   const { user } = useAuth()
+  const { t, formatDate } = useLang()
   const { classroomCode: savedCode } = useRole()
   const hasWorksheet = !!worksheetHtml
 
@@ -56,19 +59,19 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
 
   const handleSubmit = async () => {
     const trimmed = code.trim().toUpperCase()
-    if (!trimmed) { setError('Please enter a classroom code.'); return }
-    if (selectedStatus.state === 'closed') { setError('This assignment is closed — the deadline has passed.'); return }
-    if (!canSubmit) { setError('Attach a worksheet or write some feedback.'); return }
+    if (!trimmed) { setError(t('enterClassCode')); return }
+    if (selectedStatus.state === 'closed') { setError(t('assignmentClosed')); return }
+    if (!canSubmit) { setError(t('attachOrFeedback')); return }
     setSubmitting(true); setError('')
     try {
       const classroom = await getClassroom(trimmed)
-      if (!classroom) { setError('Classroom not found. Check the code and try again.'); return }
+      if (!classroom) { setError(t('classroomNotFoundCheck')); return }
 
       let wsName = name || ''
       let wsHtml = worksheetHtml || ''
       if (!hasWorksheet && attachId) {
         const full = await getWorksheet(user.uid, attachId)
-        if (!full.worksheetHtml) { setError("This worksheet uses an old format and can't be attached."); return }
+        if (!full.worksheetHtml) { setError(t('oldFormatWorksheet')); return }
         wsName = full.name
         wsHtml = hydrateWorksheetHtml(full.worksheetHtml, full.originalImageUri)
       }
@@ -82,7 +85,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
       }
       setDone(true)
     } catch (err) {
-      setError('Submission failed: ' + (err.message || 'Please try again.'))
+      setError(t('submissionFailed') + ': ' + errorText(err, t))
     } finally {
       setSubmitting(false)
     }
@@ -93,9 +96,9 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
         <div className="bg-gradient-to-r from-cyan-600 to-blue-600 px-5 pt-5 pb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-bold text-white">Submit to Teacher</h2>
+            <h2 className="font-bold text-white">{t('submitToTeacher')}</h2>
             <p className="text-white/70 text-xs mt-0.5 truncate max-w-[200px]">
-              {hasWorksheet ? `"${name}"` : assignment ? assignment.title : 'Feedback or worksheet'}
+              {hasWorksheet ? `"${name}"` : assignment ? assignment.title : t('feedbackOrWorksheet')}
             </p>
           </div>
           <button onClick={onClose} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
@@ -108,13 +111,13 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
             <div className="text-center py-4">
               <div className="text-5xl mb-3">🎉</div>
               <CheckCircle size={32} className="text-emerald-500 mx-auto mb-2" />
-              <h3 className="font-bold text-slate-800 dark:text-slate-100 mb-1">Submitted!</h3>
+              <h3 className="font-bold text-slate-800 dark:text-slate-100 mb-1">{t('submittedTitle')}</h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                Sent to your teacher.{' '}
-                {selectedAssignment && <span className="font-medium">Assignment: {selectedAssignment.title}</span>}
+                {t('sentToTeacher')}{' '}
+                {selectedAssignment && <span className="font-medium">{t('assignmentLabel', { title: selectedAssignment.title })}</span>}
               </p>
               <button onClick={onClose} className="btn-primary justify-center w-full text-sm">
-                Done
+                {t('doneButton')}
               </button>
             </div>
           ) : (
@@ -122,19 +125,19 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
               {/* Classroom code field */}
               <div className="mb-4">
                 <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
-                  Classroom Code
+                  {t('classroomCode')}
                 </label>
                 <input
                   type="text"
                   value={code}
                   onChange={e => { setCode(e.target.value.toUpperCase()); setError('') }}
-                  placeholder="e.g. AB12CD"
+                  placeholder={t('codePlaceholder')}
                   maxLength={10}
                   className="input w-full uppercase tracking-widest font-mono text-center text-lg"
                   readOnly={!!savedCode}
                 />
                 {savedCode && (
-                  <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 text-center">✓ Saved classroom</p>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 text-center">{t('savedClassroom')}</p>
                 )}
               </div>
 
@@ -142,18 +145,18 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
               {assignment ? (
                 <div className="mb-4 px-3 py-2 rounded-xl border border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-xs text-blue-700 dark:text-blue-300">
                   <div className="font-semibold">{assignment.title}</div>
-                  {assignment.dueDate && <div className="text-slate-400 mt-0.5">Due: {assignment.dueDate}</div>}
+                  {assignment.dueDate && <div className="text-slate-400 mt-0.5">{t('dueOn', { date: formatDate(assignment.dueDate) })}</div>}
                   <DueWarning status={selectedStatus} />
                 </div>
               ) : loadingAssignments ? (
                 <div className="flex items-center gap-2 text-xs text-slate-400 mb-4">
                   <div className="w-3 h-3 border-2 border-slate-300 border-t-slate-500 rounded-full animate-spin" />
-                  Loading assignments…
+                  {t('loadingAssignments')}
                 </div>
               ) : assignments.length > 0 && (
                 <div className="mb-4">
                   <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
-                    Assignment (optional)
+                    {t('assignmentOptional')}
                   </label>
                   <div className="space-y-1.5 max-h-36 overflow-y-auto">
                     <button
@@ -164,7 +167,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
                           : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-slate-300'
                       }`}
                     >
-                      General submission
+                      {t('generalSubmission')}
                     </button>
                     {assignments.map(a => {
                       const status = dueStatus(a)
@@ -181,8 +184,8 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
                               : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-slate-300'
                           }`}
                         >
-                          <div className="font-semibold">{a.title}{submittedAlready ? ' · Submitted ✓' : ''}</div>
-                          {a.dueDate && <div className="text-slate-400 mt-0.5">Due: {a.dueDate}</div>}
+                          <div className="font-semibold">{a.title}{submittedAlready ? ' · ' + t('submittedCheck') : ''}</div>
+                          {a.dueDate && <div className="text-slate-400 mt-0.5">{t('dueOn', { date: formatDate(a.dueDate) })}</div>}
                           {!submittedAlready && <DueWarning status={status} />}
                         </button>
                       )
@@ -194,14 +197,14 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
               {!hasWorksheet && (
                 <div className="mb-4">
                   <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
-                    Attach a worksheet (optional)
+                    {t('attachWorksheetOptional')}
                   </label>
                   <select
                     value={attachId}
                     onChange={e => { setAttachId(e.target.value); setError('') }}
                     className="input w-full text-sm"
                   >
-                    <option value="">No worksheet</option>
+                    <option value="">{t('noWorksheet')}</option>
                     {myWorksheets.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
                   </select>
                 </div>
@@ -209,12 +212,12 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
 
               <div className="mb-4">
                 <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
-                  Feedback {hasWorksheet || attachId ? '(optional)' : ''}
+                  {t('feedback')} {hasWorksheet || attachId ? t('optionalSuffix') : ''}
                 </label>
                 <textarea
                   value={feedback}
                   onChange={e => { setFeedback(e.target.value); setError('') }}
-                  placeholder="How did it go? Anything you found hard or want to ask?"
+                  placeholder={t('feedbackPlaceholder')}
                   maxLength={2000}
                   rows={3}
                   className="input w-full text-sm resize-none"
@@ -230,7 +233,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
 
               <div className="flex gap-2">
                 <button onClick={onClose} className="btn-secondary flex-1 justify-center text-sm">
-                  Cancel
+                  {t('cancel')}
                 </button>
                 <button
                   onClick={handleSubmit}
@@ -242,7 +245,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
                   ) : (
                     <Send size={14} />
                   )}
-                  Submit
+                  {t('submit')}
                 </button>
               </div>
             </>
@@ -254,7 +257,8 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
 }
 
 function DueWarning({ status }) {
-  const text = overdueText(status)
+  const { t } = useLang()
+  const text = overdueText(status, t)
   if (!text) return null
   return (
     <div className={`mt-1 font-semibold ${status.state === 'closed' ? 'text-rose-600 dark:text-rose-400' : 'text-amber-600 dark:text-amber-400'}`}>

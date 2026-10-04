@@ -1,6 +1,7 @@
 import { getLang } from './languages'
 import { MODEL_CHAIN } from './geminiModels'
 import { auth } from '../firebase/config'
+import { appError } from './appError'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -250,8 +251,6 @@ function reInjectDocxImages(html, imageUris) {
 // ── Gemini API ────────────────────────────────────────────────────────────────
 
 const TIMEOUT_MS = 300_000 // 5 min — PDF+HTML is heavier than JSON; large files need extra headroom
-const TIMEOUT_MESSAGE = 'AI processing timed out. Please try again.'
-const SIGN_IN_MESSAGE = 'Please sign in to use AI.'
 
 /** The answer can arrive split across several parts; thought parts aren't part of it. */
 function partsText(data) {
@@ -290,7 +289,7 @@ async function readSseText(response) {
 /** Calls Gemini through the /api/gemini Netlify Edge Function, which holds the API key. */
 async function callGemini(model, body, signal) {
   const idToken = await auth.currentUser?.getIdToken()
-  if (!idToken) throw new Error(SIGN_IN_MESSAGE)
+  if (!idToken) throw appError('signInForAI')
   return fetch('/api/gemini', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
@@ -398,9 +397,9 @@ export async function processWorksheetWithGemini(fileData, mimeType, langCode = 
       try {
         response = await callGemini(model, body, controller.signal)
       } catch (err) {
-        if (err.name === 'AbortError') throw new Error(TIMEOUT_MESSAGE)
-        if (err.message === SIGN_IN_MESSAGE) throw err
-        throw new Error(`Network error: ${err.message}`)
+        if (err.name === 'AbortError') throw appError('aiTimeout', err)
+        if (err.i18nKey) throw err
+        throw appError('aiNetwork', err)
       }
 
       // Overloaded / rate-limited / model doesn't exist → try next model
@@ -411,10 +410,9 @@ export async function processWorksheetWithGemini(fileData, mimeType, langCode = 
         continue
       }
 
-      // Sign-in problems from the /api/gemini proxy: show its message as is
+      // Sign-in problems from the /api/gemini proxy: 403 = anonymous user, 401 = missing or expired token
       if (response.status === 401 || response.status === 403) {
-        const errBody = await response.json().catch(() => ({}))
-        throw new Error(errBody?.error?.message || SIGN_IN_MESSAGE)
+        throw appError(response.status === 403 ? 'signInGoogleForAI' : 'signInExpired')
       }
 
       // 400 Bad Request — invalid request body (bad API key format, bad payload, etc.)
@@ -428,14 +426,14 @@ export async function processWorksheetWithGemini(fileData, mimeType, langCode = 
       try {
         rawText = await readSseText(response)
       } catch (err) {
-        if (err.name === 'AbortError') throw new Error(TIMEOUT_MESSAGE)
+        if (err.name === 'AbortError') throw appError('aiTimeout', err)
         throw err
       }
     } finally {
       clearTimeout(timer)
     }
 
-    if (!rawText) throw new Error('No response from AI. Please try again.')
+    if (!rawText) throw appError('aiNoResponse')
 
     // Strip markdown fences if model wrapped output
     rawText = rawText.trim()
@@ -499,5 +497,5 @@ export async function processWorksheetWithGemini(fileData, mimeType, langCode = 
     return rawText  // HTML string
   }
 
-  throw new Error(`All Gemini models are busy. Please try again in a moment. (${lastErr})`)
+  throw appError('aiBusy', new Error(lastErr))
 }

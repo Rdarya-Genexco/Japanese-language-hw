@@ -9,6 +9,7 @@ import {
   restAdd, restCreate, restGet, restSet, restUpdate, restDelete, restQuery, restList, restGetPublic,
 } from './firestoreREST'
 import { dueDateToTimes } from './dueDates'
+import { appError } from './appError'
 
 // ── Connectivity test ──────────────────────────────────────────────────────────
 
@@ -211,7 +212,7 @@ export async function submitToAssignment(code, assignmentId, studentUid, student
       submittedAt: new Date(),
     })
   } catch (err) {
-    if (err.code === 'already-exists') throw new Error('You already submitted this assignment. Unsubmit it first to submit again.')
+    if (err.code === 'already-exists') throw appError('alreadySubmitted', err)
     throw err
   }
 }
@@ -317,7 +318,7 @@ export async function getWorksheets(uid, folderId = 'root') {
 
 export async function getWorksheet(uid, worksheetId) {
   const doc = await restGet(`users/${uid}/worksheets`, worksheetId)
-  if (!doc) throw new Error('Worksheet not found')
+  if (!doc) throw appError('worksheetNotFound')
 
   // New HTML-based worksheets
   if (doc.worksheetHtml) {

@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun } from 'docx'
 import { saveAs } from 'file-saver'
 import DOMPurify from 'dompurify'
+import { appError } from './appError'
 
 /**
  * Generates a print-ready bilingual HTML string from worksheet JSON.
@@ -330,7 +331,7 @@ export function sanitizeWorksheetHtml(html, { wholeDocument = true } = {}) {
 /** Print worksheet HTML from a popup; window.open('') shares the app's origin, hence the sanitizing. */
 export function printWorksheetHtml(html) {
   const win = window.open('', '_blank')
-  if (!win) { alert('Please allow popups for this site and try again.'); return }
+  if (!win) throw appError('allowPopups')
   win.document.write('<!DOCTYPE html>' + sanitizeWorksheetHtml(html))
   win.document.close()
   win.focus()
@@ -340,10 +341,7 @@ export function printWorksheetHtml(html) {
 export function openPrintView(worksheetData) {
   const html = generatePrintableHTML(worksheetData)
   const win = window.open('', '_blank')
-  if (!win) {
-    alert('Please disable your popup blocker and try again.')
-    return
-  }
+  if (!win) throw appError('allowPopups')
   win.document.write(html)
   win.document.close()
 }

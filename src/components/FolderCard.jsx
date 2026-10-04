@@ -62,7 +62,7 @@ export default function FolderCard({ folder, onClick, onDelete, onRename, isDrag
       {isOver && (
         <div className="absolute inset-0 rounded-2xl bg-violet-400/10 flex items-center justify-center pointer-events-none z-10">
           <span className="text-xs font-bold text-violet-600 dark:text-violet-300 bg-white/80 dark:bg-slate-800/80 px-2 py-1 rounded-lg shadow">
-            Move here
+            {t('moveHere')}
           </span>
         </div>
       )}

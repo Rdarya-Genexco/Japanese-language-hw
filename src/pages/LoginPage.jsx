@@ -85,7 +85,7 @@ export default function LoginPage() {
                   : 'border-violet-300 dark:border-violet-600 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-900/20'
               }`}
             >
-              📚 I'm a Student
+              {t('imStudent')}
             </button>
             <button
               onClick={() => handleSignIn('teacher')}
@@ -96,7 +96,7 @@ export default function LoginPage() {
                   : 'border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
               }`}
             >
-              🎓 I'm a Teacher
+              {t('imTeacher')}
             </button>
           </div>
 

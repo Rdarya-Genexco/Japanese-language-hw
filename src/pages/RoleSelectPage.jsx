@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRole } from '../contexts/RoleContext'
+import { useLang } from '../contexts/LanguageContext'
 import { GraduationCap, BookOpen } from 'lucide-react'
 
 export default function RoleSelectPage() {
   const { saveRole } = useRole()
+  const { t } = useLang()
   const navigate = useNavigate()
   const [saving, setSaving] = useState(null)
 
@@ -26,8 +28,8 @@ export default function RoleSelectPage() {
       <div className="w-full max-w-lg relative z-10">
         <div className="text-center mb-8">
           <span className="text-5xl mb-4 block">🌉</span>
-          <h1 className="text-3xl font-bold text-white">Who are you?</h1>
-          <p className="text-white/70 mt-2 text-sm">Choose your role to personalise your experience</p>
+          <h1 className="text-3xl font-bold text-white">{t('whoAreYou')}</h1>
+          <p className="text-white/70 mt-2 text-sm">{t('chooseRoleDesc')}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -40,9 +42,9 @@ export default function RoleSelectPage() {
             <div className="w-16 h-16 bg-gradient-to-br from-violet-400 to-pink-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
               <BookOpen size={30} className="text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white mb-1">Student</h2>
+            <h2 className="text-xl font-bold text-white mb-1">{t('student')}</h2>
             <p className="text-white/60 text-sm leading-relaxed">
-              Access worksheets, track your progress, and submit to teachers.
+              {t('studentRoleDesc')}
             </p>
             {saving === 'student' && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-3xl">
@@ -60,9 +62,9 @@ export default function RoleSelectPage() {
             <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
               <GraduationCap size={30} className="text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white mb-1">Teacher</h2>
+            <h2 className="text-xl font-bold text-white mb-1">{t('teacher')}</h2>
             <p className="text-white/60 text-sm leading-relaxed">
-              Upload worksheets, share with students, and manage classrooms.
+              {t('teacherRoleDesc')}
             </p>
             {saving === 'teacher' && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-3xl">
@@ -73,7 +75,7 @@ export default function RoleSelectPage() {
         </div>
 
         <p className="text-center text-white/40 text-xs mt-6">
-          You can change this later in Settings
+          {t('changeLaterInSettings')}
         </p>
       </div>
     </div>

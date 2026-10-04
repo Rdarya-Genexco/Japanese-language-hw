@@ -3,9 +3,12 @@ import { X, Plus, Loader2, Paperclip, ChevronDown, ChevronUp, Check } from 'luci
 import { createAssignment, getAllWorksheets, getWorksheet } from '../utils/firestoreService'
 import { useAuth } from '../contexts/AuthContext'
 import { hydrateWorksheetHtml } from '../utils/worksheetGenerator'
+import { useLang } from '../contexts/LanguageContext'
+import { errorText } from '../utils/appError'
 
 export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
   const { user } = useAuth()
+  const { t } = useLang()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dueDate, setDueDate] = useState('')
@@ -27,7 +30,7 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
   }, [pickerOpen, user.uid, worksheets.length])
 
   const handleCreate = async () => {
-    if (!title.trim()) { setError('Please enter a title.'); return }
+    if (!title.trim()) { setError(t('enterTitle')); return }
     setSaving(true); setError('')
     try {
       let attachedWorksheet = null
@@ -47,7 +50,7 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
         attachedWorksheetName: attachedWorksheet?.name || null })
       onClose()
     } catch (err) {
-      setError('Failed to create: ' + err.message)
+      setError(t('failedCreateAssignment') + ': ' + errorText(err, t))
     } finally {
       setSaving(false)
     }
@@ -60,8 +63,8 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 pt-5 pb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-bold text-white">New Assignment</h2>
-            <p className="text-white/70 text-xs mt-0.5">Post to classroom {classroomCode}</p>
+            <h2 className="font-bold text-white">{t('newAssignment')}</h2>
+            <p className="text-white/70 text-xs mt-0.5">{t('postToClassroom', { code: classroomCode })}</p>
           </div>
           <button onClick={onClose} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
             <X size={15} className="text-white" />
@@ -71,12 +74,12 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
         <div className="px-5 py-5 space-y-4">
           {/* Title */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Title *</label>
+            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">{t('titleRequired')}</label>
             <input
               type="text"
               value={title}
               onChange={e => { setTitle(e.target.value); setError('') }}
-              placeholder="e.g. Chapter 3 Vocabulary"
+              placeholder={t('titlePlaceholder')}
               className="input w-full"
               autoFocus
             />
@@ -84,11 +87,11 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Description</label>
+            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">{t('description')}</label>
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
-              placeholder="Instructions or notes for students..."
+              placeholder={t('descriptionPlaceholder')}
               rows={2}
               className="input w-full resize-none"
             />
@@ -96,7 +99,7 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
 
           {/* Due date */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Due Date (optional)</label>
+            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">{t('dueDateOptional')}</label>
             <input
               type="date"
               value={dueDate}
@@ -115,13 +118,13 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
               <Paperclip size={14} className="text-blue-500 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
-                  Attach worksheet
+                  {t('attachWorksheet')}
                 </span>
                 {selectedWs && (
                   <p className="text-xs text-blue-600 dark:text-blue-400 truncate mt-0.5">{selectedWs.name}</p>
                 )}
                 {!selectedWs && (
-                  <p className="text-xs text-slate-400 dark:text-slate-500">Pick one of your uploaded worksheets</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500">{t('pickWorksheet')}</p>
                 )}
               </div>
               {pickerOpen ? <ChevronUp size={13} className="text-slate-400 flex-shrink-0" /> : <ChevronDown size={13} className="text-slate-400 flex-shrink-0" />}
@@ -131,10 +134,10 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
               <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 max-h-44 overflow-y-auto">
                 {loadingWs ? (
                   <div className="flex items-center gap-2 justify-center py-4 text-slate-400 text-xs">
-                    <Loader2 size={13} className="animate-spin" /> Loading worksheets…
+                    <Loader2 size={13} className="animate-spin" /> {t('loadingWorksheets')}
                   </div>
                 ) : worksheets.length === 0 ? (
-                  <p className="text-xs text-slate-400 text-center py-4">No worksheets yet. Upload one from the dashboard first.</p>
+                  <p className="text-xs text-slate-400 text-center py-4">{t('noWorksheetsUploadFirst')}</p>
                 ) : (
                   <>
                     {/* None option */}
@@ -145,7 +148,7 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
                         !selectedWs ? 'bg-slate-200 dark:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
-                      {!selectedWs && <Check size={11} />} No attachment
+                      {!selectedWs && <Check size={11} />} {t('noAttachment')}
                     </button>
                     {worksheets.map(ws => (
                       <button
@@ -172,7 +175,7 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
 
           <div className="flex gap-2 pt-1">
             <button onClick={onClose} className="btn-secondary flex-1 justify-center text-sm">
-              Cancel
+              {t('cancel')}
             </button>
             <button
               onClick={handleCreate}
@@ -180,7 +183,7 @@ export default function AssignmentModal({ classroomCode, onClose, onCreated }) {
               className="btn-primary flex-1 justify-center text-sm"
             >
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
-              {saving ? 'Creating…' : 'Create'}
+              {saving ? t('creating') : t('create')}
             </button>
           </div>
         </div>

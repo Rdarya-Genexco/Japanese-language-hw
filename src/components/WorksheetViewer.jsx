@@ -2,12 +2,13 @@ import { useRef, useState } from 'react'
 import { X, Printer, FileDown, Trash2, Loader2, Share2, Send } from 'lucide-react'
 import { openPrintView, printWorksheetHtml, hydrateWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import { useLang } from '../contexts/LanguageContext'
+import { errorText } from '../utils/appError'
 import { useRole } from '../contexts/RoleContext'
 import ShareModal from './ShareModal'
 import SubmitModal from './SubmitModal'
 
 export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
-  const { t, langCode } = useLang()
+  const { t, formatDate } = useLang()
   const { role } = useRole()
   const iframeRef = useRef(null)
   const [busy, setBusy] = useState(null) // 'pdf' | 'docx' | 'print' | null
@@ -20,10 +21,8 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   // For legacy JSON worksheets — pull display fields from worksheetData
   const { title, titleEn, subject, subjectEn, grade, instructions, instructionsEn, sections = [] } = worksheetData || {}
 
-  const date = createdAt?.toDate?.()?.toLocaleDateString(
-    langCode === 'ja' ? 'ja-JP' : langCode === 'zh-CN' ? 'zh-CN' : langCode === 'ko' ? 'ko-KR' : 'en-US',
-    { year: 'numeric', month: 'long', day: 'numeric' }
-  ) || '—'
+  const createdDate = createdAt?.toDate?.()
+  const date = createdDate ? formatDate(createdDate) : '—'
 
   // ── Actions ───────────────────────────────────────────────────────────────
 
@@ -38,7 +37,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
       }
     } catch (err) {
       console.error(err)
-      alert('Print failed: ' + err.message)
+      alert(t('printFailed') + ': ' + errorText(err, t))
     } finally {
       setBusy(null)
     }
@@ -55,7 +54,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
       }
     } catch (err) {
       console.error(err)
-      alert('PDF download failed: ' + err.message)
+      alert(t('pdfFailed') + ': ' + errorText(err, t))
     } finally {
       setBusy(null)
     }
@@ -72,7 +71,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
       }
     } catch (err) {
       console.error(err)
-      alert('Word download failed: ' + err.message)
+      alert(t('wordFailed') + ': ' + errorText(err, t))
     } finally {
       setBusy(null)
     }
@@ -128,7 +127,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
                 <span className="text-xs text-white/60">{date}</span>
                 {isHtml && (
                   <span className="text-xs bg-emerald-400/30 text-white px-2 py-0.5 rounded-full border border-emerald-300/30 font-medium">
-                    ✨ AI formatted
+                    {t('aiFormatted')}
                   </span>
                 )}
               </div>
@@ -169,9 +168,9 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
                 onClick={() => setShowShare(true)}
                 disabled={!!busy}
                 className="flex items-center gap-1.5 text-xs font-semibold bg-emerald-500/80 hover:bg-emerald-500 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors border border-emerald-400/30"
-                title="Share"
+                title={t('share')}
               >
-                <Share2 size={13} /> Share
+                <Share2 size={13} /> {t('share')}
               </button>
             )}
             {role === 'student' && isHtml && (
@@ -179,9 +178,9 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
                 onClick={() => setShowSubmit(true)}
                 disabled={!!busy}
                 className="flex items-center gap-1.5 text-xs font-semibold bg-cyan-500/80 hover:bg-cyan-500 disabled:opacity-60 text-white px-3 py-1.5 rounded-lg transition-colors border border-cyan-400/30"
-                title="Submit to Teacher"
+                title={t('submitToTeacher')}
               >
-                <Send size={13} /> Submit
+                <Send size={13} /> {t('submit')}
               </button>
             )}
             {onDelete && (
@@ -221,7 +220,7 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
             srcDoc={previewHtml}
             sandbox="allow-scripts"
             className="flex-1 w-full bg-white border-0"
-            title="Worksheet"
+            title={t('worksheet')}
             style={{ minHeight: 0 }}
           />
         ) : (

@@ -8,12 +8,14 @@
  * PPT       → raw ArrayBuffer (legacy OLE format — not ZIP, cannot convert in browser)
  */
 
+import { appError } from './appError'
+
 export async function extractDocxHtml(file) {
   const mammoth = await import('mammoth')
   const arrayBuffer = await file.arrayBuffer()
   const result = await mammoth.convertToHtml({ arrayBuffer })
   if (!result.value || result.value.trim().length === 0) {
-    throw new Error('Could not extract content from DOCX file.')
+    throw appError('docxReadFailed')
   }
   return result.value
 }
@@ -64,7 +66,7 @@ async function extractPptxContent(arrayBuffer) {
     .map(p => parseInt(p.match(/slide(\d+)\.xml/)[1]))
     .sort((a, b) => a - b)
 
-  if (slideNumbers.length === 0) throw new Error('No slides found in PPTX')
+  if (slideNumbers.length === 0) throw appError('noSlidesFound')
 
   const images = []       // [{b64, ext, mimeType}]
   const seenMedia = new Set()
@@ -171,5 +173,5 @@ export async function parseFile(file) {
     }
   }
 
-  throw new Error('Unsupported file type. Please upload a PDF, DOCX, PPTX, PNG or JPG.')
+  throw appError('wrongFile')
 }

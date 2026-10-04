@@ -4,6 +4,7 @@ import { parseFile } from '../utils/fileParser'
 import { processWorksheetWithGemini } from '../utils/gemini'
 import { saveWorksheet } from '../utils/storageService'
 import { useLang } from '../contexts/LanguageContext'
+import { errorText } from '../utils/appError'
 
 /** Compress an image File to a JPEG data URI at max `maxPx` on the longest side. */
 function compressImage(file, maxPx = 800, quality = 0.72) {
@@ -105,7 +106,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
       setCurrentStep(3); setDone(true)
     } catch (err) {
       console.error(err)
-      setError(err.message || 'An error occurred. Please try again.')
+      setError(errorText(err, t))
       setProcessing(false); setCurrentStep(-1); setDone(false)
     }
   }
@@ -139,7 +140,6 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                 <span className="text-xl">{lang.flag}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-semibold text-violet-700 dark:text-violet-300">{lang.native}</p>
-                  <p className="text-xs text-violet-500 dark:text-violet-400 truncate">{lang.name}</p>
                 </div>
                 <span className="text-xs text-violet-400 dark:text-violet-500">{t('selected')}</span>
               </div>
@@ -193,7 +193,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                         {t('orBrowse')}
                       </p>
                     </div>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">PDF · DOCX · PPTX · PNG · JPG · max 20 MB</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">{t('fileTypesHint')}</p>
                   </div>
                 )}
                 <input ref={fileInputRef} type="file" accept={ACCEPTED_TYPES.join(',')} className="hidden"

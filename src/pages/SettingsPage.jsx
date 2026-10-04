@@ -88,7 +88,7 @@ export default function SettingsPage() {
 
         {/* Role toggle */}
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Role</p>
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">{t('role')}</p>
           <div className="flex gap-2">
             <button
               onClick={() => handleChangeRole('student')}
@@ -100,7 +100,7 @@ export default function SettingsPage() {
               }`}
             >
               {changingRole && role !== 'student' ? <Loader2 size={12} className="animate-spin" /> : <BookOpen size={12} />}
-              Student
+              {t('student')}
             </button>
             <button
               onClick={() => handleChangeRole('teacher')}
@@ -112,7 +112,7 @@ export default function SettingsPage() {
               }`}
             >
               {changingRole && role !== 'teacher' ? <Loader2 size={12} className="animate-spin" /> : <GraduationCap size={12} />}
-              Teacher
+              {t('teacher')}
             </button>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function SettingsPage() {
         {/* Student: join classroom */}
         {role === 'student' && (
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3">
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Classroom</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">{t('classroom')}</p>
             {classroomCode && !changingCode && joinStatus !== 'ok' ? (
               <div className="flex items-center gap-2">
                 <span className="flex-1 font-mono font-black text-lg text-center tracking-widest text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 rounded-xl py-1.5 border border-cyan-200 dark:border-cyan-700">
@@ -130,12 +130,12 @@ export default function SettingsPage() {
                   onClick={() => { setJoinCode(''); setJoinStatus(null); setChangingCode(true) }}
                   className="text-xs text-slate-400 hover:text-slate-600 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                 >
-                  Change
+                  {t('change')}
                 </button>
               </div>
             ) : joinStatus === 'ok' ? (
               <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium text-center py-1.5 flex items-center justify-center gap-1.5">
-                <Check size={14} /> Joined!
+                <Check size={14} /> {t('joinedExcl')}
               </p>
             ) : (
               <div className="flex gap-2">
@@ -143,7 +143,7 @@ export default function SettingsPage() {
                   type="text"
                   value={joinCode}
                   onChange={e => { setJoinCode(e.target.value.toUpperCase()); setJoinStatus(null) }}
-                  placeholder="Code from teacher"
+                  placeholder={t('codeFromTeacher')}
                   maxLength={10}
                   className="input flex-1 uppercase tracking-widest font-mono text-center text-sm"
                 />
@@ -152,15 +152,15 @@ export default function SettingsPage() {
                   disabled={!joinCode.trim() || joinStatus === 'verifying'}
                   className="btn-primary text-xs flex-shrink-0 px-3"
                 >
-                  {joinStatus === 'verifying' ? <Loader2 size={12} className="animate-spin" /> : 'Join'}
+                  {joinStatus === 'verifying' ? <Loader2 size={12} className="animate-spin" /> : t('join')}
                 </button>
               </div>
             )}
             {joinStatus === 'not-found' && (
-              <p className="text-xs text-rose-500 mt-1">Classroom not found.</p>
+              <p className="text-xs text-rose-500 mt-1">{t('classroomNotFound')}</p>
             )}
             {joinStatus === 'removed' && (
-              <p className="text-xs text-rose-500 mt-1">Your teacher removed you from this class. Ask them for help.</p>
+              <p className="text-xs text-rose-500 mt-1">{t('removedFromClass')}</p>
             )}
           </div>
         )}

@@ -1,11 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useRole } from '../contexts/RoleContext'
+import { useLang } from '../contexts/LanguageContext'
 import { Home, School, Settings, Upload } from 'lucide-react'
 
 export default function BottomNav({ onUpload }) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { role } = useRole()
+  const { t } = useLang()
 
   const isHome = pathname === '/' || pathname.startsWith('/folder/')
   const isClasses = pathname === '/classes'
@@ -14,19 +16,19 @@ export default function BottomNav({ onUpload }) {
   const items = [
     {
       icon: Home,
-      label: 'Home',
+      label: t('navHome'),
       active: isHome,
       onClick: () => navigate('/'),
     },
     ...(role === 'teacher' ? [{
       icon: School,
-      label: 'Classes',
+      label: t('navClasses'),
       active: isClasses,
       onClick: () => navigate('/classes'),
     }] : []),
     {
       icon: Upload,
-      label: 'Upload',
+      label: t('upload'),
       active: false,
       primary: true,
       // Pages without their own upload dialog send the user home and open it there
@@ -34,7 +36,7 @@ export default function BottomNav({ onUpload }) {
     },
     {
       icon: Settings,
-      label: 'Settings',
+      label: t('settings'),
       active: isSettings,
       onClick: () => navigate('/settings'),
     },

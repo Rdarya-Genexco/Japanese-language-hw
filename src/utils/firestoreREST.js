@@ -3,6 +3,7 @@
  * which is blocked on some networks. Uses plain HTTPS fetch instead.
  */
 import { auth } from '../firebase/config'
+import { appError } from './appError'
 
 const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
 const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/lang/documents`
@@ -18,7 +19,7 @@ async function token() {
     if (typeof window !== 'undefined' && window.location.search.includes('mock=1')) {
       return 'mock-token'
     }
-    throw new Error('Not authenticated')
+    throw appError('signInExpired')
   }
   return u.getIdToken()
 }
@@ -146,7 +147,11 @@ export async function restDelete(collection, id) {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${t}` },
   })
-  if (!res.ok && res.status !== 404) throw new Error(`Delete failed: ${res.status}`)
+  if (!res.ok && res.status !== 404) {
+    const e = new Error(`Delete failed: ${res.status}`)
+    if (res.status === 403) e.code = 'permission-denied'
+    throw e
+  }
 }
 
 /**

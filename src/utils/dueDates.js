@@ -25,8 +25,8 @@ export function dueStatus(assignment, now = Date.now()) {
   return { state: 'closed', dueMs, closesMs }
 }
 
-export function overdueText(status) {
-  if (status.state === 'overdue') return `Overdue — submissions close in ${status.daysLeft} day${status.daysLeft !== 1 ? 's' : ''}`
-  if (status.state === 'closed') return 'Closed — the deadline has passed'
+export function overdueText(status, t) {
+  if (status.state === 'overdue') return t('overdueClosesIn', { count: status.daysLeft })
+  if (status.state === 'closed') return t('closedDeadlinePassed')
   return ''
 }

@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { X, Copy, Check, Loader2 } from 'lucide-react'
 import { createShareToken } from '../utils/firestoreService'
 import { useAuth } from '../contexts/AuthContext'
+import { useLang } from '../contexts/LanguageContext'
 
 export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }) {
   const { user } = useAuth()
+  const { t } = useLang()
   const [token, setToken] = useState(null)
   const [creating, setCreating] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -16,7 +18,7 @@ export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }
     if (!user) return
     setCreating(true)
     createShareToken(user.uid, worksheetId, worksheetHtml, name)
-      .then(t => setToken(t))
+      .then(setToken)
       .catch(err => console.error('Share token error:', err))
       .finally(() => setCreating(false))
   }, [])
@@ -55,8 +57,8 @@ export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-5 pt-5 pb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-bold text-white">Share Worksheet</h2>
-            <p className="text-white/70 text-xs mt-0.5">Generate a public link</p>
+            <h2 className="font-bold text-white">{t('shareWorksheet')}</h2>
+            <p className="text-white/70 text-xs mt-0.5">{t('generatePublicLink')}</p>
           </div>
           <button onClick={onClose} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
             <X size={15} className="text-white" />
@@ -67,17 +69,17 @@ export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }
           {creating ? (
             <div className="flex flex-col items-center gap-3 py-6">
               <Loader2 size={28} className="text-violet-500 animate-spin" />
-              <p className="text-sm text-slate-500 dark:text-slate-400">Creating share link…</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{t('creatingShareLink')}</p>
             </div>
           ) : (
             <>
               {qrDataUrl && (
                 <div className="flex justify-center mb-4">
-                  <img src={qrDataUrl} alt="QR Code" className="w-36 h-36 rounded-xl shadow-md" />
+                  <img src={qrDataUrl} alt={t('qrCode')} className="w-36 h-36 rounded-xl shadow-md" />
                 </div>
               )}
 
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">Share URL</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{t('shareUrl')}</p>
               <div className="flex gap-2">
                 <input
                   readOnly
@@ -94,12 +96,12 @@ export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }
                   }`}
                 >
                   {copied ? <Check size={13} /> : <Copy size={13} />}
-                  {copied ? 'Copied!' : 'Copy'}
+                  {copied ? t('copied') : t('copy')}
                 </button>
               </div>
 
               <p className="text-xs text-slate-400 dark:text-slate-500 mt-3 text-center">
-                Anyone with this link can view the worksheet
+                {t('anyoneWithLink')}
               </p>
             </>
           )}

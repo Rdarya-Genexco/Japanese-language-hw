@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { FolderPlus, X } from 'lucide-react'
 import { useLang } from '../contexts/LanguageContext'
+import { errorText } from '../utils/appError'
 
 export default function NewFolderModal({ onCreate, onClose }) {
   const { t } = useLang()
@@ -18,7 +19,7 @@ export default function NewFolderModal({ onCreate, onClose }) {
       await onCreate(name.trim())
       onClose()
     } catch (err) {
-      alert('Failed to create folder: ' + err.message)
+      alert(t('failedCreateFolder') + ': ' + errorText(err, t))
     } finally {
       setLoading(false)
     }

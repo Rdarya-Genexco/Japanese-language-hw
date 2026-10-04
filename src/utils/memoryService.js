@@ -4,6 +4,8 @@
  * Used automatically when the signed-in user is anonymous (test mode).
  */
 
+import { appError } from './appError'
+
 let _nextId = 1
 function uid() { return `mem_${_nextId++}` }
 
@@ -104,7 +106,7 @@ export async function getWorksheets(_uid, folderId = 'root') {
 
 export async function getWorksheet(_uid, worksheetId) {
   const doc = _worksheets.get(worksheetId)
-  if (!doc) throw new Error('Worksheet not found')
+  if (!doc) throw appError('worksheetNotFound')
   let wsData = doc.worksheetData
   if (typeof wsData === 'string') {
     try { wsData = JSON.parse(wsData) } catch { wsData = {} }

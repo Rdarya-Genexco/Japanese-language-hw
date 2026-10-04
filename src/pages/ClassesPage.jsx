@@ -11,11 +11,14 @@ import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
 import WorksheetViewer from '../components/WorksheetViewer'
 import { dueStatus } from '../utils/dueDates'
+import { useLang } from '../contexts/LanguageContext'
+import { errorText } from '../utils/appError'
 import BottomNav from '../components/BottomNav'
 import { ArrowLeft, Plus, Copy, Check, Users, FileText, Loader2, ChevronDown, ChevronRight, Eye, UserMinus, Trash2 } from 'lucide-react'
 
 export default function ClassesPage() {
   const { user } = useAuth()
+  const { t } = useLang()
   const { role, classroomCode, saveClassroomCode } = useRole()
   const navigate = useNavigate()
 
@@ -63,27 +66,27 @@ export default function ClassesPage() {
       setMembers(p => ({ ...p, [code]: [] }))
       setActiveCode(code)
     } catch (err) {
-      alert('Failed to create classroom: ' + err.message)
+      alert(t('failedCreateClass') + ': ' + errorText(err, t))
     } finally {
       setCreating(false)
     }
   }
 
   const handleRemoveMember = async (code, m) => {
-    if (!window.confirm(`Remove ${m.name || m.email || 'this student'} from class ${code}?\nThey won't be able to rejoin with this code.`)) return
+    if (!window.confirm(t('confirmRemoveStudent', { name: m.name || m.email || t('thisStudent'), code }))) return
     setRemovingUid(m.id)
     try {
       await removeClassroomMember(code, m.id)
       setMembers(p => ({ ...p, [code]: (p[code] || []).filter(x => x.id !== m.id) }))
     } catch (err) {
-      alert('Failed to remove student: ' + err.message)
+      alert(t('failedRemoveStudent') + ': ' + errorText(err, t))
     } finally {
       setRemovingUid(null)
     }
   }
 
   const handleDeleteClass = async (code) => {
-    if (!window.confirm(`Delete class ${code}?\nThis permanently deletes its assignments, submissions and student list.`)) return
+    if (!window.confirm(t('confirmDeleteClass', { code }))) return
     setDeletingCode(code)
     try {
       await deleteClassroom(code)
@@ -92,7 +95,7 @@ export default function ClassesPage() {
       setActiveCode(null)
       if (classroomCode === code) saveClassroomCode(remaining[0]?.code || null).catch(() => {})
     } catch (err) {
-      alert('Failed to delete class: ' + err.message)
+      alert(t('failedDeleteClass') + ': ' + errorText(err, t))
     } finally {
       setDeletingCode(null)
     }
@@ -187,13 +190,13 @@ export default function ClassesPage() {
               <ArrowLeft size={16} className="text-slate-600 dark:text-slate-400" />
             </button>
             <div>
-              <h1 className="font-bold text-slate-800 dark:text-slate-100 text-xl">My Classes</h1>
+              <h1 className="font-bold text-slate-800 dark:text-slate-100 text-xl">{t('myClasses')}</h1>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {loadingClassrooms
-                  ? 'Loading…'
+                  ? t('loading')
                   : classrooms.length === 0
-                    ? 'No classrooms yet'
-                    : `${classrooms.length} classroom${classrooms.length !== 1 ? 's' : ''}`}
+                    ? t('noClassroomsYet')
+                    : t('classroomsCount', { count: classrooms.length })}
               </p>
             </div>
           </div>
@@ -203,19 +206,19 @@ export default function ClassesPage() {
             className="btn-primary flex-shrink-0"
           >
             {creating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
-            {creating ? 'Creating…' : 'New Class'}
+            {creating ? t('creating') : t('newClass')}
           </button>
         </div>
 
         {loadingClassrooms ? (
           <div className="flex items-center gap-2 text-sm text-slate-400 py-10 justify-center">
-            <Loader2 size={18} className="animate-spin" /> Loading classrooms…
+            <Loader2 size={18} className="animate-spin" /> {t('loadingClassrooms')}
           </div>
         ) : classrooms.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
             <p className="text-5xl mb-3">🏫</p>
-            <p className="font-semibold text-slate-700 dark:text-slate-200">No classrooms yet</p>
-            <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Create your first classroom to get started.</p>
+            <p className="font-semibold text-slate-700 dark:text-slate-200">{t('noClassroomsYet')}</p>
+            <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">{t('createFirstClassroom')}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -253,7 +256,7 @@ export default function ClassesPage() {
       {viewSubmission && (
         <WorksheetViewer
           worksheet={{
-            name: `${viewSubmission.studentName || 'Student'} — ${viewSubmission.worksheetName || 'Submission'}`,
+            name: `${viewSubmission.studentName || t('student')} — ${viewSubmission.worksheetName || t('submission')}`,
             worksheetHtml: viewSubmission.worksheetHtml,
             worksheetData: null,
             originalImageUri: null,
@@ -289,6 +292,7 @@ function ClassroomCard({
   generalSubs, loadingGeneralSubs, expandedGeneral,
   onToggle, onCopy, onToggleAssignment, onToggleGeneral, onNewAssignment,
 }) {
+  const { t, formatDate } = useLang()
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
 
@@ -305,10 +309,10 @@ function ClassroomCard({
             <p className="text-xs text-slate-400 dark:text-slate-500">
               {assignments !== undefined
                 ? [
-                    members && `${members.length} student${members.length !== 1 ? 's' : ''}`,
-                    `${assignments.length} assignment${assignments.length !== 1 ? 's' : ''}`,
+                    members && t('studentsCount', { count: members.length }),
+                    t('assignmentsCount', { count: assignments.length }),
                   ].filter(Boolean).join(' · ')
-                : 'Tap to view'}
+                : t('tapToView')}
             </p>
           </div>
         </button>
@@ -321,7 +325,7 @@ function ClassroomCard({
           }`}
         >
           {copied ? <Check size={13} /> : <Copy size={13} />}
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? t('copied') : t('copy')}
         </button>
         <button onClick={onToggle} className="p-1 flex-shrink-0">
           {active
@@ -338,7 +342,7 @@ function ClassroomCard({
           <div className="p-4 border-b border-slate-100 dark:border-slate-700">
             <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mb-3">
               <Users size={13} className="text-cyan-500" />
-              Students
+              {t('students')}
               {members?.length > 0 && (
                 <span className="bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-400 px-1.5 py-0.5 rounded-full text-[10px] font-bold">
                   {members.length}
@@ -347,15 +351,17 @@ function ClassroomCard({
             </h3>
             {members === undefined ? (
               <div className="flex items-center gap-2 text-xs text-slate-400 py-3 justify-center">
-                <Loader2 size={13} className="animate-spin" /> Loading…
+                <Loader2 size={13} className="animate-spin" /> {t('loading')}
               </div>
             ) : members === null ? (
               <p className="text-xs text-rose-500 text-center py-3">
-                Couldn't load students. Check that the latest Firestore rules are published to the "lang" database.
+                {t('studentsLoadError')}
               </p>
             ) : members.length === 0 ? (
               <p className="text-xs text-slate-400 text-center py-3">
-                No students yet. Share the code <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">{cls.code}</span> so they can join from Settings.
+                {t('noStudentsYet').split('{code}')[0]}
+                <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">{cls.code}</span>
+                {t('noStudentsYet').split('{code}')[1]}
               </p>
             ) : (
               <div className="space-y-1.5">
@@ -369,19 +375,19 @@ function ClassroomCard({
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate">{m.name || 'Student'}</p>
+                      <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate">{m.name || t('student')}</p>
                       {m.email && <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{m.email}</p>}
                     </div>
                     {m.joinedAt?.seconds && (
                       <p className="text-[10px] text-slate-400 flex-shrink-0">
-                        Joined {new Date(m.joinedAt.seconds * 1000).toLocaleDateString()}
+                        {t('joinedOn', { date: formatDate(m.joinedAt.seconds * 1000) })}
                       </p>
                     )}
                     <button
                       onClick={() => onRemoveMember(m)}
                       disabled={removingUid === m.id}
-                      title="Remove from class"
-                      aria-label={`Remove ${m.name || m.email || 'student'} from class`}
+                      title={t('removeFromClass')}
+                      aria-label={t('removeNameFromClass', { name: m.name || m.email || t('student') })}
                       className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 disabled:opacity-50 transition-colors flex-shrink-0"
                     >
                       {removingUid === m.id ? <Loader2 size={14} className="animate-spin" /> : <UserMinus size={14} />}
@@ -397,7 +403,7 @@ function ClassroomCard({
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
                 <FileText size={13} className="text-violet-500" />
-                Assignments
+                {t('assignments')}
                 {assignments?.length > 0 && (
                   <span className="bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 px-1.5 py-0.5 rounded-full text-[10px] font-bold">
                     {assignments.length}
@@ -408,16 +414,16 @@ function ClassroomCard({
                 onClick={onNewAssignment}
                 className="flex items-center gap-1 text-[11px] font-semibold bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg transition-colors"
               >
-                <Plus size={11} /> New
+                <Plus size={11} /> {t('newShort')}
               </button>
             </div>
 
             {loadingAssignments ? (
               <div className="flex items-center gap-2 text-xs text-slate-400 py-3 justify-center">
-                <Loader2 size={13} className="animate-spin" /> Loading…
+                <Loader2 size={13} className="animate-spin" /> {t('loading')}
               </div>
             ) : !assignments || assignments.length === 0 ? (
-              <p className="text-xs text-slate-400 text-center py-3">No assignments yet.</p>
+              <p className="text-xs text-slate-400 text-center py-3">{t('noAssignmentsYet')}</p>
             ) : (
               <div className="space-y-1.5">
                 {assignments.map(a => (
@@ -433,9 +439,9 @@ function ClassroomCard({
                         )}
                         {a.dueDate && (
                           <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-0.5">
-                            Due: {a.dueDate}
-                            {dueStatus(a).state === 'overdue' && <span className="ml-1.5 font-semibold text-orange-600 dark:text-orange-400">· Overdue, closes in {dueStatus(a).daysLeft}d</span>}
-                            {dueStatus(a).state === 'closed' && <span className="ml-1.5 font-semibold text-rose-600 dark:text-rose-400">· Closed</span>}
+                            {t('dueOn', { date: formatDate(a.dueDate) })}
+                            {dueStatus(a).state === 'overdue' && <span className="ml-1.5 font-semibold text-orange-600 dark:text-orange-400">· {t('overdueClosesIn', { count: dueStatus(a).daysLeft })}</span>}
+                            {dueStatus(a).state === 'closed' && <span className="ml-1.5 font-semibold text-rose-600 dark:text-rose-400">· {t('closed')}</span>}
                           </p>
                         )}
                         {a.attachedWorksheetName && (
@@ -454,11 +460,11 @@ function ClassroomCard({
                     {expandedAssignment === a.id && !loadingSubs[a.id] && (
                       <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 px-3 py-2">
                         {(submissions[a.id] || []).length === 0 ? (
-                          <p className="text-[10px] text-slate-400 text-center py-2">No submissions yet.</p>
+                          <p className="text-[10px] text-slate-400 text-center py-2">{t('noSubmissionsYet')}</p>
                         ) : (
                           <div className="space-y-1">
                             <p className="text-[10px] font-semibold text-slate-500 mb-1.5">
-                              {submissions[a.id].length} submission{submissions[a.id].length !== 1 ? 's' : ''}
+                              {t('submissionsCount', { count: submissions[a.id].length })}
                             </p>
                             {submissions[a.id].map(s => (
                               <SubmissionRow key={s.id} s={s} icon="👤" onView={onViewSubmission} dueMs={dueStatus(a).dueMs}
@@ -481,7 +487,7 @@ function ClassroomCard({
               className="w-full flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2"
             >
               <span className="flex items-center gap-1.5">
-                <Eye size={13} className="text-emerald-500" /> General Submissions
+                <Eye size={13} className="text-emerald-500" /> {t('generalSubmissions')}
               </span>
               {expandedGeneral
                 ? <ChevronDown size={13} className="text-slate-400" />
@@ -491,10 +497,10 @@ function ClassroomCard({
             {expandedGeneral && (
               loadingGeneralSubs ? (
                 <div className="flex items-center gap-2 text-xs text-slate-400 py-3 justify-center">
-                  <Loader2 size={13} className="animate-spin" /> Loading…
+                  <Loader2 size={13} className="animate-spin" /> {t('loading')}
                 </div>
               ) : !generalSubs || generalSubs.length === 0 ? (
-                <p className="text-[10px] text-slate-400 text-center py-2">No general submissions yet.</p>
+                <p className="text-[10px] text-slate-400 text-center py-2">{t('noGeneralSubmissions')}</p>
               ) : (
                 <div className="space-y-1.5">
                   {generalSubs.map(s => (
@@ -514,7 +520,7 @@ function ClassroomCard({
               className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 hover:bg-rose-50 dark:hover:bg-rose-900/20 disabled:opacity-60 py-2 rounded-xl transition-colors"
             >
               {deleting ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
-              {deleting ? 'Deleting…' : 'Delete class'}
+              {deleting ? t('deleting') : t('deleteClass')}
             </button>
           </div>
 
@@ -525,6 +531,7 @@ function ClassroomCard({
 }
 
 function SubmissionRow({ s, icon, onView, className, dueMs }) {
+  const { t, formatDate } = useLang()
   const canView = !!s.worksheetHtml
   const late = dueMs && s.submittedAt?.seconds && s.submittedAt.seconds * 1000 > dueMs
   return (
@@ -536,8 +543,8 @@ function SubmissionRow({ s, icon, onView, className, dueMs }) {
     >
       <span className="text-sm flex-shrink-0">{icon}</span>
       <div className="flex-1 min-w-0">
-        <p className="font-medium text-slate-700 dark:text-slate-200 truncate">{s.studentName || 'Student'}</p>
-        <p className="text-slate-400 truncate">{s.worksheetName || s.name || (canView ? 'Worksheet' : 'Feedback only')}</p>
+        <p className="font-medium text-slate-700 dark:text-slate-200 truncate">{s.studentName || t('student')}</p>
+        <p className="text-slate-400 truncate">{s.worksheetName || s.name || (canView ? t('worksheet') : t('feedbackOnly'))}</p>
         {s.feedback && (
           <p className="mt-1 text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md px-2 py-1">
             💬 {s.feedback}
@@ -545,10 +552,10 @@ function SubmissionRow({ s, icon, onView, className, dueMs }) {
         )}
       </div>
       {s.submittedAt?.seconds && (
-        <span className="text-slate-400 flex-shrink-0">{new Date(s.submittedAt.seconds * 1000).toLocaleDateString()}</span>
+        <span className="text-slate-400 flex-shrink-0">{formatDate(s.submittedAt.seconds * 1000)}</span>
       )}
-      {late && <span className="flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">Late</span>}
-      {canView && <span className="text-blue-500 dark:text-blue-400 font-semibold flex-shrink-0">View ›</span>}
+      {late && <span className="flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">{t('late')}</span>}
+      {canView && <span className="text-blue-500 dark:text-blue-400 font-semibold flex-shrink-0">{t('viewArrow')}</span>}
     </button>
   )
 }

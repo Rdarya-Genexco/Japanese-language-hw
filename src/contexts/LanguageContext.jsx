@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react'
 import { getLang } from '../utils/languages'
 import { getStrings } from '../utils/i18n'
 
@@ -44,11 +44,29 @@ export function LanguageProvider({ children }) {
   const lang = getLang(langCode)
   const strings = getStrings(langCode)
 
-  /** Translation helper: t('signIn') → localized string */
-  const t = useCallback((key) => strings[key] ?? key, [strings])
+  const plural = useMemo(() => new Intl.PluralRules(langCode), [langCode])
+
+  /**
+   * t('signIn') → localized string. t('studentsCount', { count: 3 }) picks the language's plural
+   * form and fills {count}; any {name} placeholder is filled from the second argument.
+   */
+  const t = useCallback((key, vars) => {
+    let s = strings[key] ?? key
+    if (s && typeof s === 'object') s = s[plural.select(vars?.count ?? 0)] ?? s.other ?? s.one
+    if (vars) s = s.replace(/\{(\w+)\}/g, (m, name) => (vars[name] ?? m))
+    return s
+  }, [strings, plural])
+
+  /** Dates in the chosen language. Accepts a Date, epoch ms, or a 'YYYY-MM-DD' due-date string. */
+  const formatDate = useCallback((value) => {
+    const m = typeof value === 'string' && /^(\d{4})-(\d{2})-(\d{2})$/.exec(value)
+    const d = m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : new Date(value)
+    if (Number.isNaN(d.getTime())) return String(value ?? '')
+    return new Intl.DateTimeFormat(langCode, { year: 'numeric', month: 'short', day: 'numeric' }).format(d)
+  }, [langCode])
 
   return (
-    <LanguageContext.Provider value={{ langCode, setLangCode, lang, t }}>
+    <LanguageContext.Provider value={{ langCode, setLangCode, lang, t, formatDate }}>
       {children}
     </LanguageContext.Provider>
   )

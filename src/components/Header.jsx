@@ -45,7 +45,7 @@ export default function Header({ streak = 0 }) {
         >
           <Logo size={32} />
           <span className="font-bold text-white tracking-tight">Doc Translate</span>
-          <span className="text-white/50 text-xs font-medium hidden md:block">— Every worksheet in your language!</span>
+          <span className="text-white/50 text-xs font-medium hidden md:block">{t('headerTagline')}</span>
         </button>
 
         {/* Right side */}
@@ -62,7 +62,7 @@ export default function Header({ streak = 0 }) {
               onClick={() => navigate('/classes')}
               className="hidden sm:flex items-center gap-1.5 bg-cyan-400/20 border border-cyan-400/40 hover:bg-cyan-400/30 text-cyan-200 px-2.5 py-1 rounded-full text-xs font-medium transition-colors"
             >
-              <School size={12} /> Classes
+              <School size={12} /> {t('navClasses')}
             </button>
           )}
 

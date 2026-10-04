@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRight, Home } from 'lucide-react'
+import { useLang } from '../contexts/LanguageContext'
 
 export default function Breadcrumb({ items = [], isDragTarget = false, onDropWorksheet }) {
   const navigate = useNavigate()
+  const { t } = useLang()
   const [dragOverId, setDragOverId] = useState(null)
 
   // ── Mouse drag handlers ──────────────────────────────────────────────────
@@ -58,7 +60,7 @@ export default function Breadcrumb({ items = [], isDragTarget = false, onDropWor
       {/* Hint shown while dragging */}
       {isDragTarget && items.length > 1 && (
         <span className="ml-2 text-xs text-violet-400 dark:text-violet-500 italic flex-shrink-0">
-          ← drop here to move up
+          {t('dropToMoveUp')}
         </span>
       )}
     </nav>

@@ -19,13 +19,14 @@ import NewFolderModal from '../components/NewFolderModal'
 import WorksheetViewer from '../components/WorksheetViewer'
 import SubmitModal from '../components/SubmitModal'
 import { dueStatus, overdueText } from '../utils/dueDates'
+import { errorText } from '../utils/appError'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 
 export default function DashboardPage() {
   const { user }              = useAuth()
-  const { t }                 = useLang()
+  const { t, formatDate }     = useLang()
   const { role, classroomCode } = useRole()
   const { folderId = 'root' } = useParams()
   const navigate              = useNavigate()
@@ -103,13 +104,13 @@ export default function DashboardPage() {
 
   const handleUnsubmit = (a) => {
     setTimeout(async () => {
-      if (!window.confirm(`Unsubmit "${a.title}"?\nYour teacher will no longer see it, and you can submit again.`)) return
+      if (!window.confirm(t('confirmUnsubmit', { title: a.title }))) return
       setUnsubmittingId(a.id)
       try {
         await unsubmitAssignment(classroomCode, a.id, user.uid)
         setSubmitted(p => ({ ...p, [a.id]: false }))
       } catch (err) {
-        alert('Failed to unsubmit: ' + err.message)
+        alert(t('failedUnsubmit') + ': ' + errorText(err, t))
       } finally {
         setUnsubmittingId(null)
       }
@@ -150,7 +151,7 @@ export default function DashboardPage() {
       } else {
         openPrintView(full.worksheetData)
       }
-    } catch (err) { alert(t('loadFailed') + ': ' + err.message) }
+    } catch (err) { alert(t('printFailed') + ': ' + errorText(err, t)) }
     finally  { setWsLoading(false) }
   }
 
@@ -164,7 +165,7 @@ export default function DashboardPage() {
       } else {
         await downloadAsDocx(full.worksheetData)
       }
-    } catch (err) { alert(t('loadFailed') + ': ' + err.message) }
+    } catch (err) { alert(t('wordFailed') + ': ' + errorText(err, t)) }
     finally  { setWsLoading(false) }
   }
 
@@ -178,7 +179,7 @@ export default function DashboardPage() {
       } else {
         await downloadAsPdf(full.worksheetData)
       }
-    } catch (err) { alert(t('loadFailed') + ': ' + err.message) }
+    } catch (err) { alert(t('pdfFailed') + ': ' + errorText(err, t)) }
     finally  { setWsLoading(false) }
   }
 
@@ -196,7 +197,7 @@ export default function DashboardPage() {
       try {
         await deleteFolder(user.uid, folder.id)
       } catch (err) {
-        alert('Failed to delete folder: ' + err.message)
+        alert(t('failedDeleteFolder') + ': ' + errorText(err, t))
       }
       load()
     }, 0)
@@ -211,7 +212,7 @@ export default function DashboardPage() {
         await renameFolder(user.uid, folder.id, name)
         load()
       } catch (err) {
-        alert('Failed to rename folder: ' + err.message)
+        alert(t('failedRenameFolder') + ': ' + errorText(err, t))
       }
     }, 0)
   }
@@ -224,7 +225,7 @@ export default function DashboardPage() {
       load()
     } catch (err) {
       console.error('[Dashboard] moveWorksheet error', err)
-      alert('Failed to move worksheet: ' + err.message)
+      alert(t('failedMoveWorksheet') + ': ' + errorText(err, t))
     }
   }
 
@@ -261,7 +262,7 @@ export default function DashboardPage() {
         if (viewWorksheet?.id === ws.id) setViewWorksheet(null)
         load()
       } catch (err) {
-        alert('Failed to delete worksheet: ' + err.message)
+        alert(t('failedDeleteWorksheet') + ': ' + errorText(err, t))
       }
     }, 0)
   }
@@ -269,7 +270,7 @@ export default function DashboardPage() {
   const isEmpty = !loading && folders.length === 0 && worksheets.length === 0
 
   // Error help text (kept in English for technical content)
-  const driveHelp = driveError ? buildDriveHelp(driveError.code) : null
+  const driveHelp = driveError ? buildDriveHelp(driveError.code, t) : null
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-violet-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex flex-col">
@@ -290,20 +291,20 @@ export default function DashboardPage() {
                 <span className="text-4xl flex-shrink-0 animate-bounce" style={{ animationDuration: '2s' }}>🎒</span>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-white text-base">
-                    {user?.displayName ? `Hey ${user.displayName.split(' ')[0]}! 👋` : 'Welcome back!'}
+                    {user?.displayName ? t('greeting', { name: user.displayName.split(' ')[0] }) : t('welcomeBack')}
                   </p>
                   <p className="text-white/80 text-xs mt-0.5">
                     {worksheets.length === 0
-                      ? '🌟 Upload your first worksheet to get started!'
+                      ? t('uploadFirstWorksheet')
                       : worksheets.length < 3
-                      ? `You have ${worksheets.length} worksheet${worksheets.length !== 1 ? 's' : ''}. Keep going! 💪`
-                      : `${worksheets.length} worksheets done! You're on a roll! 🚀`}
+                      ? t('keepGoing', { count: worksheets.length })
+                      : t('onARoll', { count: worksheets.length })}
                   </p>
                 </div>
                 {streak > 0 && (
                   <div className="flex-shrink-0 bg-white/20 rounded-2xl px-3 py-2 text-center border border-white/30">
                     <p className="text-2xl font-black text-white leading-none">{streak}</p>
-                    <p className="text-white/80 text-xs mt-0.5">🔥 streak</p>
+                    <p className="text-white/80 text-xs mt-0.5">{t('streakLabel')}</p>
                   </div>
                 )}
               </div>
@@ -312,10 +313,10 @@ export default function DashboardPage() {
             {/* Achievement badges */}
             <div className="flex gap-2 overflow-x-auto pb-1">
               {[
-                { icon: '🌱', label: 'Started', done: worksheets.length >= 1 },
-                { icon: '📚', label: '3 sheets', done: worksheets.length >= 3 },
-                { icon: '⭐', label: '5 sheets', done: worksheets.length >= 5 },
-                { icon: '🏆', label: '10 sheets', done: worksheets.length >= 10 },
+                { icon: '🌱', label: t('badgeStarted'), done: worksheets.length >= 1 },
+                { icon: '📚', label: t('badgeSheets', { count: 3 }), done: worksheets.length >= 3 },
+                { icon: '⭐', label: t('badgeSheets', { count: 5 }), done: worksheets.length >= 5 },
+                { icon: '🏆', label: t('badgeSheets', { count: 10 }), done: worksheets.length >= 10 },
               ].map(badge => (
                 <div
                   key={badge.label}
@@ -338,7 +339,7 @@ export default function DashboardPage() {
               <div className="bg-white dark:bg-slate-800 rounded-2xl border border-blue-200 dark:border-blue-700 p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <ClipboardList size={15} className="text-blue-500" />
-                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Assignments</span>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t('assignments')}</span>
                   <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold px-2 py-0.5 rounded-full">
                     {assignments.length}
                   </span>
@@ -363,26 +364,26 @@ export default function DashboardPage() {
                         {a.description && (
                           <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{a.description}</p>
                         )}
-                        {a.dueDate && <p className="text-xs text-amber-600 dark:text-amber-400">Due: {a.dueDate}</p>}
-                        {!submitted[a.id] && overdueText(due) && (
+                        {a.dueDate && <p className="text-xs text-amber-600 dark:text-amber-400">{t('dueOn', { date: formatDate(a.dueDate) })}</p>}
+                        {!submitted[a.id] && overdueText(due, t) && (
                           <p className={`text-xs font-semibold ${closed ? 'text-rose-600 dark:text-rose-400' : 'text-orange-600 dark:text-orange-400'}`}>
-                            ⚠️ {overdueText(due)}
+                            ⚠️ {overdueText(due, t)}
                           </p>
                         )}
                       </div>
                       {a.attachedWorksheetHtml && (
-                        <span className="flex-shrink-0 text-xs text-blue-500 dark:text-blue-400 font-semibold">View ›</span>
+                        <span className="flex-shrink-0 text-xs text-blue-500 dark:text-blue-400 font-semibold">{t('viewArrow')}</span>
                       )}
                       {submitted[a.id] ? (
                         <div className="flex-shrink-0 flex items-center gap-1.5">
-                          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Submitted ✓</span>
+                          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">{t('submittedCheck')}</span>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleUnsubmit(a) }}
                             disabled={unsubmittingId === a.id || closed}
-                            title={closed ? 'The deadline has passed' : undefined}
+                            title={closed ? t('deadlinePassed') : undefined}
                             className="text-xs font-semibold border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 px-2.5 py-1.5 rounded-lg transition-colors"
                           >
-                            {unsubmittingId === a.id ? '…' : 'Unsubmit'}
+                            {unsubmittingId === a.id ? '…' : t('unsubmit')}
                           </button>
                         </div>
                       ) : (
@@ -391,7 +392,7 @@ export default function DashboardPage() {
                           disabled={submitted[a.id] === undefined || closed}
                           className="flex-shrink-0 text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white px-2.5 py-1.5 rounded-lg transition-colors"
                         >
-                          {closed ? 'Closed' : 'Submit'}
+                          {closed ? t('closed') : t('submit')}
                         </button>
                       )}
                     </div>
@@ -402,7 +403,7 @@ export default function DashboardPage() {
                     onClick={() => setShowAllAssignments(v => !v)}
                     className="mt-2 w-full text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-center py-1.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                   >
-                    {showAllAssignments ? 'Show less' : `See all ${assignments.length} assignments`}
+                    {showAllAssignments ? t('showLess') : t('seeAllAssignments', { count: assignments.length })}
                   </button>
                 )}
               </div>
@@ -416,25 +417,25 @@ export default function DashboardPage() {
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
                 <p className="text-2xl font-black text-blue-600 dark:text-blue-400">{worksheets.length}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Worksheets</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{t('worksheets')}</p>
               </div>
               <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
                 <p className="text-2xl font-black text-violet-600 dark:text-violet-400">{folders.length}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Folders</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{t('folders')}</p>
               </div>
               <button
                 onClick={() => navigate('/classes')}
                 className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-cyan-300 dark:hover:border-cyan-600 transition-colors"
               >
                 <p className="text-2xl">🏫</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Classes ↗</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{t('classesLink')}</p>
               </button>
             </div>
             <button
               onClick={() => navigate('/classes')}
               className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
             >
-              <School size={15} /> Manage Classes &amp; Assignments
+              <School size={15} /> {t('manageClasses')}
             </button>
           </div>
         )}
@@ -451,7 +452,7 @@ export default function DashboardPage() {
               <button
                 onClick={() => setListView(v => !v)}
                 className="btn-secondary text-sm"
-                title={listView ? 'Grid view' : 'List view'}
+                title={listView ? t('gridView') : t('listView')}
               >
                 {listView ? <LayoutGrid size={16} /> : <List size={16} />}
               </button>
@@ -578,7 +579,7 @@ export default function DashboardPage() {
             className="fixed z-50 pointer-events-none flex items-center gap-2 bg-violet-600 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-2xl"
             style={{ left: touchPos.x + 16, top: touchPos.y - 20 }}
           >
-            📄 {dragOverFolderId ? '→ Move here' : 'Drag to a folder'}
+            📄 {dragOverFolderId ? t('moveHereArrow') : t('dragToFolder')}
           </div>
         )}
 
@@ -638,35 +639,22 @@ export default function DashboardPage() {
   )
 }
 
-function buildDriveHelp(code) {
-  const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
+function buildDriveHelp(code, t) {
+  const consoleUrl = `https://console.firebase.google.com/project/${import.meta.env.VITE_FIREBASE_PROJECT_ID}/firestore`
   if (code === 'db-not-created') {
     return {
-      title: 'Firestore database has not been created yet',
-      steps: [
-        `Create the database in Firebase Console: https://console.firebase.google.com/project/${PROJECT_ID}/firestore`,
-        'Click "Create database", choose "Production" or "Test" mode.',
-        'Reload this page after creation.',
-      ],
+      title: t('dbNotCreatedTitle'),
+      steps: [t('dbNotCreatedStep1', { url: consoleUrl }), t('reloadAfter')],
     }
   }
   if (code === 'permission-denied' || code === 'forbidden') {
     return {
-      title: 'Firestore security rules are blocking access',
-      steps: [
-        `Open the security rules tab: https://console.firebase.google.com/project/${PROJECT_ID}/firestore/rules`,
-        "Paste the following rules and click Publish:",
-        `rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /users/{uid}/{document=**} {\n      allow read, write: if request.auth != null && request.auth.uid == uid;\n    }\n  }\n}`,
-        'Reload after publishing.',
-      ],
+      title: t('rulesBlockingTitle'),
+      steps: [t('rulesBlockingStep1', { url: `${consoleUrl}/databases/lang/rules` }), t('rulesBlockingStep2'), t('reloadAfter')],
     }
   }
   return {
-    title: `Connection error (${code || 'unknown'})`,
-    steps: [
-      'Check your internet connection.',
-      'Reload the page.',
-      'Try signing out and back in if the problem persists.',
-    ],
+    title: t('connectionErrorTitle', { code: code || 'unknown' }),
+    steps: [t('checkConnection'), t('reloadPage'), t('signOutIn')],
   }
 }
