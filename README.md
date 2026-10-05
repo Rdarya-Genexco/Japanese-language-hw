@@ -35,8 +35,8 @@ Translate worksheets into any of 10 languages with AI, keep them in a personal d
 ```bash
 npm install
 cp .env.example .env.local   # fill in the Firebase values
-npm run dev                  # app only; AI needs the Edge Function:
-npx netlify dev              # app + /api/gemini (set GEMINI_API_KEY in .env.local)
+npm run dev                  # app + /api/gemini (set GEMINI_API_KEY in .env or .env.local)
+npx netlify dev              # same, through Netlify's own dev server
 ```
 
 Scripts:

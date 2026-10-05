@@ -1,10 +1,47 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { handleGemini } from './netlify/edge-functions/gemini.js'
+
+/**
+ * Serves /api/gemini during `npm run dev` with the same handler as the Netlify Edge Function,
+ * so AI works locally without `netlify dev`. GEMINI_API_KEY is read from .env on the dev machine only.
+ */
+function geminiDevApi() {
+  return {
+    name: 'gemini-dev-api',
+    apply: 'serve',
+    configureServer(server) {
+      const vars = loadEnv(server.config.mode, process.cwd(), '')
+      const env = { get: (name) => vars[name] }
+      server.middlewares.use('/api/gemini', async (req, res) => {
+        try {
+          const chunks = []
+          for await (const chunk of req) chunks.push(chunk)
+          const request = new Request(new URL(req.originalUrl || req.url, 'http://localhost'), {
+            method: req.method,
+            headers: req.headers,
+            body: ['GET', 'HEAD'].includes(req.method) ? undefined : Buffer.concat(chunks),
+          })
+          const response = await handleGemini(request, env)
+          res.statusCode = response.status
+          response.headers.forEach((value, name) => res.setHeader(name, value))
+          if (response.body) for await (const chunk of response.body) res.write(chunk)
+          res.end()
+        } catch (err) {
+          server.config.logger.error(`[gemini-dev-api] ${err.message}`)
+          if (!res.headersSent) res.statusCode = 502
+          res.end()
+        }
+      })
+    },
+  }
+}
 
 export default defineConfig({
   plugins: [
     react(),
+    geminiDevApi(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icon-192.png', 'icon-512.png'],

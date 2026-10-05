@@ -402,6 +402,11 @@ export async function processWorksheetWithGemini(fileData, mimeType, langCode = 
         throw appError('aiNetwork', err)
       }
 
+      // A 404 that isn't JSON means /api/gemini itself is missing (the app wasn't started with it)
+      if (response.status === 404 && !(response.headers.get('content-type') || '').includes('json')) {
+        throw appError('aiNetwork', new Error('/api/gemini not found'))
+      }
+
       // Overloaded / rate-limited / model doesn't exist → try next model
       if (response.status === 503 || response.status === 429 || response.status === 404) {
         const errBody = await response.json().catch(() => ({}))
