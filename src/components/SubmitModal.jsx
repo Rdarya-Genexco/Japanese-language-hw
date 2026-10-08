@@ -92,9 +92,9 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
-        <div className="bg-gradient-to-r from-cyan-600 to-blue-600 px-5 pt-5 pb-4 flex items-center justify-between">
+    <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 w-full max-w-sm overflow-hidden">
+        <div className="bg-slate-900 dark:bg-slate-950 border-b-2 border-violet-500 px-5 pt-5 pb-4 flex items-center justify-between">
           <div>
             <h2 className="font-bold text-white">{t('submitToTeacher')}</h2>
             <p className="text-white/70 text-xs mt-0.5 truncate max-w-[200px]">
@@ -143,7 +143,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
 
               {/* Assignment picker */}
               {assignment ? (
-                <div className="mb-4 px-3 py-2 rounded-xl border border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-xs text-blue-700 dark:text-blue-300">
+                <div className="mb-4 px-3 py-2 rounded-xl border border-violet-400 bg-violet-50 dark:bg-violet-900/20 text-xs text-violet-700 dark:text-violet-300">
                   <div className="font-semibold">{assignment.title}</div>
                   {assignment.dueDate && <div className="text-slate-400 mt-0.5">{t('dueOn', { date: formatDate(assignment.dueDate) })}</div>}
                   <DueWarning status={selectedStatus} />
@@ -163,7 +163,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
                       onClick={() => setSelectedAssignment(null)}
                       className={`w-full text-left px-3 py-2 rounded-xl border text-xs transition-colors ${
                         !selectedAssignment
-                          ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                          ? 'border-violet-400 bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300'
                           : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-slate-300'
                       }`}
                     >
@@ -180,7 +180,7 @@ export default function SubmitModal({ worksheetHtml, name, assignment = null, on
                           disabled={unavailable}
                           className={`w-full text-left px-3 py-2 rounded-xl border text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                             selectedAssignment?.id === a.id
-                              ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                              ? 'border-violet-400 bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300'
                               : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-slate-300'
                           }`}
                         >

@@ -103,14 +103,14 @@ export default function WorksheetViewer({ worksheet, onClose, onDelete }) {
   const displayTitle = decodeHtml(isHtml ? name : (title || name))
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-md z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div
-        className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden w-full sm:w-[95vw]"
+        className="bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden w-full sm:w-[95vw]"
         style={{ height: 'calc(90dvh - env(safe-area-inset-bottom, 0px))', maxHeight: '90dvh' }}
       >
 
         {/* Gradient header */}
-        <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 px-5 pt-5 pb-4 flex-shrink-0">
+        <div className="bg-slate-900 dark:bg-slate-950 border-b-2 border-violet-500 px-5 pt-5 pb-4 flex-shrink-0">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0 pr-3">
               <h2 className="font-bold text-white text-lg leading-tight">{displayTitle}</h2>

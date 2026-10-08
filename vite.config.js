@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import { handleGemini } from './netlify/edge-functions/gemini.js'
+import { handleGemini, withDefaults } from './netlify/edge-functions/gemini.js'
 
 /**
  * Serves /api/gemini during `npm run dev` with the same handler as the Netlify Edge Function,
@@ -13,7 +13,7 @@ function geminiDevApi() {
     apply: 'serve',
     configureServer(server) {
       const vars = loadEnv(server.config.mode, process.cwd(), '')
-      const env = { get: (name) => vars[name] }
+      const env = withDefaults({ get: (name) => vars[name] })
       server.middlewares.use('/api/gemini', async (req, res) => {
         try {
           const chunks = []
@@ -48,6 +48,8 @@ export default defineConfig({
       manifest: false, // use our own public/manifest.json
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}'],
+        // Static pages must not be swallowed by the SPA fallback
+        navigateFallbackDenylist: [/^\/privacy\.html$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

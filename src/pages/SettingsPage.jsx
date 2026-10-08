@@ -54,49 +54,49 @@ export default function SettingsPage() {
     <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-950 overflow-hidden">
       <BottomNav />
       {/* Header */}
-      <header className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 dark:from-indigo-900 dark:via-blue-900 dark:to-violet-900 flex-shrink-0 safe-top">
+      <header className="bg-slate-900/95 dark:bg-slate-950/90 backdrop-blur-md border-b border-white/10 shadow-md flex-shrink-0 safe-top">
         <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <button onClick={() => navigate('/')} className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
+          <button onClick={() => navigate('/')} className="p-2 bg-white/5 hover:bg-white/15 ring-1 ring-white/10 rounded-lg transition-colors">
             <ArrowLeft size={18} className="text-white" />
           </button>
-          <span className="font-bold text-white">{t('settings')}</span>
+          <span className="font-bold tracking-tight text-white">{t('settings')}</span>
         </div>
       </header>
 
-      <div className="max-w-lg mx-auto w-full flex-1 overflow-y-auto p-4 space-y-3 with-bottom-nav">
+      <div className="max-w-lg mx-auto w-full flex-1 overflow-y-auto px-4 py-6 space-y-4 with-bottom-nav">
 
         {/* User + sign out */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3 flex items-center gap-3">
+        <div className="card p-4 flex items-center gap-3.5">
           {user.photoURL ? (
-            <img src={user.photoURL} alt="" className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-600 flex-shrink-0" />
+            <img src={user.photoURL} alt="" className="w-12 h-12 rounded-full ring-2 ring-violet-200 dark:ring-violet-700 flex-shrink-0" />
           ) : (
-            <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-700 dark:text-indigo-300 font-bold flex-shrink-0">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-white text-lg font-bold shadow-sm flex-shrink-0">
               {user?.displayName?.[0] || '?'}
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <div className="font-medium text-slate-800 dark:text-slate-100 truncate text-sm">{user.displayName}</div>
+            <div className="font-semibold text-slate-900 dark:text-white truncate">{user.displayName}</div>
             <div className="text-xs text-slate-500 dark:text-slate-400 truncate">{user.email}</div>
           </div>
           <button
             onClick={logout}
-            className="text-xs text-red-500 hover:text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex-shrink-0 font-medium"
+            className="text-xs text-rose-600 dark:text-rose-400 px-3 py-2 rounded-lg border border-rose-200 dark:border-rose-800 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors flex-shrink-0 font-semibold"
           >
             {t('signOut')}
           </button>
         </div>
 
         {/* Role toggle */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">{t('role')}</p>
+        <div className="card p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">{t('role')}</p>
           <div className="flex gap-2">
             <button
               onClick={() => handleChangeRole('student')}
               disabled={changingRole}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-semibold transition-all disabled:opacity-60 ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all disabled:opacity-60 ${
                 role === 'student'
-                  ? 'bg-violet-100 dark:bg-violet-900/40 border-violet-400 dark:border-violet-500 text-violet-700 dark:text-violet-300'
-                  : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-violet-300'
+                  ? 'bg-violet-50 dark:bg-violet-900/40 border-violet-500 text-violet-700 dark:text-violet-300 shadow-sm'
+                  : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-violet-300 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {changingRole && role !== 'student' ? <Loader2 size={12} className="animate-spin" /> : <BookOpen size={12} />}
@@ -105,10 +105,10 @@ export default function SettingsPage() {
             <button
               onClick={() => handleChangeRole('teacher')}
               disabled={changingRole}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 text-xs font-semibold transition-all disabled:opacity-60 ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all disabled:opacity-60 ${
                 role === 'teacher'
-                  ? 'bg-blue-100 dark:bg-blue-900/40 border-blue-400 dark:border-blue-500 text-blue-700 dark:text-blue-300'
-                  : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-blue-300'
+                  ? 'bg-cyan-50 dark:bg-cyan-900/30 border-cyan-500 text-cyan-700 dark:text-cyan-300 shadow-sm'
+                  : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-cyan-300 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {changingRole && role !== 'teacher' ? <Loader2 size={12} className="animate-spin" /> : <GraduationCap size={12} />}
@@ -119,16 +119,16 @@ export default function SettingsPage() {
 
         {/* Student: join classroom */}
         {role === 'student' && (
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3">
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">{t('classroom')}</p>
+          <div className="card p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">{t('classroom')}</p>
             {classroomCode && !changingCode && joinStatus !== 'ok' ? (
               <div className="flex items-center gap-2">
-                <span className="flex-1 font-mono font-black text-lg text-center tracking-widest text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 rounded-xl py-1.5 border border-cyan-200 dark:border-cyan-700">
+                <span className="flex-1 font-mono font-black text-lg text-center tracking-[0.25em] text-violet-700 dark:text-violet-300 bg-violet-50 dark:bg-violet-900/30 rounded-xl py-2 border-2 border-dashed border-violet-300 dark:border-violet-600">
                   {classroomCode}
                 </span>
                 <button
                   onClick={() => { setJoinCode(''); setJoinStatus(null); setChangingCode(true) }}
-                  className="text-xs text-slate-400 hover:text-slate-600 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                  className="text-xs font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   {t('change')}
                 </button>
@@ -166,20 +166,20 @@ export default function SettingsPage() {
         )}
 
         {/* Language picker */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="card p-4">
+          <div className="flex items-center gap-2 mb-3">
             <Globe size={13} className="text-violet-600 dark:text-violet-400" />
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t('language')}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{t('language')}</p>
           </div>
-          <div className="grid grid-cols-4 gap-1.5">
+          <div className="grid grid-cols-4 gap-2">
             {LANGUAGES.map(lang => (
               <button
                 key={lang.code}
                 onClick={() => setLangCode(lang.code)}
-                className={`flex flex-col items-center gap-0.5 px-1 py-2 rounded-xl border transition-all text-xs font-medium ${
+                className={`flex flex-col items-center gap-1 px-1 py-2.5 rounded-xl border transition-all text-xs font-medium ${
                   langCode === lang.code
-                    ? 'bg-violet-100 dark:bg-violet-900/40 border-violet-400 dark:border-violet-500 text-violet-700 dark:text-violet-300'
-                    : 'bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-violet-300'
+                    ? 'bg-violet-50 dark:bg-violet-900/40 border-violet-500 text-violet-700 dark:text-violet-300 ring-2 ring-violet-500/20'
+                    : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-violet-300 hover:bg-white dark:hover:bg-slate-800'
                 }`}
               >
                 <span className="text-base leading-none">{lang.flag}</span>

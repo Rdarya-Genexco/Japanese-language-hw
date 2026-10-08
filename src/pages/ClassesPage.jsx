@@ -185,12 +185,12 @@ export default function ClassesPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/')}
-              className="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors"
+              className="p-2 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 shadow-sm hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
             >
               <ArrowLeft size={16} className="text-slate-600 dark:text-slate-400" />
             </button>
             <div>
-              <h1 className="font-bold text-slate-800 dark:text-slate-100 text-xl">{t('myClasses')}</h1>
+              <h1 className="font-bold tracking-tight text-slate-900 dark:text-white text-2xl">{t('myClasses')}</h1>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {loadingClassrooms
                   ? t('loading')
@@ -215,7 +215,7 @@ export default function ClassesPage() {
             <Loader2 size={18} className="animate-spin" /> {t('loadingClassrooms')}
           </div>
         ) : classrooms.length === 0 ? (
-          <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <div className="text-center py-16 card border-dashed">
             <p className="text-5xl mb-3">🏫</p>
             <p className="font-semibold text-slate-700 dark:text-slate-200">{t('noClassroomsYet')}</p>
             <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">{t('createFirstClassroom')}</p>
@@ -294,16 +294,16 @@ function ClassroomCard({
 }) {
   const { t, formatDate } = useLang()
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div className="card overflow-hidden transition-shadow hover:shadow-md">
 
       {/* Classroom header */}
       <div className="flex items-center gap-3 p-4">
         <button onClick={onToggle} className="flex-1 flex items-center gap-3 text-left min-w-0">
-          <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
-            <Users size={18} className="text-cyan-600 dark:text-cyan-400" />
+          <div className="w-11 h-11 bg-gradient-to-br from-cyan-400 to-violet-500 shadow-sm rounded-xl flex items-center justify-center flex-shrink-0">
+            <Users size={18} className="text-white" />
           </div>
           <div className="min-w-0">
-            <p className="font-black font-mono text-xl tracking-widest text-cyan-600 dark:text-cyan-400">
+            <p className="font-bold font-mono text-xl tracking-[0.2em] text-slate-900 dark:text-white">
               {cls.code}
             </p>
             <p className="text-xs text-slate-400 dark:text-slate-500">
@@ -321,7 +321,7 @@ function ClassroomCard({
           className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 flex-shrink-0 ${
             copied
               ? 'bg-emerald-500 text-white'
-              : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+              : 'bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/50'
           }`}
         >
           {copied ? <Check size={13} /> : <Copy size={13} />}
@@ -336,11 +336,11 @@ function ClassroomCard({
 
       {/* Expanded content */}
       {active && (
-        <div className="border-t border-slate-100 dark:border-slate-700">
+        <div className="border-t border-slate-100 dark:border-white/10 bg-slate-50/50 dark:bg-slate-950/30">
 
           {/* Students */}
-          <div className="p-4 border-b border-slate-100 dark:border-slate-700">
-            <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mb-3">
+          <div className="p-5 border-b border-slate-100 dark:border-white/10">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mb-3">
               <Users size={13} className="text-cyan-500" />
               {t('students')}
               {members?.length > 0 && (
@@ -366,7 +366,7 @@ function ClassroomCard({
             ) : (
               <div className="space-y-1.5">
                 {members.map(m => (
-                  <div key={m.id} className="flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/30 rounded-xl px-3 py-2 border border-slate-200 dark:border-slate-700">
+                  <div key={m.id} className="flex items-center gap-2.5 bg-white dark:bg-slate-900 rounded-xl px-3 py-2.5 border border-slate-200/80 dark:border-white/10 shadow-sm">
                     {m.photoURL ? (
                       <img src={m.photoURL} alt="" referrerPolicy="no-referrer" className="w-7 h-7 rounded-full flex-shrink-0 object-cover" />
                     ) : (
@@ -399,9 +399,9 @@ function ClassroomCard({
           </div>
 
           {/* Assignments */}
-          <div className="p-4 border-b border-slate-100 dark:border-slate-700">
+          <div className="p-5 border-b border-slate-100 dark:border-white/10">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                 <FileText size={13} className="text-violet-500" />
                 {t('assignments')}
                 {assignments?.length > 0 && (
@@ -412,7 +412,7 @@ function ClassroomCard({
               </h3>
               <button
                 onClick={onNewAssignment}
-                className="flex items-center gap-1 text-[11px] font-semibold bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg transition-colors"
+                className="flex items-center gap-1 text-[11px] font-semibold bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors"
               >
                 <Plus size={11} /> {t('newShort')}
               </button>
@@ -427,10 +427,10 @@ function ClassroomCard({
             ) : (
               <div className="space-y-1.5">
                 {assignments.map(a => (
-                  <div key={a.id} className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+                  <div key={a.id} className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-xl overflow-hidden shadow-sm">
                     <button
                       onClick={() => onToggleAssignment(a)}
-                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
                     >
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-slate-800 dark:text-slate-100 text-xs truncate">{a.title}</p>
@@ -445,7 +445,7 @@ function ClassroomCard({
                           </p>
                         )}
                         {a.attachedWorksheetName && (
-                          <p className="text-[10px] text-blue-500 dark:text-blue-400 mt-0.5 truncate">📎 {a.attachedWorksheetName}</p>
+                          <p className="text-[10px] text-violet-600 dark:text-violet-400 mt-0.5 truncate">📎 {a.attachedWorksheetName}</p>
                         )}
                       </div>
                       {loadingSubs[a.id] ? (
@@ -481,7 +481,7 @@ function ClassroomCard({
           </div>
 
           {/* General submissions */}
-          <div className="p-4">
+          <div className="p-5">
             <button
               onClick={onToggleGeneral}
               className="w-full flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2"
@@ -513,7 +513,7 @@ function ClassroomCard({
           </div>
 
           {/* Danger zone */}
-          <div className="px-4 pb-4">
+          <div className="px-5 pb-5">
             <button
               onClick={onDeleteClass}
               disabled={deleting}
@@ -539,7 +539,7 @@ function SubmissionRow({ s, icon, onView, className, dueMs }) {
       type="button"
       onClick={() => canView && onView(s)}
       disabled={!canView}
-      className={`w-full flex items-center gap-2 text-[10px] text-left border border-slate-200 dark:border-slate-700 transition-colors enabled:hover:border-blue-300 dark:enabled:hover:border-blue-600 enabled:hover:bg-blue-50 dark:enabled:hover:bg-blue-900/20 ${className}`}
+      className={`w-full flex items-center gap-2 text-[10px] text-left border border-slate-200 dark:border-slate-700 transition-colors enabled:hover:border-violet-300 dark:enabled:hover:border-violet-600 enabled:hover:bg-violet-50 dark:enabled:hover:bg-violet-900/20 ${className}`}
     >
       <span className="text-sm flex-shrink-0">{icon}</span>
       <div className="flex-1 min-w-0">
@@ -555,7 +555,7 @@ function SubmissionRow({ s, icon, onView, className, dueMs }) {
         <span className="text-slate-400 flex-shrink-0">{formatDate(s.submittedAt.seconds * 1000)}</span>
       )}
       {late && <span className="flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">{t('late')}</span>}
-      {canView && <span className="text-blue-500 dark:text-blue-400 font-semibold flex-shrink-0">{t('viewArrow')}</span>}
+      {canView && <span className="text-violet-600 dark:text-violet-400 font-semibold flex-shrink-0">{t('viewArrow')}</span>}
     </button>
   )
 }

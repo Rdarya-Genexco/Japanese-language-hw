@@ -29,11 +29,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-blue-600 to-violet-700 dark:from-indigo-950 dark:via-blue-950 dark:to-violet-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative blobs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-violet-400/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-blue-300/10 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] bg-violet-600/25 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-pink-500/10 rounded-full -translate-x-1/3 translate-y-1/3 blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-sm relative z-10">
         {/* Logo */}
@@ -48,7 +48,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-3xl p-7 shadow-2xl border border-white/20">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-7 shadow-2xl ring-1 ring-white/10">
           {/* Language picker */}
           <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3 text-center">
             {t('chooseYourLanguage')}
@@ -92,8 +92,8 @@ export default function LoginPage() {
               disabled={loading}
               className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold border-2 rounded-xl px-3 py-2 transition-all disabled:opacity-50 ${
                 pendingRole === 'teacher'
-                  ? 'bg-blue-600 border-blue-600 text-white'
-                  : 'border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                  ? 'bg-cyan-600 border-cyan-600 text-white'
+                  : 'border-cyan-300 dark:border-cyan-600 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-900/20'
               }`}
             >
               {t('imTeacher')}
@@ -109,7 +109,7 @@ export default function LoginPage() {
           <button
             onClick={() => handleSignIn(null)}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 hover:border-violet-400 dark:hover:border-violet-500 hover:shadow-lg rounded-2xl px-4 py-3.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
+            className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-400 dark:hover:border-violet-500 shadow-sm hover:shadow-md rounded-xl px-4 py-3.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
@@ -124,6 +124,9 @@ export default function LoginPage() {
           <p className="text-center text-xs text-slate-400 dark:text-slate-500 mt-4">
             {t('termsNote')}
           </p>
+          <p className="text-center mt-2">
+            <a href="/privacy.html" className="text-xs text-violet-600 dark:text-violet-400 hover:underline">Privacy Policy</a>
+          </p>
         </div>
 
         {/* Feature pills */}
@@ -134,7 +137,7 @@ export default function LoginPage() {
             { icon: '📁', key: 'folderMgmt' },
             { icon: '🌙', key: 'darkModeFeature' },
           ].map(f => (
-            <div key={f.key} className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-medium px-3 py-1.5 rounded-full">
+            <div key={f.key} className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm border border-white/10 text-white/80 text-xs font-medium px-3 py-1.5 rounded-full">
               <span>{f.icon}</span> {t(f.key)}
             </div>
           ))}

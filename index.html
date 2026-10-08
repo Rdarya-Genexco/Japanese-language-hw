@@ -18,7 +18,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static fallback for crawlers/no-JS (e.g. Google's OAuth verification); React replaces it on load -->
+      <main style="max-width:640px;margin:15vh auto;padding:0 20px;font-family:system-ui,sans-serif;text-align:center;color:#71717f">
+        <h1 style="color:#26262f;margin:0 0 8px">Doc Translate</h1>
+        <p>Translate English worksheets into your language, organise them in folders, and share assignments with your class.</p>
+        <p><a href="/privacy.html" style="color:#5a52e3">Privacy Policy</a></p>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

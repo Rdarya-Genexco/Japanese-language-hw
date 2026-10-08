@@ -32,9 +32,9 @@ export default function Breadcrumb({ items = [], isDragTarget = false, onDropWor
 
         return (
           <div key={item.id} className="flex items-center gap-1 min-w-0">
-            {i > 0 && <ChevronRight size={14} className="text-slate-400 dark:text-slate-500 flex-shrink-0" />}
+            {i > 0 && <ChevronRight size={14} className="text-slate-300 dark:text-slate-600 flex-shrink-0" />}
             {isLast ? (
-              <span className="font-semibold text-slate-800 dark:text-slate-100 truncate max-w-[200px]">
+              <span className="font-semibold text-slate-900 dark:text-white truncate max-w-[200px] px-2 py-0.5 bg-white dark:bg-slate-800 rounded-lg ring-1 ring-slate-200 dark:ring-white/10 shadow-sm">
                 {isRoot ? <><Home size={14} className="inline mr-1" />{item.name}</> : item.name}
               </span>
             ) : (
@@ -47,7 +47,7 @@ export default function Breadcrumb({ items = [], isDragTarget = false, onDropWor
                 className={`truncate max-w-[120px] transition-all px-2 py-0.5 rounded-lg ${
                   isOver
                     ? 'bg-violet-500 text-white font-semibold ring-2 ring-violet-300'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20'
                 }`}
               >
                 {isRoot ? <><Home size={14} className="inline mr-1" />{item.name}</> : item.name}

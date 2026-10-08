@@ -165,10 +165,10 @@ export default function SquirrelMascot() {
             : 'opacity-0 translate-y-3 scale-95 pointer-events-none'
         }`}
       >
-        <div className="relative bg-white dark:bg-slate-800 rounded-2xl rounded-br-sm shadow-2xl border-2 border-emerald-300 dark:border-emerald-600 px-3.5 py-3 max-w-[200px]">
+        <div className="relative bg-white dark:bg-slate-900 rounded-2xl rounded-br-md shadow-xl ring-1 ring-emerald-200 dark:ring-emerald-500/40 px-4 py-3 max-w-[220px]">
           <button
             onClick={dismiss}
-            className="absolute -top-2 -right-2 w-5 h-5 bg-emerald-100 dark:bg-emerald-900 hover:bg-emerald-200 dark:hover:bg-emerald-800 border border-emerald-300 dark:border-emerald-600 rounded-full text-emerald-600 dark:text-emerald-400 text-xs flex items-center justify-center transition-colors"
+            className="absolute -top-2 -right-2 w-6 h-6 bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 ring-1 ring-emerald-200 dark:ring-emerald-500/40 shadow-sm rounded-full text-emerald-600 dark:text-emerald-400 text-xs flex items-center justify-center transition-colors"
           >
             ×
           </button>
@@ -181,7 +181,7 @@ export default function SquirrelMascot() {
         </div>
         {/* Pointer triangle */}
         <div className="flex justify-end pr-6">
-          <div className="w-3 h-3 bg-white dark:bg-slate-800 border-r-2 border-b-2 border-emerald-300 dark:border-emerald-600 rotate-45 -mt-[7px]" />
+          <div className="w-3 h-3 bg-white dark:bg-slate-900 border-r border-b border-emerald-200 dark:border-emerald-500/40 rotate-45 -mt-[7px]" />
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, signInAnonymously } from 'firebase/auth'
 import { auth, googleProvider } from '../firebase/config'
+import { useLang } from './LanguageContext'
 
 const AuthContext = createContext(null)
 
@@ -9,6 +10,7 @@ const MOCK_USER = { uid: 'test-uid-123', displayName: 'Rishi Dev', email: 'rishi
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const { langCode } = useLang()
 
   useEffect(() => {
     if (import.meta.env.DEV && typeof window !== 'undefined' && window.location.search.includes('mock=1')) {
@@ -26,6 +28,8 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signInWithGoogle = async () => {
+    // Show Google's sign-in page in the language picked in the app (hl = Google's UI language)
+    googleProvider.setCustomParameters({ hl: langCode })
     try {
       await signInWithPopup(auth, googleProvider)
     } catch (err) {

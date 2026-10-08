@@ -26,10 +26,10 @@ export default function NewFolderModal({ onCreate, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+    <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 w-full max-w-sm overflow-hidden">
         {/* Coloured header */}
-        <div className="bg-gradient-to-r from-indigo-500 to-violet-600 px-6 pt-5 pb-4 flex items-center justify-between">
+        <div className="bg-slate-900 dark:bg-slate-950 border-b-2 border-violet-500 px-6 pt-5 pb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FolderPlus size={18} className="text-white" />
             <h2 className="font-bold text-white">{t('newFolderTitle')}</h2>

@@ -116,11 +116,11 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
   const isProcessing = processing && !done
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+    <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 w-full max-w-md overflow-hidden">
 
         {/* Gradient header */}
-        <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-violet-600 px-6 pt-5 pb-4 flex items-center justify-between">
+        <div className="bg-slate-900 dark:bg-slate-950 border-b-2 border-violet-500 px-6 pt-5 pb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles size={18} className="text-white" />
             <h2 className="font-bold text-white">{t('upload')}</h2>
@@ -184,7 +184,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2.5">
-                    <div className="w-14 h-14 bg-gradient-to-br from-indigo-100 to-violet-100 dark:from-indigo-900/40 dark:to-violet-900/40 rounded-2xl flex items-center justify-center shadow-inner">
+                    <div className="w-14 h-14 bg-violet-50 dark:bg-violet-900/30 ring-1 ring-violet-200 dark:ring-violet-700/50 rounded-2xl flex items-center justify-center">
                       <Upload size={26} className="text-violet-500" />
                     </div>
                     <div>
@@ -217,9 +217,9 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                 </div>
               )}
 
-              <div className="mt-4 bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 rounded-xl p-3.5 border border-indigo-100 dark:border-indigo-800">
-                <p className="font-semibold text-indigo-700 dark:text-indigo-300 mb-1 text-sm">🤖 AI</p>
-                <p className="text-xs text-indigo-600 dark:text-indigo-400">{t('aiDesc')}</p>
+              <div className="mt-4 bg-violet-50/60 dark:bg-violet-900/20 rounded-xl p-3.5 border border-violet-100 dark:border-violet-800/60">
+                <p className="font-semibold text-violet-700 dark:text-violet-300 mb-1 text-sm">🤖 AI</p>
+                <p className="text-xs text-violet-600/90 dark:text-violet-300/80">{t('aiDesc')}</p>
               </div>
 
               <div className="flex gap-2 mt-4">
@@ -273,7 +273,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
                 </>
               ) : (
                 <div className="text-center py-4">
-                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                  <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-900/30 ring-4 ring-emerald-100 dark:ring-emerald-900/40 rounded-full flex items-center justify-center mx-auto mb-4">
                     <CheckCircle size={40} className="text-emerald-500" />
                   </div>
                   <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-1">{t('successTitle')}</h3>

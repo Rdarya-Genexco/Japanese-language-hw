@@ -23,6 +23,7 @@ import { errorText } from '../utils/appError'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
+import { firebaseConfig } from '../firebase/config'
 
 export default function DashboardPage() {
   const { user }              = useAuth()
@@ -273,27 +274,27 @@ export default function DashboardPage() {
   const driveHelp = driveError ? buildDriveHelp(driveError.code, t) : null
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-violet-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
       <Header streak={streak} />
       <BottomNav onUpload={() => setShowUpload(true)} />
 
-      <div className="max-w-6xl mx-auto w-full px-4 py-4 flex-1 with-bottom-nav">
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 flex-1 with-bottom-nav">
 
         {/* Student motivational banner */}
         {role === 'student' && folderId === 'root' && !loading && (
           <div className="mb-4 space-y-3">
             {/* Main welcome banner */}
-            <div className="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 rounded-2xl p-4 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 dark:from-violet-700 dark:via-fuchsia-700 dark:to-amber-600 rounded-3xl p-5 relative overflow-hidden shadow-lg shadow-fuchsia-500/20">
               {/* Decorative circles */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full" />
-              <div className="absolute -bottom-2 right-12 w-12 h-12 bg-white/10 rounded-full" />
+              <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/20 rounded-full" />
+              <div className="absolute -bottom-6 right-28 w-16 h-16 bg-yellow-200/30 rounded-full" />
               <div className="flex items-center gap-4 relative">
-                <span className="text-4xl flex-shrink-0 animate-bounce" style={{ animationDuration: '2s' }}>🎒</span>
+                <span className="text-5xl flex-shrink-0 drop-shadow-md animate-bounce" style={{ animationDuration: '2s' }}>🎒</span>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white text-base">
+                  <p className="font-extrabold text-white text-lg drop-shadow-sm">
                     {user?.displayName ? t('greeting', { name: user.displayName.split(' ')[0] }) : t('welcomeBack')}
                   </p>
-                  <p className="text-white/80 text-xs mt-0.5">
+                  <p className="text-white/90 text-sm mt-0.5">
                     {worksheets.length === 0
                       ? t('uploadFirstWorksheet')
                       : worksheets.length < 3
@@ -302,16 +303,16 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 {streak > 0 && (
-                  <div className="flex-shrink-0 bg-white/20 rounded-2xl px-3 py-2 text-center border border-white/30">
-                    <p className="text-2xl font-black text-white leading-none">{streak}</p>
-                    <p className="text-white/80 text-xs mt-0.5">{t('streakLabel')}</p>
+                  <div className="flex-shrink-0 bg-white/25 backdrop-blur-sm rounded-2xl px-4 py-2 text-center ring-2 ring-white/40 rotate-3">
+                    <p className="text-3xl font-black text-white leading-none">{streak}</p>
+                    <p className="text-white/90 text-sm mt-0.5">{t('streakLabel')}</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Achievement badges */}
-            <div className="flex gap-2 overflow-x-auto pb-1">
+            <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 no-scrollbar">
               {[
                 { icon: '🌱', label: t('badgeStarted'), done: worksheets.length >= 1 },
                 { icon: '📚', label: t('badgeSheets', { count: 3 }), done: worksheets.length >= 3 },
@@ -320,13 +321,13 @@ export default function DashboardPage() {
               ].map(badge => (
                 <div
                   key={badge.label}
-                  className={`flex-shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-xl border text-center transition-all ${
+                  className={`flex-shrink-0 flex flex-col items-center gap-1 px-4 py-2.5 rounded-2xl border-2 text-center transition-all ${
                     badge.done
-                      ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700'
-                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 opacity-40'
+                      ? 'bg-gradient-to-b from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/20 border-amber-300 dark:border-amber-600 shadow-sm shadow-amber-500/20 hover:-translate-y-1 hover:rotate-2'
+                      : 'bg-white dark:bg-slate-900 border-dashed border-slate-300 dark:border-slate-700 opacity-50 grayscale'
                   }`}
                 >
-                  <span className="text-xl leading-none">{badge.done ? badge.icon : '🔒'}</span>
+                  <span className="text-2xl leading-none">{badge.done ? badge.icon : '🔒'}</span>
                   <span className={`text-xs font-semibold ${badge.done ? 'text-amber-700 dark:text-amber-400' : 'text-slate-400'}`}>
                     {badge.label}
                   </span>
@@ -336,11 +337,11 @@ export default function DashboardPage() {
 
             {/* Assignments from teacher */}
             {assignments.length > 0 && (
-              <div className="bg-white dark:bg-slate-800 rounded-2xl border border-blue-200 dark:border-blue-700 p-4">
+              <div className="card p-5">
                 <div className="flex items-center gap-2 mb-3">
-                  <ClipboardList size={15} className="text-blue-500" />
+                  <ClipboardList size={15} className="text-fuchsia-500" />
                   <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{t('assignments')}</span>
-                  <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 font-semibold px-2 py-0.5 rounded-full">
                     {assignments.length}
                   </span>
                 </div>
@@ -352,9 +353,9 @@ export default function DashboardPage() {
                     <div
                       key={a.id}
                       onClick={() => a.attachedWorksheetHtml && setViewAssignment(a)}
-                      className={`flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl px-3 py-2.5 transition-all ${
+                      className={`flex items-center gap-3 bg-gradient-to-r from-violet-50 to-fuchsia-50 dark:from-violet-900/20 dark:to-fuchsia-900/10 ring-1 ring-violet-200/60 dark:ring-violet-500/20 rounded-2xl px-3.5 py-3 transition-all ${
                         a.attachedWorksheetHtml
-                          ? 'cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/40 active:scale-[0.98]'
+                          ? 'cursor-pointer hover:ring-violet-400 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98]'
                           : ''
                       }`}
                     >
@@ -372,7 +373,7 @@ export default function DashboardPage() {
                         )}
                       </div>
                       {a.attachedWorksheetHtml && (
-                        <span className="flex-shrink-0 text-xs text-blue-500 dark:text-blue-400 font-semibold">{t('viewArrow')}</span>
+                        <span className="flex-shrink-0 text-xs text-violet-600 dark:text-violet-400 font-semibold">{t('viewArrow')}</span>
                       )}
                       {submitted[a.id] ? (
                         <div className="flex-shrink-0 flex items-center gap-1.5">
@@ -390,7 +391,7 @@ export default function DashboardPage() {
                         <button
                           onClick={(e) => { e.stopPropagation(); setSubmitAssignment(a) }}
                           disabled={submitted[a.id] === undefined || closed}
-                          className="flex-shrink-0 text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white px-2.5 py-1.5 rounded-lg transition-colors"
+                          className="flex-shrink-0 text-xs font-semibold bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors"
                         >
                           {closed ? t('closed') : t('submit')}
                         </button>
@@ -401,7 +402,7 @@ export default function DashboardPage() {
                 {assignments.length > 3 && (
                   <button
                     onClick={() => setShowAllAssignments(v => !v)}
-                    className="mt-2 w-full text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-center py-1.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                    className="mt-3 w-full text-xs text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 font-medium text-center py-2 rounded-lg hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors"
                   >
                     {showAllAssignments ? t('showLess') : t('seeAllAssignments', { count: assignments.length })}
                   </button>
@@ -415,17 +416,17 @@ export default function DashboardPage() {
         {role === 'teacher' && folderId === 'root' && !loading && (
           <div className="mb-4 space-y-3">
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
-                <p className="text-2xl font-black text-blue-600 dark:text-blue-400">{worksheets.length}</p>
+              <div className="card p-4 text-center">
+                <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{worksheets.length}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{t('worksheets')}</p>
               </div>
-              <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center">
-                <p className="text-2xl font-black text-violet-600 dark:text-violet-400">{folders.length}</p>
+              <div className="card p-4 text-center">
+                <p className="text-3xl font-bold tracking-tight text-violet-600 dark:text-violet-400">{folders.length}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{t('folders')}</p>
               </div>
               <button
                 onClick={() => navigate('/classes')}
-                className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-cyan-300 dark:hover:border-cyan-600 transition-colors"
+                className="card p-4 text-center hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-md transition-all"
               >
                 <p className="text-2xl">🏫</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{t('classesLink')}</p>
@@ -433,7 +434,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={() => navigate('/classes')}
-              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold py-3 rounded-xl shadow-sm hover:shadow-md transition-all"
             >
               <School size={15} /> {t('manageClasses')}
             </button>
@@ -441,7 +442,7 @@ export default function DashboardPage() {
         )}
 
         {/* Breadcrumb + action buttons */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/80 dark:border-white/10">
           <Breadcrumb
             items={breadcrumb}
             isDragTarget={isDragging}
@@ -505,10 +506,10 @@ export default function DashboardPage() {
         {loading ? (
           <div className="space-y-6">
             <div>
-              <div className="h-4 w-24 bg-gradient-to-r from-slate-200 to-slate-100 dark:from-slate-700 dark:to-slate-800 rounded-full mb-3 animate-pulse" />
+              <div className="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded-full mb-3 animate-pulse" />
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {[1,2,3,4,5].map(i => (
-                  <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-4 h-28 animate-pulse"
+                  <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl ring-1 ring-slate-200 dark:ring-white/10 p-4 h-28 animate-pulse"
                     style={{ animationDelay: `${i * 80}ms` }} />
                 ))}
               </div>
@@ -522,8 +523,8 @@ export default function DashboardPage() {
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-lg">📁</span>
-                  <h2 className="text-sm font-bold text-slate-600 dark:text-slate-400 tracking-wide">{t('folders')}</h2>
-                  <span className="text-xs bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 font-bold px-2 py-0.5 rounded-full border border-violet-200 dark:border-violet-700">{folders.length}</span>
+                  <h2 className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 tracking-wider">{t('folders')}</h2>
+                  <span className="text-xs bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full">{folders.length}</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {folders.map(folder => (
@@ -546,8 +547,8 @@ export default function DashboardPage() {
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-lg">📄</span>
-                  <h2 className="text-sm font-bold text-slate-600 dark:text-slate-400 tracking-wide">{t('worksheets')}</h2>
-                  <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold px-2 py-0.5 rounded-full border border-blue-200 dark:border-blue-700">{worksheets.length}</span>
+                  <h2 className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 tracking-wider">{t('worksheets')}</h2>
+                  <span className="text-xs bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full">{worksheets.length}</span>
                 </div>
                 <div className={listView ? 'flex flex-col gap-2' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3'}>
                   {worksheets.map(ws => (
@@ -585,9 +586,9 @@ export default function DashboardPage() {
 
         {/* Loading overlay */}
         {wsLoading && (
-          <div className="fixed inset-0 bg-black/20 z-40 flex items-center justify-center pointer-events-none">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl px-8 py-6 flex items-center gap-4 pointer-events-auto">
-              <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin flex-shrink-0" />
+          <div className="fixed inset-0 bg-slate-950/30 backdrop-blur-sm z-40 flex items-center justify-center pointer-events-none">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl ring-1 ring-black/5 dark:ring-white/10 px-8 py-6 flex items-center gap-4 pointer-events-auto">
+              <div className="w-6 h-6 border-2 border-violet-600 border-t-transparent rounded-full animate-spin flex-shrink-0" />
               <span className="text-slate-700 dark:text-slate-200 font-medium">{t('loading')}</span>
             </div>
           </div>
@@ -640,7 +641,7 @@ export default function DashboardPage() {
 }
 
 function buildDriveHelp(code, t) {
-  const consoleUrl = `https://console.firebase.google.com/project/${import.meta.env.VITE_FIREBASE_PROJECT_ID}/firestore`
+  const consoleUrl = `https://console.firebase.google.com/project/${firebaseConfig.projectId}/firestore`
   if (code === 'db-not-created') {
     return {
       title: t('dbNotCreatedTitle'),

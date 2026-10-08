@@ -2,10 +2,10 @@
  * Firestore REST API client — bypasses the SDK's WebChannel/gRPC connection
  * which is blocked on some networks. Uses plain HTTPS fetch instead.
  */
-import { auth } from '../firebase/config'
+import { auth, firebaseConfig } from '../firebase/config'
 import { appError } from './appError'
 
-const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
+const PROJECT_ID = firebaseConfig.projectId
 const BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/lang/documents`
 
 // ─── Auth token ──────────────────────────────────────────────────────────────

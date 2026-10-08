@@ -68,6 +68,13 @@ export async function handleGemini(req, env, jwks = FIREBASE_JWKS) {
   })
 }
 
-export default (req) => handleGemini(req, Netlify.env)
+// GEMINI_API_KEY comes from Netlify's environment variables (never stored in code).
+// The Firebase project ID is public, so it is kept in code as a fallback.
+const PROJECT_ID = 'lang-a63d8'
+export const withDefaults = (env) => ({
+  get: (name) => env.get(name) || (name === 'VITE_FIREBASE_PROJECT_ID' ? PROJECT_ID : undefined),
+})
+
+export default (req) => handleGemini(req, withDefaults(Netlify.env))
 
 export const config = { path: '/api/gemini' }

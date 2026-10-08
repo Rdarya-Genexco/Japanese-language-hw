@@ -81,7 +81,7 @@ export default function WorksheetCard({
     return (
       <div
         ref={cardRef}
-        className={`group relative bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-200 cursor-pointer select-none flex items-center gap-3 px-4 py-3 ${
+        className={`group relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-white/10 shadow-sm hover:shadow-md hover:border-violet-300 dark:hover:border-violet-500/50 transition-all duration-200 cursor-pointer select-none flex items-center gap-3 px-4 py-3 ${
           dragging ? 'opacity-40' : ''
         }`}
         onClick={dragging ? undefined : onClick}
@@ -92,7 +92,7 @@ export default function WorksheetCard({
           <p className="text-xs text-slate-400 dark:text-slate-500">{date}</p>
         </div>
         <span className={`text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
-          isPdf ? 'bg-rose-100 text-rose-600' : 'bg-blue-100 text-blue-600'
+          isPdf ? 'bg-rose-100 text-rose-600' : 'bg-violet-100 text-violet-600'
         }`}>{isPdf ? 'PDF' : 'DOCX'}</span>
         <div data-menu ref={menuRef} className="flex-shrink-0" onClick={e => e.stopPropagation()}>
           <button
@@ -102,7 +102,7 @@ export default function WorksheetCard({
             <MoreVertical size={14} className="text-slate-400" />
           </button>
           {menuOpen && (
-            <div className="absolute right-2 top-10 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1 z-50 min-w-[170px]">
+            <div className="absolute right-2 top-10 bg-white dark:bg-slate-800 rounded-xl shadow-xl ring-1 ring-black/5 dark:ring-white/10 p-1 z-50 min-w-[170px]">
               <button onClick={() => { onClick(); setMenuOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
                 <Eye size={13} className="text-violet-500" /> {t('open')}
               </button>
@@ -127,18 +127,18 @@ export default function WorksheetCard({
       onDragEnd={handleDragEnd}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className={`group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-grab active:cursor-grabbing select-none ${
+      className={`group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-sm hover:shadow-lg hover:border-violet-300 dark:hover:border-violet-500/50 hover:-translate-y-0.5 transition-all duration-200 cursor-grab active:cursor-grabbing select-none ${
         dragging ? 'opacity-40 scale-95 shadow-none' : ''
       }`}
       onClick={dragging ? undefined : onClick}
     >
       {/* Coloured accent stripe */}
-      <div className={`h-1.5 w-full rounded-t-2xl ${isPdf ? 'bg-gradient-to-r from-rose-400 to-pink-500' : 'bg-gradient-to-r from-blue-400 to-violet-500'}`} />
+      <div className={`h-1.5 w-full rounded-t-2xl ${isPdf ? 'bg-rose-400' : 'bg-violet-500'}`} />
 
       <div className="p-4 flex items-start gap-3">
         {/* Icon — student gets emoji, teacher gets FileText */}
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-          isPdf ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-500' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-500'
+          isPdf ? 'bg-rose-50 dark:bg-rose-900/30 text-rose-500' : 'bg-violet-50 dark:bg-violet-900/30 text-violet-500'
         }`}>
           {role === 'student'
             ? <span className="text-xl leading-none">{subjectEmoji}</span>
@@ -152,7 +152,7 @@ export default function WorksheetCard({
             <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
               isPdf
                 ? 'bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400'
-                : 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400'
+                : 'bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400'
             }`}>{isPdf ? 'PDF' : 'DOCX'}</span>
             <span className="text-xs text-slate-400 dark:text-slate-500">{date}</span>
           </div>
@@ -168,7 +168,7 @@ export default function WorksheetCard({
           </button>
 
           {menuOpen && (
-            <div className="absolute right-2 top-12 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1 z-50 min-w-[170px]">
+            <div className="absolute right-2 top-12 bg-white dark:bg-slate-800 rounded-xl shadow-xl ring-1 ring-black/5 dark:ring-white/10 p-1 z-50 min-w-[170px]">
               <button
                 onClick={() => { onClick(); setMenuOpen(false) }}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { LanguageProvider, useLang } from './contexts/LanguageContext'
@@ -15,8 +15,8 @@ function ProfileError() {
   const { retryRole } = useRole()
   const { t } = useLang()
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center bg-slate-50 dark:bg-slate-900">
-      <p className="text-4xl">📡</p>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center bg-slate-50 dark:bg-slate-950">
+      <p className="text-4xl w-20 h-20 inline-flex items-center justify-center bg-white dark:bg-slate-900 rounded-3xl shadow-lg ring-1 ring-black/5 dark:ring-white/10">📡</p>
       <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xs">{t('profileLoadError')}</p>
       <button onClick={retryRole} className="btn-primary text-sm">{t('retry')}</button>
     </div>
@@ -28,8 +28,8 @@ function ProtectedRoute({ children }) {
   const { role, roleLoading, roleError } = useRole()
 
   if (loading || roleLoading) return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-      <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="w-10 h-10 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" />
     </div>
   )
   if (!user) return <Navigate to="/login" replace />
@@ -41,10 +41,11 @@ function ProtectedRoute({ children }) {
 function AppRoutes() {
   const { user, loading } = useAuth()
   const { role, roleLoading, roleError } = useRole()
+  const isSharedView = useLocation().pathname.startsWith('/s/')
 
   if (loading || roleLoading) return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-      <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="w-10 h-10 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
@@ -60,7 +61,8 @@ function AppRoutes() {
         <Route path="/"                 element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="*"                 element={<Navigate to="/" replace />} />
       </Routes>
-      <SquirrelMascot />
+      {/* Public share links (/s/:token) are viewed by outsiders — no mascot there */}
+      {!isSharedView && <SquirrelMascot />}
     </>
   )
 }

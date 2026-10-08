@@ -52,10 +52,10 @@ export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+    <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 w-full max-w-sm overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-5 pt-5 pb-4 flex items-center justify-between">
+        <div className="bg-slate-900 dark:bg-slate-950 border-b-2 border-violet-500 px-5 pt-5 pb-4 flex items-center justify-between">
           <div>
             <h2 className="font-bold text-white">{t('shareWorksheet')}</h2>
             <p className="text-white/70 text-xs mt-0.5">{t('generatePublicLink')}</p>
