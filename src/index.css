@@ -200,17 +200,19 @@ button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
 /* ==========================================================================
    Accessibility & print
    ========================================================================== */
+/* No !important: these rules sit after the Tailwind layers, so matching specificity is enough
+   to win ([class] = one class, :root adds one more to beat .dark-prefixed variants). */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  html { scroll-behavior: auto; }
+  [class], [class]::before, [class]::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
   }
 }
 
 @media print {
-  .no-print { display: none !important; }
-  body { background: #fff !important; color: #000 !important; }
-  .card { box-shadow: none !important; border-color: #ddd !important; }
+  .no-print { display: none; }
+  :root body { background: #fff; color: #000; }
+  :root .card { box-shadow: none; border-color: #ddd; }
 }

@@ -2,6 +2,8 @@
 export default {
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  // JS like `if (!visible)` would otherwise generate an unused `!visible` (!important) class
+  blocklist: ['!visible'],
   theme: {
     extend: {
       fontFamily: {
