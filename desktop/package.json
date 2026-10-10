@@ -1,0 +1,52 @@
+{
+  "name": "doc-translate-desktop",
+  "productName": "Doc Translate",
+  "version": "1.0.0",
+  "description": "Doc Translate for Windows",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "app.netlify.doc-translate",
+    "productName": "Doc Translate",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "build/icon.png"
+    ],
+    "protocols": [
+      {
+        "name": "Doc Translate",
+        "schemes": [
+          "doctranslate"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Doc Translate"
+    }
+  },
+  "allowScripts": {
+    "electron@33.4.11": true
+  }
+}

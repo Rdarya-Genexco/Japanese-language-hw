@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+# Signed-in app pages and private share links
+Disallow: /folder/
+Disallow: /classes
+Disallow: /settings
+Disallow: /role-select
+Disallow: /s/
+Disallow: /desktop-auth
+
+Sitemap: https://doc-translate.netlify.app/sitemap.xml

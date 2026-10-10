@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, signInAnonymously } from 'firebase/auth'
+import { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, signInAnonymously, signInWithCredential, GoogleAuthProvider } from 'firebase/auth'
 import { auth, googleProvider } from '../firebase/config'
 import { useLang } from './LanguageContext'
 
@@ -24,10 +24,23 @@ export function AuthProvider({ children }) {
       setUser(u)
       setLoading(false)
     })
-    return unsubscribe
+    // Desktop app (Electron): Google blocks sign-in inside embedded windows, so sign-in happens in
+    // the system browser (/desktop-auth) and the Google ID token comes back through the desktop bridge.
+    const offDesktop = window.docTranslateDesktop?.onGoogleIdToken(async (idToken) => {
+      try {
+        await signInWithCredential(auth, GoogleAuthProvider.credential(idToken))
+      } catch (err) {
+        console.error('[Auth] desktop sign-in failed', err)
+      }
+    })
+    return () => { unsubscribe(); offDesktop?.() }
   }, [])
 
   const signInWithGoogle = async () => {
+    if (window.docTranslateDesktop) {
+      await window.docTranslateDesktop.startGoogleSignIn(langCode)
+      return
+    }
     // Show Google's sign-in page in the language picked in the app (hl = Google's UI language)
     googleProvider.setCustomParameters({ hl: langCode })
     try {

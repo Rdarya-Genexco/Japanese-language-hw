@@ -10,6 +10,7 @@ import RoleSelectPage from './pages/RoleSelectPage'
 import SharedViewPage from './pages/SharedViewPage'
 import ClassesPage from './pages/ClassesPage'
 import SquirrelMascot from './components/SquirrelMascot'
+import DesktopAuthPage from './pages/DesktopAuthPage'
 
 function ProfileError() {
   const { retryRole } = useRole()
@@ -41,7 +42,8 @@ function ProtectedRoute({ children }) {
 function AppRoutes() {
   const { user, loading } = useAuth()
   const { role, roleLoading, roleError } = useRole()
-  const isSharedView = useLocation().pathname.startsWith('/s/')
+  const { pathname } = useLocation()
+  const isSharedView = pathname.startsWith('/s/') || pathname === '/desktop-auth'
 
   if (loading || roleLoading) return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
@@ -55,6 +57,7 @@ function AppRoutes() {
         <Route path="/login"            element={user ? <Navigate to="/" replace /> : <LoginPage />} />
         <Route path="/role-select"      element={!user ? <Navigate to="/login" replace /> : roleError ? <ProfileError /> : role ? <Navigate to="/" replace /> : <RoleSelectPage />} />
         <Route path="/s/:token"         element={<SharedViewPage />} />
+        <Route path="/desktop-auth"     element={<DesktopAuthPage />} />
         <Route path="/settings"         element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
         <Route path="/classes"          element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
         <Route path="/folder/:folderId" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
