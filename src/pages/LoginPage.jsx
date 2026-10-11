@@ -188,6 +188,8 @@ function DesktopDownloads({ t }) {
           </a>
         ))}
       </div>
+      {/* Installers aren't code-signed yet, so Windows/macOS show a warning the first time */}
+      <p className="text-xs text-white/45 mt-3 max-w-md mx-auto leading-relaxed">{t('unsignedInstallerHint')}</p>
     </div>
   )
 }
