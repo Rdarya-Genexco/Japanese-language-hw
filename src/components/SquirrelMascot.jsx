@@ -1,7 +1,9 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react'
 import { useRole } from '../contexts/RoleContext'
 import { useLang } from '../contexts/LanguageContext'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import TourSample from './TourSample'
 import { getTanuTips, TANU_UI } from '../utils/tanuTips'
 import { getTourSteps, tourText, TOUR_REPLAY_EVENT } from '../utils/tanuTour'
 
@@ -167,7 +169,7 @@ function TourSpotlight({ targets }) {
       <div className={panel} style={{ top, left: 0, width: left, height: bottom - top }} />
       <div className={panel} style={{ top, left: right, right: 0, height: bottom - top }} />
       <div
-        className="fixed z-[46] rounded-xl ring-4 ring-emerald-400 shadow-[0_0_24px_6px_rgba(52,211,153,0.55)] animate-pulse pointer-events-none"
+        className="fixed z-[47] rounded-xl ring-4 ring-emerald-400 shadow-[0_0_24px_6px_rgba(52,211,153,0.55)] animate-pulse pointer-events-none"
         style={{ top, left, width: right - left, height: bottom - top }}
       />
     </>
@@ -179,6 +181,8 @@ export default function SquirrelMascot() {
   const { user } = useAuth()
   const { langCode } = useLang()
   const uid = user?.uid
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
   // First-run tour for both roles; afterwards Tanu stays for students only
   const [tourStep, setTourStep] = useState(null) // null = no tour, else step index
   const steps = useMemo(() => getTourSteps(role, langCode), [role, langCode])
@@ -198,7 +202,14 @@ export default function SquirrelMascot() {
   const endTour = useCallback(() => {
     if (uid && role) markTourDone(uid, role, true)
     setTourStep(null)
-  }, [uid, role])
+    if (pathname === '/settings') navigate('/')
+  }, [uid, role, pathname, navigate])
+
+  // Open the page the current step is about (e.g. Settings for "log out")
+  const stepPage = inTour ? steps[Math.min(tourStep, steps.length - 1)].page : null
+  useEffect(() => {
+    if (stepPage && stepPage !== pathname) navigate(stepPage)
+  }, [stepPage, pathname, navigate])
   const tips = useMemo(() => getTanuTips(langCode), [langCode])
   const ui = TANU_UI[langCode] || TANU_UI.en
   const [visible, setVisible] = useState(false)
@@ -257,6 +268,7 @@ export default function SquirrelMascot() {
     return (
       <>
       <TourSpotlight targets={step.targets} />
+      {step.sample && <TourSample type={step.sample} />}
       <div className="fixed bottom-[72px] right-3 z-50 flex flex-col items-end gap-1 md:bottom-4" role="dialog" aria-label={step.title}>
         <div className="relative bg-white dark:bg-slate-900 rounded-2xl rounded-br-md shadow-xl ring-1 ring-emerald-200 dark:ring-emerald-500/40 px-4 py-3 w-[min(300px,calc(100vw-24px))]">
           <p className="text-sm font-bold text-slate-800 dark:text-slate-100">

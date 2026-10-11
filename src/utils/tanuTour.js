@@ -216,20 +216,30 @@ export const TOUR_ORDER = {
 export const TOUR_TARGETS = {
   translate: ['upload'],
   language: ['language'],
-  joinClass: ['settings'],
-  classCode: ['classes'],
-  assignment: ['classes'],
-  settingsS: ['settings'],
-  settingsT: ['settings'],
-  logout: ['logout', 'settings'],
+  joinClass: ['settings-classroom'],
+  submit: ['sample-submit'],
+  classCode: ['sample-classcode'],
+  assignment: ['sample-assignment'],
+  shareLink: ['sample-share'],
+  download: ['sample-download'],
+  settingsS: ['settings-panel'],
+  settingsT: ['settings-panel'],
+  logout: ['settings-signout'],
   dismissTanu: ['tanu'],
 }
+
+// Steps about something on the Settings page open it; every other step shows the home page
+export const TOUR_PAGES = { joinClass: '/settings', settingsS: '/settings', settingsT: '/settings', logout: '/settings' }
+
+// Steps about things inside a worksheet or a class show a non-working example of it
+export const TOUR_SAMPLES = { submit: 'viewer', shareLink: 'viewer', download: 'viewer', classCode: 'class', assignment: 'assignment' }
 
 export const TOUR_UI = {
   tourNext: { "en": "Next", "zh-CN": "下一步", "ja": "次へ", "fr": "Suivant", "de": "Weiter", "it": "Avanti", "pt": "Próximo", "es": "Siguiente", "ko": "다음", "ru": "Далее" },
   tourBack: { "en": "Back", "zh-CN": "上一步", "ja": "戻る", "fr": "Retour", "de": "Zurück", "it": "Indietro", "pt": "Voltar", "es": "Atrás", "ko": "이전", "ru": "Назад" },
   tourSkip: { "en": "Skip tour", "zh-CN": "跳过导览", "ja": "ツアーをスキップ", "fr": "Passer la visite", "de": "Tour überspringen", "it": "Salta il tour", "pt": "Pular tour", "es": "Saltar recorrido", "ko": "안내 건너뛰기", "ru": "Пропустить" },
   tourDone: { "en": "Got it!", "zh-CN": "知道了！", "ja": "わかった！", "fr": "Compris !", "de": "Verstanden!", "it": "Capito!", "pt": "Entendi!", "es": "¡Entendido!", "ko": "알겠어요!", "ru": "Понятно!" },
+  tourExample: { "en": "Example", "zh-CN": "示例", "ja": "例", "fr": "Exemple", "de": "Beispiel", "it": "Esempio", "pt": "Exemplo", "es": "Ejemplo", "ko": "예시", "ru": "Пример" },
   replayTour: { "en": "Replay Tanu’s tour", "zh-CN": "重新观看 Tanu 的导览", "ja": "Tanuのツアーをもう一度見る", "fr": "Revoir la visite de Tanu", "de": "Tanus Tour erneut ansehen", "it": "Rivedi il tour di Tanu", "pt": "Rever o tour do Tanu", "es": "Ver de nuevo el recorrido de Tanu", "ko": "Tanu의 안내 다시 보기", "ru": "Посмотреть экскурсию Тану снова" },
 }
 
@@ -238,7 +248,7 @@ export function getTourSteps(role, langCode) {
   return (TOUR_ORDER[role] || []).map(key => {
     const step = TOUR_STEPS[key]
     const [title, text] = step.text[langCode] || step.text.en
-    return { key, emoji: step.emoji, title, text, targets: TOUR_TARGETS[key] || [] }
+    return { key, emoji: step.emoji, title, text, targets: TOUR_TARGETS[key] || [], page: TOUR_PAGES[key] || '/', sample: TOUR_SAMPLES[key] || null }
   })
 }
 

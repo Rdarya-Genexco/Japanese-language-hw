@@ -64,7 +64,7 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <div className="max-w-lg mx-auto w-full flex-1 overflow-y-auto px-4 py-6 space-y-4 with-bottom-nav">
+      <div className="max-w-lg mx-auto w-full flex-1 overflow-y-auto px-4 py-6 space-y-4 with-bottom-nav" data-tour="settings-panel">
 
         {/* User + sign out */}
         <div className="card p-4 flex items-center gap-3.5">
@@ -81,6 +81,7 @@ export default function SettingsPage() {
           </div>
           <button
             onClick={logout}
+            data-tour="settings-signout"
             className="text-xs text-rose-600 dark:text-rose-400 px-3 py-2 rounded-lg border border-rose-200 dark:border-rose-800 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors flex-shrink-0 font-semibold"
           >
             {t('signOut')}
@@ -120,7 +121,7 @@ export default function SettingsPage() {
 
         {/* Student: join classroom */}
         {role === 'student' && (
-          <div className="card p-4">
+          <div className="card p-4" data-tour="settings-classroom">
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">{t('classroom')}</p>
             {classroomCode && !changingCode && joinStatus !== 'ok' ? (
               <div className="flex items-center gap-2">
