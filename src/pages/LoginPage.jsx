@@ -142,8 +142,61 @@ export default function LoginPage() {
             </div>
           ))}
         </div>
+
+        {/* Desktop app downloads (hidden inside the desktop app itself) */}
+        {!window.docTranslateDesktop && <DesktopDownloads t={t} />}
       </div>
     </div>
+  )
+}
+
+// Installers are published to the GitHub Release by .github/workflows/desktop.yml with fixed names,
+// so /releases/latest/download/<name> always points at the newest version.
+const RELEASES = 'https://github.com/Rdarya-Genexco/Japanese-language-hw/releases/latest/download'
+const DOWNLOADS = [
+  { os: 'windows', key: 'downloadWindows', file: 'DocTranslate-Setup.exe' },
+  { os: 'mac',     key: 'downloadMac',     file: 'DocTranslate.dmg' },
+  { os: 'linux',   key: 'downloadLinux',   file: 'doc-translate.deb' },
+]
+
+function detectOs() {
+  const ua = navigator.userAgent
+  if (/Windows/i.test(ua)) return 'windows'
+  // iPadOS reports itself as "Macintosh"; a touch screen gives it away
+  if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad/i.test(ua) && navigator.maxTouchPoints <= 1) return 'mac'
+  if (/Linux/i.test(ua) && !/Android/i.test(ua)) return 'linux'
+  return null
+}
+
+function DesktopDownloads({ t }) {
+  const current = detectOs()
+  return (
+    <div className="mt-6 text-center">
+      <p className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-3">{t('getTheApp')}</p>
+      <div className="flex flex-col sm:flex-row gap-2 justify-center">
+        {DOWNLOADS.map(d => (
+          <a
+            key={d.os}
+            href={`${RELEASES}/${d.file}`}
+            className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              d.os === current
+                ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/30'
+                : 'bg-white/5 hover:bg-white/10 text-white/85 ring-1 ring-white/10'
+            }`}
+          >
+            <DownloadIcon /> {t(d.key)}
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+    </svg>
   )
 }
 

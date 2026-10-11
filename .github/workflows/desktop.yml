@@ -1,0 +1,56 @@
+# Builds the Doc Translate desktop app for Windows, macOS and Linux on GitHub's machines.
+# Run it from the repo's Actions tab ("Desktop apps" → Run workflow), or push a tag like desktop-v1.0.0.
+# The installers appear as downloadable artifacts on the finished run.
+name: Desktop apps
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['desktop-v*']
+
+permissions:
+  contents: write   # needed to attach installers to the GitHub Release
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            script: dist
+            files: desktop/release/*.exe
+          - os: macos-latest
+            script: dist:mac
+            files: desktop/release/*.dmg
+          - os: ubuntu-latest
+            script: dist:linux
+            files: |
+              desktop/release/*.AppImage
+              desktop/release/*.deb
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run ${{ matrix.script }} -- --publish never
+        env:
+          # No paid signing certificates: Windows/Linux unsigned, macOS ad-hoc signed
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: doc-translate-${{ runner.os }}
+          path: ${{ matrix.files }}
+          if-no-files-found: error
+      # On a desktop-v* tag, attach the installers to that tag's GitHub Release. The website's
+      # download buttons link to /releases/latest/download/<fixed file name>.
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/desktop-v')
+        with:
+          files: ${{ matrix.files }}
+          make_latest: true

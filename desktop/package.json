@@ -5,9 +5,16 @@
   "description": "Doc Translate for Windows",
   "main": "main.js",
   "private": true,
+  "homepage": "https://doc-translate.netlify.app",
+  "author": {
+    "name": "Doc Translate",
+    "email": "krishnav.daryanani@gmail.com"
+  },
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis"
+    "dist": "electron-builder --win nsis",
+    "dist:linux": "electron-builder --linux",
+    "dist:mac": "electron-builder --mac"
   },
   "devDependencies": {
     "electron": "^33.2.0",
@@ -37,7 +44,25 @@
       "target": "nsis",
       "icon": "build/icon.png"
     },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "build/icon.png",
+      "category": "Education",
+      "executableName": "doc-translate",
+      "maintainer": "Doc Translate <krishnav.daryanani@gmail.com>",
+      "synopsis": "Translate worksheets into your language"
+    },
+    "mac": {
+      "target": [{ "target": "dmg", "arch": ["universal"] }],
+      "icon": "build/icon.png",
+      "category": "public.app-category.education",
+      "identity": "-"
+    },
+    "dmg": { "artifactName": "DocTranslate.${ext}" },
+    "appImage": { "artifactName": "DocTranslate.${ext}" },
+    "deb": { "artifactName": "doc-translate.${ext}" },
     "nsis": {
+      "artifactName": "DocTranslate-Setup.${ext}",
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,

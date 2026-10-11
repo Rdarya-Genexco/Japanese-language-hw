@@ -35,6 +35,14 @@ if (process.defaultApp) {
   app.setAsDefaultProtocolClient(PROTOCOL)
 }
 
+// macOS delivers doctranslate:// links through open-url (Windows/Linux pass them in argv)
+app.on('open-url', (event, link) => {
+  event.preventDefault()
+  if (app.isReady()) handleDeepLink(link)
+  else app.whenReady().then(() => handleDeepLink(link))
+  if (win) { if (win.isMinimized()) win.restore(); win.focus() }
+})
+
 function handleDeepLink(link) {
   let url
   try { url = new URL(link) } catch { return }
@@ -88,7 +96,10 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  Menu.setApplicationMenu(null)
+  // No menu bar on Windows/Linux; macOS keeps the app + Edit menus so ⌘C/⌘V/⌘Q work
+  Menu.setApplicationMenu(process.platform === 'darwin'
+    ? Menu.buildFromTemplate([{ role: 'appMenu' }, { role: 'editMenu' }, { role: 'windowMenu' }])
+    : null)
   createWindow()
   // App launched by a doctranslate:// link while closed
   const link = process.argv.find(a => a.startsWith(`${PROTOCOL}://`))
@@ -96,3 +107,5 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => app.quit())
+// macOS: clicking the Dock icon with no window open creates one
+app.on('activate', () => { if (!win) createWindow() })
