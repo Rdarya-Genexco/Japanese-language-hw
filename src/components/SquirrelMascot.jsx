@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react'
 import { useRole } from '../contexts/RoleContext'
 import { useLang } from '../contexts/LanguageContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -113,6 +113,67 @@ function TanukiSVG({ animClass }) {
   )
 }
 
+/** First visible element for any of the data-tour ids, in priority order. */
+function findTarget(ids) {
+  for (const id of ids) {
+    for (const el of document.querySelectorAll(`[data-tour="${id}"]`)) {
+      const r = el.getBoundingClientRect()
+      if (r.width > 0 && r.height > 0) return el
+    }
+  }
+  return null
+}
+
+/** Blurs and dims everything except the step's target, which gets a glowing ring. */
+function TourSpotlight({ targets }) {
+  const [rect, setRect] = useState(null)
+  const key = targets.join(',')
+
+  useLayoutEffect(() => {
+    if (!key) { setRect(null); return }
+    const ids = key.split(',')
+    const measure = () => {
+      const el = findTarget(ids)
+      const r = el?.getBoundingClientRect()
+      setRect(prev => {
+        if (!r) return null
+        const next = { top: r.top, left: r.left, width: r.width, height: r.height }
+        return prev && ['top', 'left', 'width', 'height'].every(k => Math.abs(prev[k] - next[k]) < 0.5) ? prev : next
+      })
+    }
+    measure()
+    // Layout can still shift (fonts, data loading), so keep the cut-out in place
+    const timer = setInterval(measure, 250)
+    window.addEventListener('resize', measure)
+    window.addEventListener('scroll', measure, true)
+    return () => {
+      clearInterval(timer)
+      window.removeEventListener('resize', measure)
+      window.removeEventListener('scroll', measure, true)
+    }
+  }, [key])
+
+  if (!rect) return null
+  const pad = 6
+  const top = Math.max(rect.top - pad, 0)
+  const left = Math.max(rect.left - pad, 0)
+  const bottom = rect.top + rect.height + pad
+  const right = rect.left + rect.width + pad
+  const panel = 'fixed z-[45] bg-slate-950/45 backdrop-blur-[3px]'
+  return (
+    <>
+      <div className={panel} style={{ top: 0, left: 0, right: 0, height: top }} />
+      <div className={panel} style={{ top: bottom, left: 0, right: 0, bottom: 0 }} />
+      <div className={panel} style={{ top, left: 0, width: left, height: bottom - top }} />
+      <div className={panel} style={{ top, left: right, right: 0, height: bottom - top }} />
+      <div
+        className="fixed z-[46] rounded-xl ring-4 ring-emerald-400 shadow-[0_0_24px_6px_rgba(52,211,153,0.55)] animate-pulse pointer-events-none"
+        style={{ top, left, width: right - left, height: bottom - top }}
+      />
+    </>
+  )
+}
+
 export default function SquirrelMascot() {
   const { role } = useRole()
   const { user } = useAuth()
@@ -194,6 +255,8 @@ export default function SquirrelMascot() {
     const step = steps[Math.min(tourStep, steps.length - 1)]
     const last = tourStep >= steps.length - 1
     return (
+      <>
+      <TourSpotlight targets={step.targets} />
       <div className="fixed bottom-[72px] right-3 z-50 flex flex-col items-end gap-1 md:bottom-4" role="dialog" aria-label={step.title}>
         <div className="relative bg-white dark:bg-slate-900 rounded-2xl rounded-br-md shadow-xl ring-1 ring-emerald-200 dark:ring-emerald-500/40 px-4 py-3 w-[min(300px,calc(100vw-24px))]">
           <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
@@ -230,8 +293,9 @@ export default function SquirrelMascot() {
         <div className="flex justify-end pr-6">
           <div className="w-3 h-3 bg-white dark:bg-slate-900 border-r border-b border-emerald-200 dark:border-emerald-500/40 rotate-45 -mt-[7px]" />
         </div>
-        <TanukiSVG animClass="squeaky-pop" />
+        <div data-tour="tanu"><TanukiSVG animClass="squeaky-pop" /></div>
       </div>
+      </>
     )
   }
 

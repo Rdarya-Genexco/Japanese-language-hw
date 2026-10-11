@@ -17,18 +17,21 @@ export default function BottomNav({ onUpload }) {
     {
       icon: Home,
       label: t('navHome'),
+      tour: 'home',
       active: isHome,
       onClick: () => navigate('/'),
     },
     ...(role === 'teacher' ? [{
       icon: School,
       label: t('navClasses'),
+      tour: 'classes',
       active: isClasses,
       onClick: () => navigate('/classes'),
     }] : []),
     {
       icon: Upload,
       label: t('upload'),
+      tour: 'upload',
       active: false,
       primary: true,
       // Pages without their own upload dialog send the user home and open it there
@@ -37,6 +40,7 @@ export default function BottomNav({ onUpload }) {
     {
       icon: Settings,
       label: t('settings'),
+      tour: 'settings',
       active: isSettings,
       onClick: () => navigate('/settings'),
     },
@@ -51,6 +55,7 @@ export default function BottomNav({ onUpload }) {
         <button
           key={item.label}
           onClick={item.onClick}
+          data-tour={item.tour}
           className={`flex-1 flex flex-col items-center justify-center gap-1 py-2.5 transition-colors relative isolate ${
             item.primary
               ? 'text-white'

@@ -461,7 +461,7 @@ export default function DashboardPage() {
             <button onClick={() => setShowNewFolder(true)} className="btn-secondary text-sm">
               <FolderPlus size={16} /> {t('newFolder')}
             </button>
-            <button onClick={() => setShowUpload(true)} className="btn-primary text-sm">
+            <button onClick={() => setShowUpload(true)} className="btn-primary text-sm" data-tour="upload">
               <Upload size={16} /> {t('upload')}
             </button>
           </div>

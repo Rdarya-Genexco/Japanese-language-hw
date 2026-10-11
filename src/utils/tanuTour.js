@@ -211,6 +211,20 @@ export const TOUR_ORDER = {
   ]
 }
 
+// What each step spotlights: data-tour ids, first visible one wins (e.g. the header's
+// logout icon on desktop, the Settings tab on phones where logout lives in Settings)
+export const TOUR_TARGETS = {
+  translate: ['upload'],
+  language: ['language'],
+  joinClass: ['settings'],
+  classCode: ['classes'],
+  assignment: ['classes'],
+  settingsS: ['settings'],
+  settingsT: ['settings'],
+  logout: ['logout', 'settings'],
+  dismissTanu: ['tanu'],
+}
+
 export const TOUR_UI = {
   tourNext: { "en": "Next", "zh-CN": "下一步", "ja": "次へ", "fr": "Suivant", "de": "Weiter", "it": "Avanti", "pt": "Próximo", "es": "Siguiente", "ko": "다음", "ru": "Далее" },
   tourBack: { "en": "Back", "zh-CN": "上一步", "ja": "戻る", "fr": "Retour", "de": "Zurück", "it": "Indietro", "pt": "Voltar", "es": "Atrás", "ko": "이전", "ru": "Назад" },
@@ -224,7 +238,7 @@ export function getTourSteps(role, langCode) {
   return (TOUR_ORDER[role] || []).map(key => {
     const step = TOUR_STEPS[key]
     const [title, text] = step.text[langCode] || step.text.en
-    return { key, emoji: step.emoji, title, text }
+    return { key, emoji: step.emoji, title, text, targets: TOUR_TARGETS[key] || [] }
   })
 }
 

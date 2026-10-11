@@ -60,6 +60,7 @@ export default function Header({ streak = 0 }) {
           {role === 'teacher' && (
             <button
               onClick={() => navigate('/classes')}
+              data-tour="classes"
               className="hidden sm:flex items-center gap-1.5 bg-white/5 ring-1 ring-white/10 hover:bg-white/15 text-white/90 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
             >
               <School size={12} /> {t('navClasses')}
@@ -70,6 +71,7 @@ export default function Header({ streak = 0 }) {
           <div className="relative" ref={langRef}>
             <button
               onClick={() => setLangOpen(v => !v)}
+              data-tour="language"
               className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/5 hover:bg-white/15 ring-1 ring-white/10 rounded-lg transition-colors text-white text-sm font-medium"
               title={t('language')}
             >
@@ -110,6 +112,7 @@ export default function Header({ streak = 0 }) {
           {/* Settings — hidden on mobile (use bottom nav) */}
           <button
             onClick={() => navigate('/settings')}
+            data-tour="settings"
             className="hidden md:block p-2 bg-white/5 hover:bg-white/15 ring-1 ring-white/10 rounded-lg transition-colors text-white/80 hover:text-white"
             title={t('settings')}
           >
@@ -126,6 +129,7 @@ export default function Header({ streak = 0 }) {
 
           <button
             onClick={handleLogout}
+            data-tour="logout"
             className="hidden md:block p-2 bg-white/5 hover:bg-white/15 ring-1 ring-white/10 rounded-lg transition-colors text-white/80 hover:text-white"
             title={t('signOut')}
           >
