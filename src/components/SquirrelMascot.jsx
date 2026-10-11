@@ -1,7 +1,21 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRole } from '../contexts/RoleContext'
 import { useLang } from '../contexts/LanguageContext'
+import { useAuth } from '../contexts/AuthContext'
 import { getTanuTips, TANU_UI } from '../utils/tanuTips'
+import { getTourSteps, tourText, TOUR_REPLAY_EVENT } from '../utils/tanuTour'
+
+const tourKey = (uid, role) => `tanu-tour-done:${uid}:${role}`
+
+function tourDone(uid, role) {
+  try { return localStorage.getItem(tourKey(uid, role)) === '1' } catch { return false }
+}
+function markTourDone(uid, role, done) {
+  try {
+    if (done) localStorage.setItem(tourKey(uid, role), '1')
+    else localStorage.removeItem(tourKey(uid, role))
+  } catch { /* storage unavailable (private mode): the tour just shows again next time */ }
+}
 
 // Tanuki — Japanese raccoon dog, iconic folklore creature 🍃
 function TanukiSVG({ animClass }) {
@@ -101,7 +115,29 @@ function TanukiSVG({ animClass }) {
 
 export default function SquirrelMascot() {
   const { role } = useRole()
+  const { user } = useAuth()
   const { langCode } = useLang()
+  const uid = user?.uid
+  // First-run tour for both roles; afterwards Tanu stays for students only
+  const [tourStep, setTourStep] = useState(null) // null = no tour, else step index
+  const steps = useMemo(() => getTourSteps(role, langCode), [role, langCode])
+  const inTour = tourStep !== null && steps.length > 0
+
+  useEffect(() => {
+    if (!uid || (role !== 'student' && role !== 'teacher')) { setTourStep(null); return }
+    setTourStep(tourDone(uid, role) ? null : 0)
+  }, [uid, role])
+
+  useEffect(() => {
+    const replay = () => { if (uid && role) { markTourDone(uid, role, false); setTourStep(0) } }
+    window.addEventListener(TOUR_REPLAY_EVENT, replay)
+    return () => window.removeEventListener(TOUR_REPLAY_EVENT, replay)
+  }, [uid, role])
+
+  const endTour = useCallback(() => {
+    if (uid && role) markTourDone(uid, role, true)
+    setTourStep(null)
+  }, [uid, role])
   const tips = useMemo(() => getTanuTips(langCode), [langCode])
   const ui = TANU_UI[langCode] || TANU_UI.en
   const [visible, setVisible] = useState(false)
@@ -138,20 +174,66 @@ export default function SquirrelMascot() {
     setAnimClass('squeaky-idle')
   }, [])
 
-  // First tip immediately on mount
+  // First tip shortly after mount (students only, and not during the tour)
   useEffect(() => {
+    if (inTour || role !== 'student') return
     const t = setTimeout(showTip, 300)
     return () => clearTimeout(t)
-  }, [showTip])
+  }, [showTip, inTour, role])
 
   // Re-schedule after each dismiss
   useEffect(() => {
-    if (!visible) {
+    if (!visible && !inTour && role === 'student') {
       const delay = 45000 + Math.random() * 55000
       nextTimerRef.current = setTimeout(showTip, delay)
     }
     return () => clearTimeout(nextTimerRef.current)
-  }, [visible, showTip])
+  }, [visible, showTip, inTour, role])
+
+  if (inTour) {
+    const step = steps[Math.min(tourStep, steps.length - 1)]
+    const last = tourStep >= steps.length - 1
+    return (
+      <div className="fixed bottom-[72px] right-3 z-50 flex flex-col items-end gap-1 md:bottom-4" role="dialog" aria-label={step.title}>
+        <div className="relative bg-white dark:bg-slate-900 rounded-2xl rounded-br-md shadow-xl ring-1 ring-emerald-200 dark:ring-emerald-500/40 px-4 py-3 w-[min(300px,calc(100vw-24px))]">
+          <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
+            <span className="mr-1.5">{step.emoji}</span>{step.title}
+          </p>
+          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-1">{step.text}</p>
+          <div className="flex items-center gap-1 mt-3">
+            {steps.map((s, i) => (
+              <span key={s.key} className={`h-1.5 rounded-full transition-all ${i === tourStep ? 'w-4 bg-emerald-500' : 'w-1.5 bg-slate-200 dark:bg-slate-700'}`} />
+            ))}
+          </div>
+          <div className="flex items-center justify-between gap-2 mt-3">
+            {!last ? (
+              <button onClick={endTour} className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                {tourText('tourSkip', langCode)}
+              </button>
+            ) : <span />}
+            <div className="flex gap-1.5">
+              {tourStep > 0 && (
+                <button onClick={() => setTourStep(i => i - 1)} className="text-xs font-semibold px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                  {tourText('tourBack', langCode)}
+                </button>
+              )}
+              <button
+                onClick={() => last ? endTour() : setTourStep(i => i + 1)}
+                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white"
+              >
+                {last ? tourText('tourDone', langCode) : tourText('tourNext', langCode)}
+              </button>
+            </div>
+          </div>
+          <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-2">— Tanu 🍃</p>
+        </div>
+        <div className="flex justify-end pr-6">
+          <div className="w-3 h-3 bg-white dark:bg-slate-900 border-r border-b border-emerald-200 dark:border-emerald-500/40 rotate-45 -mt-[7px]" />
+        </div>
+        <TanukiSVG animClass="squeaky-pop" />
+      </div>
+    )
+  }
 
   if (role !== 'student') return null
 

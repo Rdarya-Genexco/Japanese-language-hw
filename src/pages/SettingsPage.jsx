@@ -7,6 +7,7 @@ import { LANGUAGES } from '../utils/languages'
 import { ArrowLeft, Globe, BookOpen, GraduationCap, Check, Loader2 } from 'lucide-react'
 import { getClassroom, getClassroomMember } from '../utils/firestoreService'
 import BottomNav from '../components/BottomNav'
+import { tourText, TOUR_REPLAY_EVENT } from '../utils/tanuTour'
 
 export default function SettingsPage() {
   const { user, logout } = useAuth()
@@ -164,6 +165,14 @@ export default function SettingsPage() {
             )}
           </div>
         )}
+
+        {/* Replay Tanu's first-run tour */}
+        <button
+          onClick={() => window.dispatchEvent(new Event(TOUR_REPLAY_EVENT))}
+          className="w-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-3 text-left text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors"
+        >
+          🍃 {tourText('replayTour', langCode)}
+        </button>
 
         {/* Language picker */}
         <div className="card p-4">
