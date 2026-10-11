@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { useAuth } from './AuthContext'
 import {
   getUserData, saveUserData, upsertClassroomMember, leaveClassroom, getClassroom, getClassroomMember,
@@ -12,6 +12,8 @@ export function RoleProvider({ children }) {
   const [classroomCode, setClassroomCode] = useState(null)
   const [roleLoading, setRoleLoading] = useState(true)
   const [roleError, setRoleError] = useState(null)
+  // Which roles' Tanu tour this account has finished (stored on the profile, so it follows the user across devices)
+  const [toursDone, setToursDone] = useState({})
   const [attempt, setAttempt] = useState(0)
 
   // Drops the code if the class was deleted or the teacher removed this student;
@@ -61,6 +63,7 @@ export function RoleProvider({ children }) {
 
         setRole(r)
         setClassroomCode(savedCode)
+        setToursDone({ student: !!doc?.tourDoneStudent, teacher: !!doc?.tourDoneTeacher })
         if (r === 'student' && savedCode) syncMembership(user, savedCode)
       })
       // Not "no role": offline or Firestore trouble. Don't send them to role-select to overwrite it.
@@ -100,8 +103,17 @@ export function RoleProvider({ children }) {
     setClassroomCode(code)
   }
 
+  const saveTourDone = useCallback((forRole, done) => {
+    if (forRole !== 'student' && forRole !== 'teacher') return
+    setToursDone(p => ({ ...p, [forRole]: done }))
+    if (user && !user.isAnonymous) {
+      const field = forRole === 'student' ? 'tourDoneStudent' : 'tourDoneTeacher'
+      saveUserData(user.uid, { [field]: done }).catch(err => console.warn('[Role] could not save tour state', err))
+    }
+  }, [user])
+
   return (
-    <RoleContext.Provider value={{ role, roleLoading, roleError, retryRole: () => setAttempt(a => a + 1), saveRole, classroomCode, saveClassroomCode }}>
+    <RoleContext.Provider value={{ role, roleLoading, roleError, retryRole: () => setAttempt(a => a + 1), saveRole, classroomCode, saveClassroomCode, toursDone, saveTourDone }}>
       {children}
     </RoleContext.Provider>
   )

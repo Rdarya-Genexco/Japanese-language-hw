@@ -227,6 +227,53 @@ export async function unsubmitAssignment(code, assignmentId, studentUid) {
   await Promise.all(mine.map(s => restDelete(assignmentSubsPath(code, assignmentId), s.id)))
 }
 
+/** Teacher's grade and/or reply on an assignment submission (rules allow only these fields). */
+export async function gradeAssignmentSubmission(code, assignmentId, subId, { grade, teacherReply }) {
+  const data = { grade: (grade || '').trim().slice(0, 40), teacherReply: (teacherReply || '').trim().slice(0, 2000), gradedAt: new Date() }
+  await restUpdate(assignmentSubsPath(code, assignmentId), subId, data)
+  return data
+}
+
+// ── Account deletion ───────────────────────────────────────────────────────────
+
+/**
+ * Deletes everything this account owns, whatever role it has used: classes it teaches (with their
+ * assignments and submissions), share links, its drive and profile, and its submissions and
+ * membership in its current class. Runs before the sign-in itself is deleted.
+ */
+export async function deleteAccountData(uid, { classroomCode } = {}) {
+  const step = (label, p) => p.catch(err => { throw new Error(`${label}: ${err.message}`, { cause: err }) })
+
+  // Classes this user teaches
+  const classes = await step('listing classes', restQuery('classrooms', 'teacherUid', uid))
+  for (const c of classes) await deleteClassroom(c.id)
+
+  // Their own work in the class they belong to (as a student)
+  if (classroomCode) {
+    const code = classroomCode.toUpperCase()
+    const assignments = await restList(`classrooms/${code}/assignments`).catch(() => [])
+    await step('deleting submissions', Promise.all(assignments.map(async a => {
+      const mine = await getMyAssignmentSubmissions(code, a.id, uid).catch(() => [])
+      await Promise.all(mine.map(sub => restDelete(assignmentSubsPath(code, a.id), sub.id)))
+    })))
+    const general = await restQuery(`classrooms/${code}/submissions`, 'studentUid', uid).catch(() => [])
+    await step('deleting submissions', Promise.all(general.map(sub => restDelete(`classrooms/${code}/submissions`, sub.id))))
+    // A record the teacher marked "removed" can't be deleted by the student; it holds only name and email
+    await leaveClassroom(code, uid).catch(() => {})
+  }
+
+  // Share links
+  const shares = await step('listing share links', restQuery('sharedWorksheets', 'teacherUid', uid))
+  await step('deleting share links', Promise.all(shares.map(d => restDelete('sharedWorksheets', d.id))))
+
+  // Drive and profile
+  for (const sub of ['worksheets', 'folders', 'config']) {
+    const docs = await step(`listing ${sub}`, restList(`users/${uid}/${sub}`))
+    await step(`deleting ${sub}`, Promise.all(docs.map(d => restDelete(`users/${uid}/${sub}`, d.id))))
+  }
+  await step('deleting profile', restDelete('users', uid))
+}
+
 // ── Folders ────────────────────────────────────────────────────────────────────
 
 export async function createFolder(uid, parentId, name) {

@@ -177,7 +177,7 @@ function TourSpotlight({ targets }) {
 }
 
 export default function SquirrelMascot() {
-  const { role } = useRole()
+  const { role, roleLoading, toursDone, saveTourDone } = useRole()
   const { user } = useAuth()
   const { langCode } = useLang()
   const uid = user?.uid
@@ -188,22 +188,25 @@ export default function SquirrelMascot() {
   const steps = useMemo(() => getTourSteps(role, langCode), [role, langCode])
   const inTour = tourStep !== null && steps.length > 0
 
+  // Seen = finished on this browser or on the account (profile), so it doesn't replay on a new device
+  const seen = !!toursDone?.[role] || (uid && tourDone(uid, role))
   useEffect(() => {
+    if (roleLoading) return
     if (!uid || (role !== 'student' && role !== 'teacher')) { setTourStep(null); return }
-    setTourStep(tourDone(uid, role) ? null : 0)
-  }, [uid, role])
+    setTourStep(seen ? null : 0)
+  }, [uid, role, roleLoading, seen])
 
   useEffect(() => {
-    const replay = () => { if (uid && role) { markTourDone(uid, role, false); setTourStep(0) } }
+    const replay = () => { if (uid && role) setTourStep(0) }
     window.addEventListener(TOUR_REPLAY_EVENT, replay)
     return () => window.removeEventListener(TOUR_REPLAY_EVENT, replay)
   }, [uid, role])
 
   const endTour = useCallback(() => {
-    if (uid && role) markTourDone(uid, role, true)
+    if (uid && role) { markTourDone(uid, role, true); saveTourDone(role, true) }
     setTourStep(null)
     if (pathname === '/settings') navigate('/')
-  }, [uid, role, pathname, navigate])
+  }, [uid, role, pathname, navigate, saveTourDone])
 
   // Open the page the current step is about (e.g. Settings for "log out")
   const stepPage = inTour ? steps[Math.min(tourStep, steps.length - 1)].page : null

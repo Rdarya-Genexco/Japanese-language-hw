@@ -4,13 +4,14 @@ import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
 import { LANGUAGES } from '../utils/languages'
-import { ArrowLeft, Globe, BookOpen, GraduationCap, Check, Loader2 } from 'lucide-react'
-import { getClassroom, getClassroomMember } from '../utils/firestoreService'
+import { ArrowLeft, Globe, BookOpen, GraduationCap, Check, Loader2, Trash2, AlertTriangle } from 'lucide-react'
+import { getClassroom, getClassroomMember, deleteAccountData } from '../utils/firestoreService'
+import { errorText } from '../utils/appError'
 import BottomNav from '../components/BottomNav'
 import { tourText, TOUR_REPLAY_EVENT } from '../utils/tanuTour'
 
 export default function SettingsPage() {
-  const { user, logout } = useAuth()
+  const { user, logout, deleteAccount } = useAuth()
   const { langCode, setLangCode, t } = useLang()
   const { role, saveRole, classroomCode, saveClassroomCode } = useRole()
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ export default function SettingsPage() {
   const [joinCode, setJoinCode] = useState('')
   const [joinStatus, setJoinStatus] = useState(null) // null | 'ok' | 'not-found' | 'verifying'
   const [changingCode, setChangingCode] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   const handleChangeRole = async (newRole) => {
     if (newRole === role) return
@@ -199,6 +201,68 @@ export default function SettingsPage() {
           </div>
         </div>
 
+        {/* Delete account (not for guest sessions, which keep nothing) */}
+        {!user.isAnonymous && (
+          <button
+            onClick={() => setConfirmDelete(true)}
+            className="w-full flex items-center justify-center gap-2 rounded-xl border border-rose-200 dark:border-rose-900 px-4 py-3 text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
+          >
+            <Trash2 size={15} /> {t('deleteAccount')}
+          </button>
+        )}
+
+      </div>
+
+      {confirmDelete && (
+        <DeleteAccountDialog
+          onCancel={() => setConfirmDelete(false)}
+          onConfirm={() => deleteAccount(() => deleteAccountData(user.uid, { classroomCode }))
+            .then(() => navigate('/login', { replace: true }))}
+        />
+      )}
+    </div>
+  )
+}
+
+/** "Are you sure?" popup. Stays open with the error if deleting fails. */
+function DeleteAccountDialog({ onCancel, onConfirm }) {
+  const { t } = useLang()
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+
+  const confirm = async () => {
+    setBusy(true); setError('')
+    try {
+      await onConfirm()
+    } catch (err) {
+      const code = err?.code || ''
+      // Closing Google's sign-in window just cancels
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') setError('')
+      else setError(t('deleteAccountFailed') + ': ' + errorText(err, t))
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-labelledby="delete-account-title">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm p-5">
+        <div className="w-11 h-11 rounded-full bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center mb-3">
+          <AlertTriangle size={20} className="text-rose-600 dark:text-rose-400" />
+        </div>
+        <h2 id="delete-account-title" className="font-bold text-lg text-slate-900 dark:text-white">{t('deleteAccountTitle')}</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">{t('deleteAccountBody')}</p>
+        {!window.docTranslateDesktop && <p className="text-xs text-slate-400 mt-2">{t('deleteNeedsSignIn')}</p>}
+        {error && <p className="text-xs text-rose-600 dark:text-rose-400 mt-3">{error}</p>}
+        <div className="flex gap-2 mt-5">
+          <button onClick={onCancel} disabled={busy} className="btn-secondary flex-1 justify-center text-sm">{t('cancel')}</button>
+          <button
+            onClick={confirm}
+            disabled={busy}
+            className="flex-1 flex items-center justify-center gap-1.5 text-sm font-semibold rounded-xl px-3 py-2 bg-rose-600 hover:bg-rose-700 disabled:opacity-60 text-white"
+          >
+            {busy ? <><Loader2 size={14} className="animate-spin" /> {t('deletingAccount')}</> : t('deleteForever')}
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, signInAnonymously, signInWithCredential, GoogleAuthProvider } from 'firebase/auth'
+import { onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, signInAnonymously, signInWithCredential, GoogleAuthProvider, reauthenticateWithPopup, deleteUser } from 'firebase/auth'
 import { auth, googleProvider } from '../firebase/config'
 import { useLang } from './LanguageContext'
 
@@ -62,12 +62,36 @@ export function AuthProvider({ children }) {
     await signOut(auth)
   }
 
+  /**
+   * Deletes the account: a fresh Google sign-in first (Firebase requires a recent one to delete a user,
+   * and doing it up front means data is never deleted while the sign-in survives), then the caller's
+   * data, then the sign-in itself.
+   */
+  const deleteAccount = async (deleteData) => {
+    const current = auth.currentUser
+    if (!current) { // mock/test mode has no Firebase user
+      await deleteData()
+      setUser(null)
+      return
+    }
+    // The desktop app can't open Google's popup; Firebase may then refuse deleteUser below
+    if (!window.docTranslateDesktop) await reauthenticateWithPopup(current, googleProvider)
+    await deleteData()
+    try {
+      await deleteUser(current)
+    } catch (err) {
+      // Data is already gone; never leave the user signed in to an empty account
+      await signOut(auth)
+      if (err.code !== 'auth/requires-recent-login') throw err
+    }
+  }
+
   const loginAnonymous = async () => {
     await signInAnonymously(auth)
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, logout, loginAnonymous }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, logout, loginAnonymous, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   )

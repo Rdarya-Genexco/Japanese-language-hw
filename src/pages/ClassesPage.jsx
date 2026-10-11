@@ -5,7 +5,7 @@ import { useRole } from '../contexts/RoleContext'
 import {
   createClassroom, getTeacherClassrooms, getAssignments,
   getAssignmentSubmissions, getClassroomSubmissions, getClassroomMembers,
-  removeClassroomMember, deleteClassroom,
+  removeClassroomMember, deleteClassroom, gradeAssignmentSubmission,
 } from '../utils/firestoreService'
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
@@ -468,6 +468,7 @@ function ClassroomCard({
                             </p>
                             {submissions[a.id].map(s => (
                               <SubmissionRow key={s.id} s={s} icon="👤" onView={onViewSubmission} dueMs={dueStatus(a).dueMs}
+                                grading={{ code: cls.code, assignmentId: a.id }}
                                 className="bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1.5" />
                             ))}
                           </div>
@@ -530,32 +531,92 @@ function ClassroomCard({
   )
 }
 
-function SubmissionRow({ s, icon, onView, className, dueMs }) {
+function SubmissionRow({ s, icon, onView, className, dueMs, grading = null }) {
   const { t, formatDate } = useLang()
   const canView = !!s.worksheetHtml
   const late = dueMs && s.submittedAt?.seconds && s.submittedAt.seconds * 1000 > dueMs
+  const [saved, setSaved] = useState({ grade: s.grade || '', teacherReply: s.teacherReply || '' })
+  const [open, setOpen] = useState(false)
+  const graded = !!(saved.grade || saved.teacherReply)
   return (
-    <button
-      type="button"
-      onClick={() => canView && onView(s)}
-      disabled={!canView}
-      className={`w-full flex items-center gap-2 text-[10px] text-left border border-slate-200 dark:border-slate-700 transition-colors enabled:hover:border-violet-300 dark:enabled:hover:border-violet-600 enabled:hover:bg-violet-50 dark:enabled:hover:bg-violet-900/20 ${className}`}
-    >
-      <span className="text-sm flex-shrink-0">{icon}</span>
-      <div className="flex-1 min-w-0">
-        <p className="font-medium text-slate-700 dark:text-slate-200 truncate">{s.studentName || t('student')}</p>
-        <p className="text-slate-400 truncate">{s.worksheetName || s.name || (canView ? t('worksheet') : t('feedbackOnly'))}</p>
-        {s.feedback && (
-          <p className="mt-1 text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md px-2 py-1">
-            💬 {s.feedback}
-          </p>
+    <div className={`border border-slate-200 dark:border-slate-700 ${className}`}>
+      <button
+        type="button"
+        onClick={() => canView && onView(s)}
+        disabled={!canView}
+        className="w-full flex items-center gap-2 text-[10px] text-left rounded-md transition-colors enabled:hover:bg-violet-50 dark:enabled:hover:bg-violet-900/20"
+      >
+        <span className="text-sm flex-shrink-0">{icon}</span>
+        <div className="flex-1 min-w-0">
+          <p className="font-medium text-slate-700 dark:text-slate-200 truncate">{s.studentName || t('student')}</p>
+          <p className="text-slate-400 truncate">{s.worksheetName || s.name || (canView ? t('worksheet') : t('feedbackOnly'))}</p>
+          {s.feedback && (
+            <p className="mt-1 text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md px-2 py-1">
+              💬 {s.feedback}
+            </p>
+          )}
+        </div>
+        {s.submittedAt?.seconds && (
+          <span className="text-slate-400 flex-shrink-0">{formatDate(s.submittedAt.seconds * 1000)}</span>
         )}
-      </div>
-      {s.submittedAt?.seconds && (
-        <span className="text-slate-400 flex-shrink-0">{formatDate(s.submittedAt.seconds * 1000)}</span>
+        {late && <span className="flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">{t('late')}</span>}
+        {canView && <span className="text-violet-600 dark:text-violet-400 font-semibold flex-shrink-0">{t('viewArrow')}</span>}
+      </button>
+
+      {grading && !open && (
+        <div className="flex items-start gap-2 mt-1.5 text-[10px]">
+          {graded && (
+            <p className="flex-1 min-w-0 text-emerald-700 dark:text-emerald-400 whitespace-pre-wrap break-words">
+              {saved.grade && <span className="font-bold mr-1.5">{t('gradeLabel')}: {saved.grade}</span>}
+              {saved.teacherReply}
+            </p>
+          )}
+          <button type="button" onClick={() => setOpen(true)} className="ml-auto flex-shrink-0 font-semibold text-violet-600 dark:text-violet-400 hover:underline">
+            ✏️ {t('replyAndGrade')}
+          </button>
+        </div>
       )}
-      {late && <span className="flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">{t('late')}</span>}
-      {canView && <span className="text-violet-600 dark:text-violet-400 font-semibold flex-shrink-0">{t('viewArrow')}</span>}
-    </button>
+      {grading && open && (
+        <GradeForm grading={grading} subId={s.id} initial={saved}
+          onSaved={(v) => { setSaved(v); setOpen(false) }} onCancel={() => setOpen(false)} />
+      )}
+    </div>
+  )
+}
+
+function GradeForm({ grading, subId, initial, onSaved, onCancel }) {
+  const { t } = useLang()
+  const [grade, setGrade] = useState(initial.grade)
+  const [reply, setReply] = useState(initial.teacherReply)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const save = async () => {
+    setSaving(true); setError('')
+    try {
+      const data = await gradeAssignmentSubmission(grading.code, grading.assignmentId, subId, { grade, teacherReply: reply })
+      onSaved({ grade: data.grade, teacherReply: data.teacherReply })
+    } catch (err) {
+      setError(t('failedSaveGrade') + ': ' + errorText(err, t))
+    } finally {
+      setSaving(false)
+    }
+  }
+  return (
+    <div className="mt-2 space-y-1.5 text-[11px]">
+      <div className="flex items-center gap-2">
+        <label className="font-semibold text-slate-500 flex-shrink-0">{t('gradeLabel')}</label>
+        <input value={grade} onChange={e => setGrade(e.target.value)} maxLength={40} placeholder={t('gradePlaceholder')} className="input flex-1 text-xs py-1.5" />
+      </div>
+      <textarea value={reply} onChange={e => setReply(e.target.value)} maxLength={2000} rows={2}
+        placeholder={t('replyPlaceholder')} aria-label={t('teacherReplyLabel')} className="input w-full text-xs resize-none" />
+      {error && <p className="text-rose-500">{error}</p>}
+      <div className="flex justify-end gap-1.5">
+        <button type="button" onClick={onCancel} disabled={saving} className="px-2.5 py-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700">{t('cancel')}</button>
+        <button type="button" onClick={save} disabled={saving || (!grade.trim() && !reply.trim())}
+          className="flex items-center gap-1 px-3 py-1 rounded-lg font-semibold bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white">
+          {saving && <Loader2 size={11} className="animate-spin" />} {t('saveButton')}
+        </button>
+      </div>
+    </div>
   )
 }
