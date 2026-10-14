@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:proxy": "node tests/gemini-proxy.test.mjs",
+    "test:proxy": "node tests/gemini-proxy.test.mjs && node tests/firebase-auth-proxy.test.mjs",
     "lint": "oxlint src netlify tests"
   },
   "dependencies": {

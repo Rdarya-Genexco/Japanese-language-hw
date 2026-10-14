@@ -48,8 +48,10 @@ export default defineConfig({
       manifest: false, // use our own public/manifest.json
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}'],
-        // Static pages must not be swallowed by the SPA fallback
-        navigateFallbackDenylist: [/^\/privacy\.html$/],
+        // Real files (sitemap.xml, robots.txt, privacy.html, Google verification…) must come from
+        // the server, not the SPA fallback: skip any path whose last segment has a file extension.
+        // /__/ is Firebase's sign-in handler, served by the firebase-auth edge function.
+        navigateFallbackDenylist: [/\/[^/?]+\.[a-z0-9]+$/i, /^\/__\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
