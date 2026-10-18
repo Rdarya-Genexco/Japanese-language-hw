@@ -341,19 +341,21 @@ export default function SquirrelMascot() {
   if (role !== 'student') return null
   if (tanuHidden || snoozed) {
     return hiddenHint && !tanuHidden ? (
-      <div className="fixed bottom-[76px] right-3 z-40 md:bottom-4 max-w-[240px] bg-slate-900/90 text-white text-xs rounded-xl px-3 py-2 shadow-lg" role="status">
+      <div className="fixed bottom-[76px] right-3 z-40 md:bottom-4 max-w-[240px] bg-slate-900/90 text-white text-xs rounded-xl px-3 py-2 shadow-lg pointer-events-none" role="status">
         🍃 {t('tanuHiddenHint')}
       </div>
     ) : null
   }
 
   return (
-    <div className="fixed bottom-[72px] right-3 z-40 flex flex-col items-end gap-1 md:bottom-4">
+    // The wrapper lets taps through (pointer-events-none): only Tanu and a visible tip catch them,
+    // so the faded-out bubble's empty space never blocks the page underneath
+    <div className="fixed bottom-[72px] right-3 z-40 flex flex-col items-end gap-1 md:bottom-4 pointer-events-none">
       {/* Tip bubble */}
       <div
         className={`transition-all duration-400 ease-out ${
           visible
-            ? 'opacity-100 translate-y-0 scale-100'
+            ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
             : 'opacity-0 translate-y-3 scale-95 pointer-events-none'
         }`}
       >
@@ -377,8 +379,8 @@ export default function SquirrelMascot() {
         </div>
       </div>
 
-      {/* Tanu — click to summon/dismiss a tip; the small × hides Tanu altogether */}
-      <div className="relative">
+      {/* Tanu — click to summon/dismiss a tip; the small × sends him away for a while */}
+      <div className="relative pointer-events-auto">
         <button
           onClick={() => visible ? dismiss() : showTip()}
           title={visible ? ui.dismiss : ui.ask}
