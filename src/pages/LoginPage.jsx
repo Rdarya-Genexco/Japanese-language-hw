@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { LANGUAGES } from '../utils/languages'
@@ -164,12 +164,67 @@ function detectOs() {
   if (/Windows/i.test(ua)) return 'windows'
   // iPadOS reports itself as "Macintosh"; a touch screen gives it away
   if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad/i.test(ua) && navigator.maxTouchPoints <= 1) return 'mac'
-  if (/Linux/i.test(ua) && !/Android/i.test(ua)) return 'linux'
+  if (/Android/i.test(ua)) return 'android'
+  if (/Linux/i.test(ua)) return 'linux'
   return null
+}
+
+// Already running as the installed app (opened from the home-screen icon)
+const runningInstalled = () => window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true
+
+/**
+ * Android installs the web app itself (it is a PWA), so there is no file to download: show the
+ * browser's own install prompt when it offered one, otherwise the two-tap instructions.
+ */
+function useAndroidInstall({ t, highlighted }) {
+  const [prompt, setPrompt] = useState(() => window.__docTranslateInstallPrompt || null)
+  const [showHelp, setShowHelp] = useState(false)
+  useEffect(() => {
+    const ready = () => setPrompt(window.__docTranslateInstallPrompt || null)
+    const installed = () => { window.__docTranslateInstallPrompt = null; setPrompt(null) }
+    window.addEventListener('doc-translate-install-ready', ready)
+    window.addEventListener('appinstalled', installed)
+    return () => {
+      window.removeEventListener('doc-translate-install-ready', ready)
+      window.removeEventListener('appinstalled', installed)
+    }
+  }, [])
+
+  const install = async () => {
+    if (!prompt) { setShowHelp(v => !v); return }
+    prompt.prompt()
+    const { outcome } = await prompt.userChoice.catch(() => ({}))
+    // A prompt can only be shown once
+    window.__docTranslateInstallPrompt = null
+    setPrompt(null)
+    if (outcome !== 'accepted') setShowHelp(true)
+  }
+
+  return { button: (
+    <button
+      key="android"
+      type="button"
+      onClick={install}
+      aria-expanded={showHelp}
+      className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+        highlighted
+          ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/30'
+          : 'bg-white/5 hover:bg-white/10 text-white/85 ring-1 ring-white/10'
+      }`}
+    >
+      <DownloadIcon /> {t('downloadAndroid')}
+    </button>
+  ), help: showHelp && (
+    <p className="text-xs text-white/75 mt-3 max-w-md mx-auto leading-relaxed bg-white/5 ring-1 ring-white/10 rounded-xl px-3 py-2" role="status">
+      📱 {t('androidInstallHelp')}
+    </p>
+  ) }
 }
 
 function DesktopDownloads({ t }) {
   const current = detectOs()
+  const android = useAndroidInstall({ t, highlighted: current === 'android' })
+  const showAndroid = !runningInstalled()
   return (
     <div className="mt-6 text-center">
       <p className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-3">{t('getTheApp')}</p>
@@ -187,7 +242,9 @@ function DesktopDownloads({ t }) {
             <DownloadIcon /> {t(d.key)}
           </a>
         ))}
+        {showAndroid && android.button}
       </div>
+      {showAndroid && android.help}
       {/* Installers aren't code-signed yet, so Windows/macOS show a warning the first time */}
       <p className="text-xs text-white/45 mt-3 max-w-md mx-auto leading-relaxed">{t('unsignedInstallerHint')}</p>
     </div>
