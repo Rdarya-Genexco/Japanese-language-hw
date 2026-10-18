@@ -23,6 +23,8 @@ import { errorText } from '../utils/appError'
 import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
+import AndroidInstallCard from '../components/AndroidInstallCard'
+import { isAndroid } from '../hooks/useInstallPrompt'
 import { firebaseConfig } from '../firebase/config'
 
 export default function DashboardPage() {
@@ -279,6 +281,9 @@ export default function DashboardPage() {
       <BottomNav onUpload={() => setShowUpload(true)} />
 
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 flex-1 with-bottom-nav">
+
+        {/* Android phones: install the app (hidden once installed) */}
+        {folderId === 'root' && isAndroid() && <AndroidInstallCard className="mb-4" />}
 
         {/* Student motivational banner */}
         {role === 'student' && folderId === 'root' && !loading && (

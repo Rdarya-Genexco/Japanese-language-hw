@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { LANGUAGES } from '../utils/languages'
 import Logo from '../components/Logo'
+import { useInstallPrompt, canOfferAndroidInstall } from '../hooks/useInstallPrompt'
 
 export default function LoginPage() {
   const { signInWithGoogle } = useAuth()
@@ -169,36 +170,9 @@ function detectOs() {
   return null
 }
 
-// Already running as the installed app (opened from the home-screen icon)
-const runningInstalled = () => window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true
-
-/**
- * Android installs the web app itself (it is a PWA), so there is no file to download: show the
- * browser's own install prompt when it offered one, otherwise the two-tap instructions.
- */
+/** Android "download" = install the web app from the browser (see hooks/useInstallPrompt). */
 function useAndroidInstall({ t, highlighted }) {
-  const [prompt, setPrompt] = useState(() => window.__docTranslateInstallPrompt || null)
-  const [showHelp, setShowHelp] = useState(false)
-  useEffect(() => {
-    const ready = () => setPrompt(window.__docTranslateInstallPrompt || null)
-    const installed = () => { window.__docTranslateInstallPrompt = null; setPrompt(null) }
-    window.addEventListener('doc-translate-install-ready', ready)
-    window.addEventListener('appinstalled', installed)
-    return () => {
-      window.removeEventListener('doc-translate-install-ready', ready)
-      window.removeEventListener('appinstalled', installed)
-    }
-  }, [])
-
-  const install = async () => {
-    if (!prompt) { setShowHelp(v => !v); return }
-    prompt.prompt()
-    const { outcome } = await prompt.userChoice.catch(() => ({}))
-    // A prompt can only be shown once
-    window.__docTranslateInstallPrompt = null
-    setPrompt(null)
-    if (outcome !== 'accepted') setShowHelp(true)
-  }
+  const { install, showHelp } = useInstallPrompt()
 
   return { button: (
     <button
@@ -224,7 +198,7 @@ function useAndroidInstall({ t, highlighted }) {
 function DesktopDownloads({ t }) {
   const current = detectOs()
   const android = useAndroidInstall({ t, highlighted: current === 'android' })
-  const showAndroid = !runningInstalled()
+  const showAndroid = canOfferAndroidInstall()
   return (
     <div className="mt-6 text-center">
       <p className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-3">{t('getTheApp')}</p>

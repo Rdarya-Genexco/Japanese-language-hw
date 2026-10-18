@@ -8,6 +8,7 @@ import { ArrowLeft, Globe, BookOpen, GraduationCap, Check, Loader2, Trash2, Aler
 import { getClassroom, getClassroomMember, deleteAccountData } from '../utils/firestoreService'
 import { errorText } from '../utils/appError'
 import BottomNav from '../components/BottomNav'
+import AndroidInstallCard from '../components/AndroidInstallCard'
 import { tourText, TOUR_REPLAY_EVENT } from '../utils/tanuTour'
 
 export default function SettingsPage() {
@@ -187,6 +188,9 @@ export default function SettingsPage() {
             <span aria-hidden="true" className="relative w-10 h-6 rounded-full bg-slate-300 dark:bg-slate-600 peer-checked:bg-emerald-500 transition-colors after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-4 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-400" />
           </label>
         )}
+
+        {/* Download for Android (any device; hidden inside the installed or desktop app) */}
+        <AndroidInstallCard />
 
         {/* Replay Tanu's first-run tour */}
         <button
