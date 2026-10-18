@@ -1,7 +1,7 @@
 # Builds the Doc Translate desktop app for Windows, macOS and Linux on GitHub's machines.
 # Run it from the repo's Actions tab ("Desktop apps" → Run workflow), or push a tag like desktop-v1.0.0.
 # The installers appear as downloadable artifacts on the finished run.
-name: Desktop apps
+name: Desktop and Android apps
 
 on:
   workflow_dispatch:
@@ -53,4 +53,59 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/desktop-v')
         with:
           files: ${{ matrix.files }}
+          make_latest: true
+
+  # Android app (Trusted Web Activity): DocTranslate.apk to install directly, DocTranslate.aab for Google Play
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          elif [[ "$GITHUB_REF" == refs/tags/desktop-v* ]]; then
+            # A release must use the real key: phones refuse updates signed with a different one
+            echo "::error::Add the ANDROID_KEYSTORE_BASE64 / ANDROID_KEYSTORE_PASSWORD / ANDROID_KEY_ALIAS / ANDROID_KEY_PASSWORD secrets before releasing"
+            exit 1
+          else
+            echo "::warning::No signing secrets: test build signed with a throwaway key (not for release)"
+          fi
+      - run: gradle --no-daemon assembleRelease bundleRelease
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      - name: Name the files
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release.apk dist/DocTranslate.apk
+          cp app/build/outputs/bundle/release/app-release.aab dist/DocTranslate.aab
+          rm -f "$RUNNER_TEMP/release.jks"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: doc-translate-Android
+          path: |
+            android/dist/DocTranslate.apk
+            android/dist/DocTranslate.aab
+          if-no-files-found: error
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/desktop-v')
+        with:
+          files: |
+            android/dist/DocTranslate.apk
+            android/dist/DocTranslate.aab
           make_latest: true

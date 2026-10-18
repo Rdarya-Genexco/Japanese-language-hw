@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.netlify.doctranslate",
+      "sha256_cert_fingerprints": ["B8:95:A6:9F:8B:57:53:81:82:70:E2:FC:78:73:92:85:A2:E8:BE:51:D1:B8:C2:F2:12:40:90:3C:AB:C3:61:08"]
+    }
+  }
+]

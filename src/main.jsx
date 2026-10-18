@@ -47,14 +47,6 @@ function reloadOnChunkError(msg) {
 window.addEventListener('error', (e) => reloadOnChunkError(e?.message || ''))
 window.addEventListener('unhandledrejection', (e) => reloadOnChunkError(String(e?.reason?.message || e?.reason || '')))
 
-// Android/Chrome offer to install the app once, at page load: keep that offer so the login page's
-// "Download for Android" button can show it later
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault()
-  window.__docTranslateInstallPrompt = e
-  window.dispatchEvent(new Event('doc-translate-install-ready'))
-})
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

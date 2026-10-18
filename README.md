@@ -44,3 +44,16 @@ Scripts:
 - `npm run build`: production build into `dist/`
 - `npm run lint`: lint with oxlint
 - `npm run test:proxy`: tests for the Gemini Edge Function's sign-in and model checks
+
+## Android app
+
+`android/` is a Trusted Web Activity: Chrome runs the live site full-screen as a real app, so Google
+sign-in and every feature work as on the web. `.github/workflows/desktop.yml` builds it with the
+desktop apps and attaches **DocTranslate.apk** (install directly) and **DocTranslate.aab** (Google Play)
+to the release. The version follows `desktop/package.json`.
+
+Signing needs four repository secrets (Settings → Secrets and variables → Actions):
+`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`.
+Always sign with the same key, or phones refuse the update. `public/.well-known/assetlinks.json`
+holds that key's SHA-256 fingerprint, which lets the app open without a browser address bar; if you
+publish on Google Play with Play App Signing, add Play's app-signing fingerprint there as well.

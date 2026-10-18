@@ -24,7 +24,7 @@ import EmptyState from '../components/EmptyState'
 import { FolderPlus, Upload, RefreshCw, LayoutGrid, List, School, ClipboardList } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 import AndroidInstallCard from '../components/AndroidInstallCard'
-import { isAndroid } from '../hooks/useInstallPrompt'
+import { isAndroid } from '../hooks/androidApp'
 import { firebaseConfig } from '../firebase/config'
 
 export default function DashboardPage() {

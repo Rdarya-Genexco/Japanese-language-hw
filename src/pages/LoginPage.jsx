@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { LANGUAGES } from '../utils/languages'
 import Logo from '../components/Logo'
-import { useInstallPrompt, canOfferAndroidInstall } from '../hooks/useInstallPrompt'
+import { ANDROID_APK_URL, canOfferAndroidInstall } from '../hooks/androidApp'
 
 export default function LoginPage() {
   const { signInWithGoogle } = useAuth()
@@ -170,43 +170,18 @@ function detectOs() {
   return null
 }
 
-/** Android "download" = install the web app from the browser (see hooks/useInstallPrompt). */
-function useAndroidInstall({ t, highlighted }) {
-  const { install, showHelp } = useInstallPrompt()
-
-  return { button: (
-    <button
-      key="android"
-      type="button"
-      onClick={install}
-      aria-expanded={showHelp}
-      className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-        highlighted
-          ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/30'
-          : 'bg-white/5 hover:bg-white/10 text-white/85 ring-1 ring-white/10'
-      }`}
-    >
-      <DownloadIcon /> {t('downloadAndroid')}
-    </button>
-  ), help: showHelp && (
-    <p className="text-xs text-white/75 mt-3 max-w-md mx-auto leading-relaxed bg-white/5 ring-1 ring-white/10 rounded-xl px-3 py-2" role="status">
-      📱 {t('androidInstallHelp')}
-    </p>
-  ) }
-}
-
 function DesktopDownloads({ t }) {
   const current = detectOs()
-  const android = useAndroidInstall({ t, highlighted: current === 'android' })
-  const showAndroid = canOfferAndroidInstall()
+  // Not offered inside the Android app itself
+  const downloads = canOfferAndroidInstall() ? [...DOWNLOADS, { os: 'android', key: 'downloadAndroid', url: ANDROID_APK_URL }] : DOWNLOADS
   return (
     <div className="mt-6 text-center">
       <p className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-3">{t('getTheApp')}</p>
       <div className="flex flex-col sm:flex-row gap-2 justify-center">
-        {DOWNLOADS.map(d => (
+        {downloads.map(d => (
           <a
             key={d.os}
-            href={`${RELEASES}/${d.file}`}
+            href={d.url || `${RELEASES}/${d.file}`}
             className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
               d.os === current
                 ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/30'
@@ -216,11 +191,10 @@ function DesktopDownloads({ t }) {
             <DownloadIcon /> {t(d.key)}
           </a>
         ))}
-        {showAndroid && android.button}
       </div>
-      {showAndroid && android.help}
       {/* Installers aren't code-signed yet, so Windows/macOS show a warning the first time */}
       <p className="text-xs text-white/45 mt-3 max-w-md mx-auto leading-relaxed">{t('unsignedInstallerHint')}</p>
+      {current === 'android' && <p className="text-xs text-white/45 mt-2 max-w-md mx-auto leading-relaxed">{t('androidInstallHelp')}</p>}
     </div>
   )
 }

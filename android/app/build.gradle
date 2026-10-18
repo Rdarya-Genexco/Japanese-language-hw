@@ -1,0 +1,53 @@
+// Doc Translate for Android: a Trusted Web Activity (Chrome running the live site full-screen), so
+// Google sign-in and every web feature work exactly as on the website. The version follows
+// desktop/package.json, so one desktop-v* release tag versions every app.
+plugins {
+    id 'com.android.application'
+}
+
+def appVersion = new groovy.json.JsonSlurper().parse(rootProject.file('../desktop/package.json')).version
+def (major, minor, patch) = appVersion.tokenize('.').collect { it.toInteger() }
+
+// Release signing key comes from CI secrets (see README "Android app"); never stored in the repo
+def keystorePath = System.getenv('ANDROID_KEYSTORE_PATH')
+
+android {
+    namespace 'app.netlify.doctranslate'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'app.netlify.doctranslate'
+        minSdk 21
+        targetSdk 34
+        versionCode major * 10000 + minor * 100 + patch
+        versionName appVersion
+    }
+
+    signingConfigs {
+        release {
+            if (keystorePath) {
+                storeFile file(keystorePath)
+                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // Without the secret (e.g. a test run) fall back to the throwaway debug key
+            signingConfig keystorePath ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}
