@@ -178,9 +178,10 @@ function TourSpotlight({ targets }) {
 }
 
 export default function SquirrelMascot() {
-  const { role, roleLoading, toursDone, saveTourDone, tanuHidden, saveTanuHidden } = useRole()
+  const { role, roleLoading, toursDone, saveTourDone, tanuHidden } = useRole()
   const { t } = useLang()
   const [hiddenHint, setHiddenHint] = useState(false)
+  const [snoozed, setSnoozed] = useState(false) // × on Tanu: away for 30–60 s; Settings turns him off for good
   const { user } = useAuth()
   const { langCode } = useLang()
   const uid = user?.uid
@@ -259,20 +260,27 @@ export default function SquirrelMascot() {
     return () => clearTimeout(timer)
   }, [showTip, inTour, role, tanuHidden])
 
-  // Re-schedule after each dismiss
+  // Next tip 30–60 s after the last one closes
   useEffect(() => {
-    if (!visible && !inTour && role === 'student' && !tanuHidden) {
-      const delay = 45000 + Math.random() * 55000
+    if (!visible && !inTour && role === 'student' && !tanuHidden && !snoozed) {
+      const delay = 30000 + Math.random() * 30000
       nextTimerRef.current = setTimeout(showTip, delay)
     }
     return () => clearTimeout(nextTimerRef.current)
-  }, [visible, showTip, inTour, role, tanuHidden])
+  }, [visible, showTip, inTour, role, tanuHidden, snoozed])
 
   const hideTanu = () => {
     dismiss()
-    saveTanuHidden(true)
+    setSnoozed(true)
     setHiddenHint(true)
   }
+
+  // After the × Tanu comes back in 30–60 s with a tip
+  useEffect(() => {
+    if (!snoozed) return
+    const timer = setTimeout(() => { setSnoozed(false); showTip() }, 30000 + Math.random() * 30000)
+    return () => clearTimeout(timer)
+  }, [snoozed, showTip])
 
   // Brief "how to get him back" note after hiding
   useEffect(() => {
@@ -331,8 +339,8 @@ export default function SquirrelMascot() {
   }
 
   if (role !== 'student') return null
-  if (tanuHidden) {
-    return hiddenHint ? (
+  if (tanuHidden || snoozed) {
+    return hiddenHint && !tanuHidden ? (
       <div className="fixed bottom-[76px] right-3 z-40 md:bottom-4 max-w-[240px] bg-slate-900/90 text-white text-xs rounded-xl px-3 py-2 shadow-lg" role="status">
         🍃 {t('tanuHiddenHint')}
       </div>
