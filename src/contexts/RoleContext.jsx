@@ -14,6 +14,7 @@ export function RoleProvider({ children }) {
   const [roleError, setRoleError] = useState(null)
   // Which roles' Tanu tour this account has finished (stored on the profile, so it follows the user across devices)
   const [toursDone, setToursDone] = useState({})
+  const [tanuHidden, setTanuHidden] = useState(false)
   const [attempt, setAttempt] = useState(0)
 
   // Drops the code if the class was deleted or the teacher removed this student;
@@ -64,6 +65,7 @@ export function RoleProvider({ children }) {
         setRole(r)
         setClassroomCode(savedCode)
         setToursDone({ student: !!doc?.tourDoneStudent, teacher: !!doc?.tourDoneTeacher })
+        setTanuHidden(!!doc?.tanuHidden)
         if (r === 'student' && savedCode) syncMembership(user, savedCode)
       })
       // Not "no role": offline or Firestore trouble. Don't send them to role-select to overwrite it.
@@ -112,8 +114,15 @@ export function RoleProvider({ children }) {
     }
   }, [user])
 
+  const saveTanuHidden = useCallback((hidden) => {
+    setTanuHidden(hidden)
+    if (user && !user.isAnonymous) {
+      saveUserData(user.uid, { tanuHidden: hidden }).catch(err => console.warn('[Role] could not save Tanu setting', err))
+    }
+  }, [user])
+
   return (
-    <RoleContext.Provider value={{ role, roleLoading, roleError, retryRole: () => setAttempt(a => a + 1), saveRole, classroomCode, saveClassroomCode, toursDone, saveTourDone }}>
+    <RoleContext.Provider value={{ role, roleLoading, roleError, retryRole: () => setAttempt(a => a + 1), saveRole, classroomCode, saveClassroomCode, toursDone, saveTourDone, tanuHidden, saveTanuHidden }}>
       {children}
     </RoleContext.Provider>
   )

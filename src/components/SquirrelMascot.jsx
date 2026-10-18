@@ -24,8 +24,9 @@ function TanukiSVG({ animClass }) {
   return (
     <svg
       width="94" height="104" viewBox="0 0 94 104" fill="none"
+      // Smaller on phones so Tanu doesn't cover the page
       xmlns="http://www.w3.org/2000/svg"
-      className={`drop-shadow-2xl ${animClass}`}
+      className={`drop-shadow-2xl w-[58px] h-[64px] sm:w-[94px] sm:h-[104px] ${animClass}`}
     >
       {/* ── TAIL (behind body — striped raccoon tail) ── */}
       <path d="M63,84 C84,76 94,62 86,50 C80,42 68,44 67,52 C66,60 74,64 70,76 C68,82 63,84 63,84 Z" fill="#5A4A10"/>
@@ -177,7 +178,9 @@ function TourSpotlight({ targets }) {
 }
 
 export default function SquirrelMascot() {
-  const { role, roleLoading, toursDone, saveTourDone } = useRole()
+  const { role, roleLoading, toursDone, saveTourDone, tanuHidden, saveTanuHidden } = useRole()
+  const { t } = useLang()
+  const [hiddenHint, setHiddenHint] = useState(false)
   const { user } = useAuth()
   const { langCode } = useLang()
   const uid = user?.uid
@@ -251,19 +254,32 @@ export default function SquirrelMascot() {
 
   // First tip shortly after mount (students only, and not during the tour)
   useEffect(() => {
-    if (inTour || role !== 'student') return
-    const t = setTimeout(showTip, 300)
-    return () => clearTimeout(t)
-  }, [showTip, inTour, role])
+    if (inTour || role !== 'student' || tanuHidden) return
+    const timer = setTimeout(showTip, 300)
+    return () => clearTimeout(timer)
+  }, [showTip, inTour, role, tanuHidden])
 
   // Re-schedule after each dismiss
   useEffect(() => {
-    if (!visible && !inTour && role === 'student') {
+    if (!visible && !inTour && role === 'student' && !tanuHidden) {
       const delay = 45000 + Math.random() * 55000
       nextTimerRef.current = setTimeout(showTip, delay)
     }
     return () => clearTimeout(nextTimerRef.current)
-  }, [visible, showTip, inTour, role])
+  }, [visible, showTip, inTour, role, tanuHidden])
+
+  const hideTanu = () => {
+    dismiss()
+    saveTanuHidden(true)
+    setHiddenHint(true)
+  }
+
+  // Brief "how to get him back" note after hiding
+  useEffect(() => {
+    if (!hiddenHint) return
+    const timer = setTimeout(() => setHiddenHint(false), 4000)
+    return () => clearTimeout(timer)
+  }, [hiddenHint])
 
   if (inTour) {
     const step = steps[Math.min(tourStep, steps.length - 1)]
@@ -315,6 +331,13 @@ export default function SquirrelMascot() {
   }
 
   if (role !== 'student') return null
+  if (tanuHidden) {
+    return hiddenHint ? (
+      <div className="fixed bottom-[76px] right-3 z-40 md:bottom-4 max-w-[240px] bg-slate-900/90 text-white text-xs rounded-xl px-3 py-2 shadow-lg" role="status">
+        🍃 {t('tanuHiddenHint')}
+      </div>
+    ) : null
+  }
 
   return (
     <div className="fixed bottom-[72px] right-3 z-40 flex flex-col items-end gap-1 md:bottom-4">
@@ -326,7 +349,7 @@ export default function SquirrelMascot() {
             : 'opacity-0 translate-y-3 scale-95 pointer-events-none'
         }`}
       >
-        <div className="relative bg-white dark:bg-slate-900 rounded-2xl rounded-br-md shadow-xl ring-1 ring-emerald-200 dark:ring-emerald-500/40 px-4 py-3 max-w-[220px]">
+        <div className="relative bg-white dark:bg-slate-900 rounded-2xl rounded-br-md shadow-xl ring-1 ring-emerald-200 dark:ring-emerald-500/40 px-3 py-2 sm:px-4 sm:py-3 max-w-[190px] sm:max-w-[220px]">
           <button
             onClick={dismiss}
             className="absolute -top-2 -right-2 w-6 h-6 bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 ring-1 ring-emerald-200 dark:ring-emerald-500/40 shadow-sm rounded-full text-emerald-600 dark:text-emerald-400 text-xs flex items-center justify-center transition-colors"
@@ -346,14 +369,24 @@ export default function SquirrelMascot() {
         </div>
       </div>
 
-      {/* Tanu — click to summon/dismiss */}
-      <button
-        onClick={() => visible ? dismiss() : showTip()}
-        title={visible ? ui.dismiss : ui.ask}
-        className="select-none"
-      >
-        <TanukiSVG animClass={animClass} />
-      </button>
+      {/* Tanu — click to summon/dismiss a tip; the small × hides Tanu altogether */}
+      <div className="relative">
+        <button
+          onClick={() => visible ? dismiss() : showTip()}
+          title={visible ? ui.dismiss : ui.ask}
+          className="select-none block"
+        >
+          <TanukiSVG animClass={animClass} />
+        </button>
+        <button
+          onClick={hideTanu}
+          title={t('hideTanu')}
+          aria-label={t('hideTanu')}
+          className="absolute -top-1 -left-1 w-6 h-6 sm:w-5 sm:h-5 rounded-full bg-slate-700/85 hover:bg-slate-800 text-white text-xs leading-none flex items-center justify-center shadow ring-2 ring-white dark:ring-slate-900"
+        >
+          ×
+        </button>
+      </div>
     </div>
   )
 }

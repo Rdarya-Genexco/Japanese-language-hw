@@ -13,7 +13,7 @@ import { tourText, TOUR_REPLAY_EVENT } from '../utils/tanuTour'
 export default function SettingsPage() {
   const { user, logout, deleteAccount } = useAuth()
   const { langCode, setLangCode, t } = useLang()
-  const { role, saveRole, classroomCode, saveClassroomCode } = useRole()
+  const { role, saveRole, classroomCode, saveClassroomCode, tanuHidden, saveTanuHidden } = useRole()
   const navigate = useNavigate()
 
   const [changingRole, setChangingRole] = useState(false)
@@ -167,6 +167,25 @@ export default function SettingsPage() {
               <p className="text-xs text-rose-500 mt-1">{t('removedFromClass')}</p>
             )}
           </div>
+        )}
+
+        {/* Students: switch Tanu's tips on/off (also hidden with the × on Tanu) */}
+        {role === 'student' && (
+          <label className="card p-4 flex items-center gap-3 cursor-pointer">
+            <span className="text-xl">🍃</span>
+            <span className="flex-1 min-w-0">
+              <span className="block text-sm font-semibold text-slate-800 dark:text-slate-100">{t('showTanu')}</span>
+              <span className="block text-xs text-slate-500 dark:text-slate-400">{t('showTanuDesc')}</span>
+            </span>
+            <input
+              type="checkbox"
+              role="switch"
+              checked={!tanuHidden}
+              onChange={e => saveTanuHidden(!e.target.checked)}
+              className="peer sr-only"
+            />
+            <span aria-hidden="true" className="relative w-10 h-6 rounded-full bg-slate-300 dark:bg-slate-600 peer-checked:bg-emerald-500 transition-colors after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-4 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-400" />
+          </label>
         )}
 
         {/* Replay Tanu's first-run tour */}
