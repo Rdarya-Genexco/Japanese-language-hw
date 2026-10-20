@@ -1,7 +1,7 @@
 {
   "name": "doc-translate-desktop",
   "productName": "Doc Translate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Doc Translate for Windows",
   "main": "main.js",
   "private": true,
