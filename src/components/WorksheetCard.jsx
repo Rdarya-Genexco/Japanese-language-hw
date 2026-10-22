@@ -3,6 +3,9 @@ import { FileText, MoreVertical, Download, Printer, Trash2, Eye } from 'lucide-r
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
 
+const LONG_PRESS_MS = 450     // hold this long to pick a card up on a phone
+const MOVE_TOLERANCE_PX = 10  // moving more than this first means the user is scrolling
+
 const SUBJECT_EMOJI = {
   pdf: '📕', docx: '📘', doc: '📘', pptx: '📙', ppt: '📙', png: '🖼️', jpg: '🖼️', jpeg: '🖼️',
 }
@@ -20,6 +23,8 @@ export default function WorksheetCard({
   const menuRef  = useRef(null)
   const cardRef  = useRef(null)
   const touchDragging = useRef(false)
+  const press = useRef(null)          // finger down, waiting to see if it's a long press
+  const suppressClick = useRef(false) // the tap that ends a drag must not open the worksheet
 
   useEffect(() => {
     const handler = (e) => {
@@ -29,19 +34,28 @@ export default function WorksheetCard({
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  // ── Prevent page scroll during touch drag (must be non-passive) ───────────
+  // ── Touch: swipe scrolls, tap opens, press-and-hold picks the card up ─────
+  // Only a drag that has started blocks scrolling (needs a non-passive listener)
   useEffect(() => {
     const el = cardRef.current
     if (!el) return
     const handleTouchMove = (e) => {
-      if (!touchDragging.current) return
-      e.preventDefault()
       const touch = e.touches[0]
-      onTouchDragMove?.(worksheet.id, touch.clientX, touch.clientY)
+      if (touchDragging.current) {
+        e.preventDefault()
+        onTouchDragMove?.(worksheet.id, touch.clientX, touch.clientY)
+      } else if (press.current) {
+        // Finger moved before the hold finished: it's a scroll, so never start a drag
+        const dx = touch.clientX - press.current.x
+        const dy = touch.clientY - press.current.y
+        if (dx * dx + dy * dy > MOVE_TOLERANCE_PX * MOVE_TOLERANCE_PX) cancelPress()
+      }
     }
     el.addEventListener('touchmove', handleTouchMove, { passive: false })
     return () => el.removeEventListener('touchmove', handleTouchMove)
   }, [worksheet.id, onTouchDragMove])
+
+  useEffect(() => () => clearTimeout(press.current?.timer), [])
 
   const { name, originalFileType, createdAt } = worksheet
   const locale = langCode === 'ja' ? 'ja-JP' : langCode === 'zh-CN' ? 'zh-CN' : langCode === 'ko' ? 'ko-KR' : 'en-US'
@@ -57,22 +71,51 @@ export default function WorksheetCard({
   }
   const handleDragEnd = () => { setDragging(false); onDragEnd?.() }
 
-  // ── Touch drag (mobile) ───────────────────────────────────────────────────
+  // ── Touch drag (mobile): starts only after a press-and-hold ───────────────
+  function cancelPress() {
+    clearTimeout(press.current?.timer)
+    press.current = null
+  }
+
   const handleTouchStart = (e) => {
-    // Only start drag if not tapping the menu button
-    if (e.target.closest('[data-menu]')) return
-    touchDragging.current = true
-    setDragging(true)
+    if (e.target.closest('[data-menu]') || e.touches.length > 1) return
     const touch = e.touches[0]
-    onTouchDragStart?.(worksheet.id, touch.clientX, touch.clientY)
+    const x = touch.clientX, y = touch.clientY
+    cancelPress()
+    press.current = {
+      x, y,
+      timer: setTimeout(() => {
+        press.current = null
+        touchDragging.current = true
+        setDragging(true)
+        navigator.vibrate?.(25)
+        onTouchDragStart?.(worksheet.id, x, y)
+      }, LONG_PRESS_MS),
+    }
   }
 
   const handleTouchEnd = (e) => {
+    cancelPress()
+    if (!touchDragging.current) return // a tap or a scroll: the normal click/scroll happens
+    touchDragging.current = false
+    setDragging(false)
+    suppressClick.current = true
+    setTimeout(() => { suppressClick.current = false }, 400)
+    const touch = e.changedTouches[0]
+    onTouchDragEnd?.(worksheet.id, touch.clientX, touch.clientY)
+  }
+
+  const handleTouchCancel = () => {
+    cancelPress()
     if (!touchDragging.current) return
     touchDragging.current = false
     setDragging(false)
-    const touch = e.changedTouches[0]
-    onTouchDragEnd?.(worksheet.id, touch.clientX, touch.clientY)
+    onTouchDragEnd?.(worksheet.id, -1, -1) // dropped nowhere
+  }
+
+  const handleClick = () => {
+    if (dragging || suppressClick.current) return
+    onClick?.()
   }
 
   const subjectEmoji = SUBJECT_EMOJI[originalFileType] || '📄'
@@ -127,17 +170,21 @@ export default function WorksheetCard({
       onDragEnd={handleDragEnd}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}
+      // No long-press callout/menu on phones: holding the card picks it up instead
+      onContextMenu={e => { if (press.current || touchDragging.current) e.preventDefault() }}
+      style={{ WebkitTouchCallout: 'none' }}
       className={`group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-sm hover:shadow-lg hover:border-violet-300 dark:hover:border-violet-500/50 hover:-translate-y-0.5 transition-all duration-200 cursor-grab active:cursor-grabbing select-none ${
         dragging ? 'opacity-40 scale-95 shadow-none' : ''
       }`}
-      onClick={dragging ? undefined : onClick}
+      onClick={handleClick}
     >
       {/* Coloured accent stripe */}
-      <div className={`h-1.5 w-full rounded-t-2xl ${isPdf ? 'bg-rose-400' : 'bg-violet-500'}`} />
+      <div className={`h-1 sm:h-1.5 w-full rounded-t-2xl ${isPdf ? 'bg-rose-400' : 'bg-violet-500'}`} />
 
-      <div className="p-4 flex items-start gap-3">
+      <div className="p-3 sm:p-4 flex items-start gap-2.5 sm:gap-3">
         {/* Icon — student gets emoji, teacher gets FileText */}
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+        <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
           isPdf ? 'bg-rose-50 dark:bg-rose-900/30 text-rose-500' : 'bg-violet-50 dark:bg-violet-900/30 text-violet-500'
         }`}>
           {role === 'student'
@@ -148,7 +195,7 @@ export default function WorksheetCard({
         {/* Info */}
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-slate-800 dark:text-slate-100 text-sm line-clamp-2 leading-snug">{name}</p>
-          <div className="flex items-center gap-2 mt-1.5">
+          <div className="flex items-center gap-2 mt-1 sm:mt-1.5">
             <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
               isPdf
                 ? 'bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400'
@@ -162,7 +209,7 @@ export default function WorksheetCard({
         <div data-menu ref={menuRef} className="flex-shrink-0" onClick={e => e.stopPropagation()}>
           <button
             onClick={() => setMenuOpen(v => !v)}
-            className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-all"
+            className="opacity-70 sm:opacity-0 sm:group-hover:opacity-100 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-all"
           >
             <MoreVertical size={14} className="text-slate-400" />
           </button>

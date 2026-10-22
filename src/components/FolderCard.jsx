@@ -50,7 +50,7 @@ export default function FolderCard({ folder, onClick, onDelete, onRename, isDrag
   return (
     <div
       data-folder-id={folder.id}
-      className={`group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer p-4 flex flex-col items-center text-center gap-2 hover:-translate-y-0.5 ${p.card} ${
+      className={`group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer p-3 sm:p-4 flex flex-col items-center text-center gap-1 sm:gap-2 hover:-translate-y-0.5 ${p.card} ${
         isOver ? 'ring-2 ring-violet-400 ring-offset-2 scale-105 shadow-xl brightness-95' : ''
       }`}
       onClick={onClick}
@@ -68,8 +68,8 @@ export default function FolderCard({ folder, onClick, onDelete, onRename, isDrag
       )}
 
       {/* Folder icon */}
-      <div className="relative mt-1">
-        <Folder className={`w-12 h-12 ${p.icon} transition-transform ${isOver ? 'scale-110' : ''}`} fill="currentColor" fillOpacity={0.25} strokeWidth={1.5} />
+      <div className="relative sm:mt-1">
+        <Folder className={`w-9 h-9 sm:w-12 sm:h-12 ${p.icon} transition-transform ${isOver ? 'scale-110' : ''}`} fill="currentColor" fillOpacity={0.25} strokeWidth={1.5} />
       </div>
 
       {/* Name */}
@@ -79,7 +79,7 @@ export default function FolderCard({ folder, onClick, onDelete, onRename, isDrag
       <div ref={menuRef} className="absolute top-2 right-2" onClick={e => e.stopPropagation()}>
         <button
           onClick={() => setMenuOpen(v => !v)}
-          className="opacity-0 group-hover:opacity-100 p-1 rounded-lg bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 ring-1 ring-black/5 dark:ring-white/10 transition-all shadow-sm"
+          className="opacity-70 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded-lg bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 ring-1 ring-black/5 dark:ring-white/10 transition-all shadow-sm"
         >
           <MoreVertical size={14} className="text-slate-500 dark:text-slate-400" />
         </button>

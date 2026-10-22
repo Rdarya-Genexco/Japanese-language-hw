@@ -247,7 +247,7 @@ export default function DashboardPage() {
   }
 
   const handleTouchDragEnd = (wsId, x, y) => {
-    const el = document.elementFromPoint(x, y)
+    const el = x >= 0 ? document.elementFromPoint(x, y) : null
     const folderEl = el?.closest('[data-folder-id]')
     const targetFolderId = folderEl?.dataset.folderId || null
     setIsDragging(false)
@@ -280,23 +280,23 @@ export default function DashboardPage() {
       <Header streak={streak} />
       <BottomNav onUpload={() => setShowUpload(true)} />
 
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 flex-1 with-bottom-nav">
+      <div className="max-w-6xl mx-auto w-full px-3 sm:px-6 py-4 sm:py-6 flex-1 with-bottom-nav">
 
         {/* Android phones: install the app (hidden once installed) */}
-        {folderId === 'root' && isAndroid() && <AndroidInstallCard className="mb-4" />}
+        {folderId === 'root' && isAndroid() && <AndroidInstallCard className="mb-3 sm:mb-4" dismissible />}
 
         {/* Student motivational banner */}
         {role === 'student' && folderId === 'root' && !loading && (
           <div className="mb-4 space-y-3">
             {/* Main welcome banner */}
-            <div className="bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 dark:from-violet-700 dark:via-fuchsia-700 dark:to-amber-600 rounded-3xl p-5 relative overflow-hidden shadow-lg shadow-fuchsia-500/20">
+            <div className="bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 dark:from-violet-700 dark:via-fuchsia-700 dark:to-amber-600 rounded-3xl p-4 sm:p-5 relative overflow-hidden shadow-lg shadow-fuchsia-500/20">
               {/* Decorative circles */}
               <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/20 rounded-full" />
               <div className="absolute -bottom-6 right-28 w-16 h-16 bg-yellow-200/30 rounded-full" />
               <div className="flex items-center gap-4 relative">
-                <span className="text-5xl flex-shrink-0 drop-shadow-md animate-bounce" style={{ animationDuration: '2s' }}>🎒</span>
+                <span className="text-4xl sm:text-5xl flex-shrink-0 drop-shadow-md animate-bounce" style={{ animationDuration: '2s' }}>🎒</span>
                 <div className="flex-1 min-w-0">
-                  <p className="font-extrabold text-white text-lg drop-shadow-sm">
+                  <p className="font-extrabold text-white text-base sm:text-lg drop-shadow-sm">
                     {user?.displayName ? t('greeting', { name: user.displayName.split(' ')[0] }) : t('welcomeBack')}
                   </p>
                   <p className="text-white/90 text-sm mt-0.5">
@@ -308,8 +308,8 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 {streak > 0 && (
-                  <div className="flex-shrink-0 bg-white/25 backdrop-blur-sm rounded-2xl px-4 py-2 text-center ring-2 ring-white/40 rotate-3">
-                    <p className="text-3xl font-black text-white leading-none">{streak}</p>
+                  <div className="flex-shrink-0 bg-white/25 backdrop-blur-sm rounded-2xl px-3 py-1.5 sm:px-4 sm:py-2 text-center ring-2 ring-white/40 rotate-3">
+                    <p className="text-2xl sm:text-3xl font-black text-white leading-none">{streak}</p>
                     <p className="text-white/90 text-sm mt-0.5">{t('streakLabel')}</p>
                   </div>
                 )}
@@ -326,13 +326,13 @@ export default function DashboardPage() {
               ].map(badge => (
                 <div
                   key={badge.label}
-                  className={`flex-shrink-0 flex flex-col items-center gap-1 px-4 py-2.5 rounded-2xl border-2 text-center transition-all ${
+                  className={`flex-shrink-0 flex flex-col items-center gap-0.5 sm:gap-1 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-2xl border-2 text-center transition-all ${
                     badge.done
                       ? 'bg-gradient-to-b from-amber-50 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/20 border-amber-300 dark:border-amber-600 shadow-sm shadow-amber-500/20 hover:-translate-y-1 hover:rotate-2'
                       : 'bg-white dark:bg-slate-900 border-dashed border-slate-300 dark:border-slate-700 opacity-50 grayscale'
                   }`}
                 >
-                  <span className="text-2xl leading-none">{badge.done ? badge.icon : '🔒'}</span>
+                  <span className="text-xl sm:text-2xl leading-none">{badge.done ? badge.icon : '🔒'}</span>
                   <span className={`text-xs font-semibold ${badge.done ? 'text-amber-700 dark:text-amber-400' : 'text-slate-400'}`}>
                     {badge.label}
                   </span>
@@ -453,7 +453,7 @@ export default function DashboardPage() {
         )}
 
         {/* Breadcrumb + action buttons */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/80 dark:border-white/10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-200/80 dark:border-white/10">
           <Breadcrumb
             items={breadcrumb}
             isDragTarget={isDragging}
@@ -515,10 +515,10 @@ export default function DashboardPage() {
 
         {/* Loading skeleton */}
         {loading ? (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
               <div className="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded-full mb-3 animate-pulse" />
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3">
                 {[1,2,3,4,5].map(i => (
                   <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl ring-1 ring-slate-200 dark:ring-white/10 p-4 h-28 animate-pulse"
                     style={{ animationDelay: `${i * 80}ms` }} />
@@ -529,7 +529,7 @@ export default function DashboardPage() {
         ) : isEmpty ? (
           <EmptyState />
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {folders.length > 0 && (
               <section>
                 <div className="flex items-center gap-2 mb-3">
@@ -537,7 +537,7 @@ export default function DashboardPage() {
                   <h2 className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 tracking-wider">{t('folders')}</h2>
                   <span className="text-xs bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full">{folders.length}</span>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3">
                   {folders.map(folder => (
                     <FolderCard
                       key={folder.id}
@@ -561,7 +561,7 @@ export default function DashboardPage() {
                   <h2 className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 tracking-wider">{t('worksheets')}</h2>
                   <span className="text-xs bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full">{worksheets.length}</span>
                 </div>
-                <div className={listView ? 'flex flex-col gap-2' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3'}>
+                <div className={listView ? 'flex flex-col gap-2' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3'}>
                   {worksheets.map(ws => (
                     <WorksheetCard
                       key={ws.id}
