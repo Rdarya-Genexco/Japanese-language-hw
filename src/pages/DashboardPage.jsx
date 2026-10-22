@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { useRole } from '../contexts/RoleContext'
 import {
-  getFolders, getWorksheets, getWorksheet,
+  getFolders, getWorksheets, getWorksheet, getDriveTotals,
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
   getAssignments, getMyAssignmentSubmissions, unsubmitAssignment,
@@ -37,6 +37,8 @@ export default function DashboardPage() {
 
   const [folders,      setFolders]      = useState([])
   const [worksheets,   setWorksheets]   = useState([])
+  // Counts across every folder, for the banner, badges and stats (the drive shows one folder)
+  const [totals,       setTotals]       = useState(null)
   const [breadcrumb,   setBreadcrumb]   = useState([{ id: 'root', name: t('drive') }])
   const [loading,      setLoading]      = useState(true)
   const [driveError,   setDriveError]   = useState(null)
@@ -56,17 +58,21 @@ export default function DashboardPage() {
   const [submitted,        setSubmitted]        = useState({}) // assignmentId → true/false; missing = still checking
   const [unsubmittingId,   setUnsubmittingId]   = useState(null)
   const [showAllAssignments, setShowAllAssignments] = useState(false)
-  const streak = worksheets.length > 0 ? Math.min(worksheets.length, 7) : 0
+  const totalWorksheets = totals?.worksheets ?? worksheets.length
+  const totalFolders = totals?.folders ?? folders.length
+  const streak = totalWorksheets > 0 ? Math.min(totalWorksheets, 7) : 0
 
   // ── Load folder contents ──────────────────────────────────────────────────
   const load = useCallback(async () => {
     try {
-      const [f, w] = await Promise.all([
+      const [f, w, totalsNow] = await Promise.all([
         getFolders(user.uid, folderId),
         getWorksheets(user.uid, folderId),
+        getDriveTotals(user.uid).catch(() => null), // a failed count just falls back to this folder's
       ])
       setFolders(f)
       setWorksheets(w)
+      setTotals(totalsNow)
     } catch (err) {
       console.error('[Dashboard] load error', err)
       setDriveError({ code: err.code || 'unknown', message: err.message })
@@ -300,11 +306,11 @@ export default function DashboardPage() {
                     {user?.displayName ? t('greeting', { name: user.displayName.split(' ')[0] }) : t('welcomeBack')}
                   </p>
                   <p className="text-white/90 text-sm mt-0.5">
-                    {worksheets.length === 0
+                    {totalWorksheets === 0
                       ? t('uploadFirstWorksheet')
-                      : worksheets.length < 3
-                      ? t('keepGoing', { count: worksheets.length })
-                      : t('onARoll', { count: worksheets.length })}
+                      : totalWorksheets < 3
+                      ? t('keepGoing', { count: totalWorksheets })
+                      : t('onARoll', { count: totalWorksheets })}
                   </p>
                 </div>
                 {streak > 0 && (
@@ -319,10 +325,10 @@ export default function DashboardPage() {
             {/* Achievement badges */}
             <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 no-scrollbar">
               {[
-                { icon: '🌱', label: t('badgeStarted'), done: worksheets.length >= 1 },
-                { icon: '📚', label: t('badgeSheets', { count: 3 }), done: worksheets.length >= 3 },
-                { icon: '⭐', label: t('badgeSheets', { count: 5 }), done: worksheets.length >= 5 },
-                { icon: '🏆', label: t('badgeSheets', { count: 10 }), done: worksheets.length >= 10 },
+                { icon: '🌱', label: t('badgeStarted'), done: totalWorksheets >= 1 },
+                { icon: '📚', label: t('badgeSheets', { count: 3 }), done: totalWorksheets >= 3 },
+                { icon: '⭐', label: t('badgeSheets', { count: 5 }), done: totalWorksheets >= 5 },
+                { icon: '🏆', label: t('badgeSheets', { count: 10 }), done: totalWorksheets >= 10 },
               ].map(badge => (
                 <div
                   key={badge.label}
@@ -436,11 +442,11 @@ export default function DashboardPage() {
           <div className="mb-4 space-y-3">
             <div className="grid grid-cols-3 gap-3">
               <div className="card p-4 text-center">
-                <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{worksheets.length}</p>
+                <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{totalWorksheets}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{t('worksheets')}</p>
               </div>
               <div className="card p-4 text-center">
-                <p className="text-3xl font-bold tracking-tight text-violet-600 dark:text-violet-400">{folders.length}</p>
+                <p className="text-3xl font-bold tracking-tight text-violet-600 dark:text-violet-400">{totalFolders}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{t('folders')}</p>
               </div>
               <button

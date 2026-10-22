@@ -6,7 +6,7 @@
  *   users/{uid}/worksheets/{id}   — worksheet docs (content stored as JSON string)
  */
 import {
-  restAdd, restCreate, restGet, restSet, restUpdate, restDelete, restQuery, restList, restGetPublic,
+  restAdd, restCreate, restGet, restSet, restUpdate, restDelete, restQuery, restList, restGetPublic, restCount,
 } from './firestoreREST'
 import { dueDateToTimes } from './dueDates'
 import { appError } from './appError'
@@ -168,6 +168,15 @@ export async function createAssignment(code, teacherUid, title, description, due
       attachedWorksheetHtml: attachedWorksheet.worksheetHtml || '',
     } : {}),
   })
+}
+
+/** Totals across every folder (the drive view only lists the current folder). */
+export async function getDriveTotals(uid) {
+  const [worksheets, folders] = await Promise.all([
+    restCount(`users/${uid}/worksheets`),
+    restCount(`users/${uid}/folders`),
+  ])
+  return { worksheets, folders }
 }
 
 export async function getAllWorksheets(uid) {

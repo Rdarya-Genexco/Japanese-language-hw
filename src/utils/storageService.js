@@ -25,6 +25,7 @@ export const deleteFolder   = (...a) => svc().deleteFolder(...a)
 
 export const saveWorksheet  = (...a) => svc().saveWorksheet(...a)
 export const getWorksheets  = (...a) => svc().getWorksheets(...a)
+export const getDriveTotals = (...a) => svc().getDriveTotals(...a)
 export const getWorksheet   = (...a) => svc().getWorksheet(...a)
 export const deleteWorksheet= (...a) => svc().deleteWorksheet(...a)
 export const moveWorksheet  = (...a) => svc().moveWorksheet(...a)

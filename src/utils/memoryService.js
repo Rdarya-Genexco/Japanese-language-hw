@@ -34,6 +34,10 @@ export async function createFolder(_uid, parentId, name) {
   return id
 }
 
+export async function getDriveTotals() {
+  return { worksheets: _worksheets.size, folders: _folders.size }
+}
+
 export async function getFolders(_uid, parentId = 'root') {
   const pid = (!parentId || parentId === 'undefined') ? 'root' : parentId
   return [..._folders.values()].filter(f => f.parentId === pid)

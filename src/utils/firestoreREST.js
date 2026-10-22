@@ -158,6 +158,32 @@ export async function restDelete(collection, id) {
  * List ALL documents in a collection. Uses runQuery (what the Firebase SDKs send) rather than a
  * collection GET (ListDocuments), which production rejected for signed-in users on subcollections.
  */
+/** Number of documents in a collection, counted by Firestore (documents aren't downloaded). */
+export async function restCount(collection) {
+  const parts = collection.split('/')
+  const collectionId = parts[parts.length - 1]
+  const parent = parts.slice(0, -1).join('/')
+  const t = await token()
+  const res = await fetch(`${BASE}${parent ? `/${parent}` : ''}:runAggregationQuery`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      structuredAggregationQuery: {
+        aggregations: [{ alias: 'n', count: {} }],
+        structuredQuery: { from: [{ collectionId }] },
+      },
+    }),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    const e = new Error(err?.error?.message || `Count failed: ${res.status}`)
+    e.code = (err?.error?.status || 'UNKNOWN').toLowerCase().replace(/_/g, '-')
+    throw e
+  }
+  const rows = await res.json()
+  return Number(rows?.[0]?.result?.aggregateFields?.n?.integerValue ?? 0)
+}
+
 export async function restList(collection) {
   return runQuery(collection, null)
 }
