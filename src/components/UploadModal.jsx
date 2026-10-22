@@ -6,8 +6,11 @@ import { saveWorksheet } from '../utils/storageService'
 import { useLang } from '../contexts/LanguageContext'
 import { errorText } from '../utils/appError'
 
-/** Compress an image File to a JPEG data URI at max `maxPx` on the longest side. */
-function compressImage(file, maxPx = 800, quality = 0.72) {
+/**
+ * Compress an image File to a data URI at max `maxPx` on the longest side. With `webp`, uses WebP
+ * (much smaller at the same quality) where the browser can encode it, otherwise JPEG.
+ */
+function compressImage(file, maxPx = 800, quality = 0.72, { webp = false } = {}) {
   return new Promise((resolve) => {
     const url = URL.createObjectURL(file)
     const img = new Image()
@@ -20,7 +23,9 @@ function compressImage(file, maxPx = 800, quality = 0.72) {
       canvas.height = h
       canvas.getContext('2d').drawImage(img, 0, 0, w, h)
       URL.revokeObjectURL(url)
-      resolve(canvas.toDataURL('image/jpeg', quality))
+      const asWebp = webp ? canvas.toDataURL('image/webp', quality) : ''
+      // Browsers that can't encode WebP return PNG instead, which would be bigger: use JPEG then
+      resolve(asWebp.startsWith('data:image/webp') ? asWebp : canvas.toDataURL('image/jpeg', quality))
     }
     img.onerror = () => { URL.revokeObjectURL(url); resolve(null) }
     img.src = url
@@ -79,8 +84,9 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
 
       // For image files, generate two thumbnails:
       //  • geminiThumb  — small (500px, 60 %) sent to Gemini API to minimise request size and avoid timeouts
-      //  • embedThumb   — quality (800px, 72 %) embedded in the HTML output for the viewer
-      // Firestore's 1 MB doc limit is the constraint for embedThumb; geminiThumb just needs to be legible.
+      //  • embedThumb   — stored with the worksheet for the viewer (640px WebP, ~60 %): small enough to keep
+      //    storage low and stay far below Firestore's 1 MB document limit, still clear on a phone
+      // geminiThumb just needs to be legible.
       let geminiThumb = null
       let embedThumb  = null
       const imgExts = ['png', 'jpg', 'jpeg']
@@ -88,7 +94,7 @@ export default function UploadModal({ uid, folderId, onClose, onComplete }) {
       if (imgExts.includes(fileExt)) {
         ;[geminiThumb, embedThumb] = await Promise.all([
           compressImage(file, 500, 0.60),
-          compressImage(file, 800, 0.72),
+          compressImage(file, 640, 0.6, { webp: true }),
         ])
       }
 

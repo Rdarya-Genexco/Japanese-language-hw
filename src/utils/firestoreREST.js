@@ -184,8 +184,9 @@ export async function restCount(collection) {
   return Number(rows?.[0]?.result?.aggregateFields?.n?.integerValue ?? 0)
 }
 
-export async function restList(collection) {
-  return runQuery(collection, null)
+/** @param fields optional list of field names to return (others are not downloaded) */
+export async function restList(collection, { fields } = {}) {
+  return runQuery(collection, null, fields)
 }
 
 /** Get a single document without authentication (for public collections). */
@@ -202,11 +203,11 @@ export async function restGetPublic(collection, id) {
 }
 
 /** Query a collection by a single field equality filter. */
-export async function restQuery(collection, field, value) {
-  return runQuery(collection, { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value: toValue(value) } })
+export async function restQuery(collection, field, value, { fields } = {}) {
+  return runQuery(collection, { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value: toValue(value) } }, fields)
 }
 
-async function runQuery(collection, where) {
+async function runQuery(collection, where, fields) {
   const parts = collection.split('/')
   const collectionId = parts[parts.length - 1]
   const parent = parts.slice(0, -1).join('/')
@@ -219,7 +220,11 @@ async function runQuery(collection, where) {
       method: 'POST',
       headers: { Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        structuredQuery: { from: [{ collectionId }], ...(where ? { where } : {}) },
+        structuredQuery: {
+          from: [{ collectionId }],
+          ...(where ? { where } : {}),
+          ...(fields ? { select: { fields: fields.map(fieldPath => ({ fieldPath })) } } : {}),
+        },
       }),
     }
   )

@@ -35,7 +35,7 @@ export {
   getUserData, saveUserData,
   createShareToken, getSharedWorksheet,
   createClassroom, getClassroom, getTeacherClassrooms, submitToClassroom, getClassroomSubmissions,
-  createAssignment, getAssignments, getAssignmentSubmissions, submitToAssignment,
+  createAssignment, getAssignments, getAssignment, getAssignmentSubmissions, submitToAssignment,
   getMyAssignmentSubmissions, unsubmitAssignment,
   getAllWorksheets,
 } from './firestoreService'

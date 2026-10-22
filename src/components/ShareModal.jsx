@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X, Copy, Check, Loader2 } from 'lucide-react'
-import { createShareToken } from '../utils/firestoreService'
+import { createShareToken, SHARE_LINK_DAYS } from '../utils/firestoreService'
 import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 
@@ -102,6 +102,7 @@ export default function ShareModal({ worksheetId, worksheetHtml, name, onClose }
 
               <p className="text-xs text-slate-400 dark:text-slate-500 mt-3 text-center">
                 {t('anyoneWithLink')}
+                <br />{t('shareLinkExpiry', { days: SHARE_LINK_DAYS })}
               </p>
             </>
           )}

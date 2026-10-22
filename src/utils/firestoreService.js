@@ -42,7 +42,46 @@ export async function saveUserData(uid, data) {
 
 // ── Shared worksheets ──────────────────────────────────────────────────────────
 
-export async function createShareToken(uid, worksheetId, worksheetHtml, name) {
+// ── Share links ───────────────────────────────────────────────────────────────
+// Each link stores a copy of the worksheet. To keep that small: one link per worksheet (sharing
+// again reuses it with the latest content), links stop working 90 days after they were last
+// shared, and they're deleted with the worksheet or the account.
+export const SHARE_LINK_DAYS = 90
+const SHARE_LINK_MS = SHARE_LINK_DAYS * 24 * 60 * 60 * 1000
+
+const sharedAtMs = (doc) => {
+  const v = doc?.sharedAt || doc?.createdAt
+  return v?.seconds ? v.seconds * 1000 : v ? new Date(v).getTime() : 0
+}
+
+const myShareLinks = (uid) =>
+  restQuery('sharedWorksheets', 'teacherUid', uid, { fields: ['worksheetId', 'sharedAt', 'createdAt'] })
+
+// Two Share clicks at once (or a double-mounted dialog) must not create two copies
+const shareInFlight = new Map()
+
+export function createShareToken(uid, worksheetId, worksheetHtml, name) {
+  const key = `${uid}/${worksheetId}`
+  if (!shareInFlight.has(key)) {
+    shareInFlight.set(key, upsertShareLink(uid, worksheetId, worksheetHtml, name).finally(() => shareInFlight.delete(key)))
+  }
+  return shareInFlight.get(key)
+}
+
+async function upsertShareLink(uid, worksheetId, worksheetHtml, name) {
+  const now = Date.now()
+  const mine = await myShareLinks(uid).catch(() => [])
+
+  // Tidy up: links nobody has re-shared for 90 days are dead anyway
+  const expired = mine.filter(d => now - sharedAtMs(d) > SHARE_LINK_MS)
+  Promise.all(expired.map(d => restDelete('sharedWorksheets', d.id))).catch(() => {})
+
+  const existing = mine.find(d => d.worksheetId === worksheetId && now - sharedAtMs(d) <= SHARE_LINK_MS)
+  if (existing) {
+    await restUpdate('sharedWorksheets', existing.id, { worksheetHtml, name, sharedAt: new Date(now) })
+    return existing.id
+  }
+
   const token = Array.from(crypto.getRandomValues(new Uint8Array(12)))
     .map(b => b.toString(36).padStart(2, '0')).join('').slice(0, 16)
   await restSet('sharedWorksheets', token, {
@@ -50,13 +89,22 @@ export async function createShareToken(uid, worksheetId, worksheetHtml, name) {
     worksheetId,
     worksheetHtml,
     name,
-    createdAt: new Date(),
+    createdAt: new Date(now),
+    sharedAt: new Date(now),
   })
   return token
 }
 
+/** A shared worksheet, or null if the link is unknown or has expired. */
 export async function getSharedWorksheet(token) {
-  return restGetPublic('sharedWorksheets', token)
+  const doc = await restGetPublic('sharedWorksheets', token)
+  if (!doc || Date.now() - sharedAtMs(doc) > SHARE_LINK_MS) return null
+  return doc
+}
+
+async function deleteShareLinksFor(uid, worksheetId) {
+  const mine = await myShareLinks(uid).catch(() => [])
+  await Promise.all(mine.filter(d => d.worksheetId === worksheetId).map(d => restDelete('sharedWorksheets', d.id)))
 }
 
 // ── Classrooms ─────────────────────────────────────────────────────────────────
@@ -80,12 +128,12 @@ export async function deleteClassroom(code) {
   const base = `classrooms/${code.toUpperCase()}`
   const step = (label, p) => p.catch(err => { throw new Error(`${label}: ${err.message}`) })
   const [assignments, members, submissions] = await Promise.all([
-    step('listing assignments', restList(`${base}/assignments`)),
-    step('listing students', restList(`${base}/members`)),
-    step('listing submissions', restList(`${base}/submissions`)),
+    step('listing assignments', restList(`${base}/assignments`, { fields: ['title'] })),
+    step('listing students', restList(`${base}/members`, { fields: ['name'] })),
+    step('listing submissions', restList(`${base}/submissions`, { fields: ['studentUid'] })),
   ])
   const assignmentSubs = await step('listing assignment submissions', Promise.all(
-    assignments.map(a => restList(`${base}/assignments/${a.id}/submissions`))
+    assignments.map(a => restList(`${base}/assignments/${a.id}/submissions`, { fields: ['studentUid'] }))
   ))
   await Promise.all([
     step('deleting assignment submissions', Promise.all(assignments.flatMap((a, i) =>
@@ -181,7 +229,7 @@ export async function getDriveTotals(uid) {
 
 export async function getAllWorksheets(uid) {
   try {
-    const docs = await restList(`users/${uid}/worksheets`)
+    const docs = await restList(`users/${uid}/worksheets`, { fields: ['name', 'originalFileName'] })
     return docs
       .map(d => ({ id: d.id, name: d.name || d.originalFileName || 'Untitled' }))
       .sort((a, b) => a.name.localeCompare(b.name))
@@ -190,12 +238,20 @@ export async function getAllWorksheets(uid) {
   }
 }
 
+// Assignment lists leave out the attached worksheet itself (often the biggest part);
+// getAssignment() loads it when someone opens it
+const ASSIGNMENT_LIST_FIELDS = ['teacherUid', 'title', 'description', 'dueDate', 'dueAt', 'closesAt', 'createdAt', 'attachedWorksheetName']
+
 export async function getAssignments(code) {
   try {
-    return await restList(`classrooms/${code.toUpperCase()}/assignments`)
+    return await restList(`classrooms/${code.toUpperCase()}/assignments`, { fields: ASSIGNMENT_LIST_FIELDS })
   } catch {
     return []
   }
+}
+
+export async function getAssignment(code, assignmentId) {
+  return restGet(`classrooms/${code.toUpperCase()}/assignments`, assignmentId)
 }
 
 export async function getAssignmentSubmissions(code, assignmentId) {
@@ -236,6 +292,12 @@ export async function unsubmitAssignment(code, assignmentId, studentUid) {
   await Promise.all(mine.map(s => restDelete(assignmentSubsPath(code, assignmentId), s.id)))
 }
 
+/** Teacher removes a submission (assignmentId null = general submission). Rules: class teacher only. */
+export async function deleteSubmission(code, assignmentId, subId) {
+  const path = assignmentId ? assignmentSubsPath(code, assignmentId) : `classrooms/${code.toUpperCase()}/submissions`
+  await restDelete(path, subId)
+}
+
 /** Teacher's grade and/or reply on an assignment submission (rules allow only these fields). */
 export async function gradeAssignmentSubmission(code, assignmentId, subId, { grade, teacherReply }) {
   const data = { grade: (grade || '').trim().slice(0, 40), teacherReply: (teacherReply || '').trim().slice(0, 2000), gradedAt: new Date() }
@@ -272,12 +334,12 @@ export async function deleteAccountData(uid, { classroomCode } = {}) {
   }
 
   // Share links
-  const shares = await step('listing share links', restQuery('sharedWorksheets', 'teacherUid', uid))
+  const shares = await step('listing share links', myShareLinks(uid))
   await step('deleting share links', Promise.all(shares.map(d => restDelete('sharedWorksheets', d.id))))
 
   // Drive and profile
   for (const sub of ['worksheets', 'folders', 'config']) {
-    const docs = await step(`listing ${sub}`, restList(`users/${uid}/${sub}`))
+    const docs = await step(`listing ${sub}`, restList(`users/${uid}/${sub}`, { fields: ['createdAt'] }))
     await step(`deleting ${sub}`, Promise.all(docs.map(d => restDelete(`users/${uid}/${sub}`, d.id))))
   }
   await step('deleting profile', restDelete('users', uid))
@@ -359,7 +421,10 @@ export async function saveWorksheet(uid, folderId, originalFile, worksheetPayloa
 
 export async function getWorksheets(uid, folderId = 'root') {
   const fid = (!folderId || folderId === 'undefined') ? 'root' : folderId
-  const docs = await restQuery(`users/${uid}/worksheets`, 'folderId', fid)
+  // Only what the drive list shows; the full worksheet is loaded when it's opened (getWorksheet)
+  const docs = await restQuery(`users/${uid}/worksheets`, 'folderId', fid, {
+    fields: ['name', 'folderId', 'originalFileName', 'originalFileType', 'createdAt'],
+  })
   return docs
     .map(d => ({
       id              : d.id,
@@ -410,6 +475,8 @@ export async function getWorksheet(uid, worksheetId) {
 
 export async function deleteWorksheet(uid, worksheetId) {
   await restDelete(`users/${uid}/worksheets`, worksheetId)
+  // Its share links hold copies of it; a failure here mustn't undo the delete
+  await deleteShareLinksFor(uid, worksheetId).catch(() => {})
 }
 
 export async function moveWorksheet(uid, worksheetId, newFolderId) {

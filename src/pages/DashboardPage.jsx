@@ -7,7 +7,7 @@ import {
   getFolders, getWorksheets, getWorksheet, getDriveTotals,
   createFolder, deleteFolder, deleteWorksheet,
   renameFolder, buildBreadcrumb, testFirestoreConnection, moveWorksheet,
-  getAssignments, getMyAssignmentSubmissions, unsubmitAssignment,
+  getAssignments, getAssignment, getMyAssignmentSubmissions, unsubmitAssignment,
 } from '../utils/storageService'
 import { openPrintView, printWorksheetHtml, hydrateWorksheetHtml, downloadAsDocx, downloadAsPdf, downloadAsPdfFromHtml, downloadAsDocxFromHtml } from '../utils/worksheetGenerator'
 import Header from '../components/Header'
@@ -238,6 +238,20 @@ export default function DashboardPage() {
     }
   }
 
+  // The assignment list leaves out attached worksheets; load the one being opened
+  const openAssignment = async (a) => {
+    setWsLoading(true)
+    try {
+      const full = await getAssignment(classroomCode, a.id)
+      if (full?.attachedWorksheetHtml) setViewAssignment({ ...a, ...full })
+      else alert(t('loadFailed'))
+    } catch (err) {
+      alert(t('loadFailed') + ': ' + errorText(err, t))
+    } finally {
+      setWsLoading(false)
+    }
+  }
+
   // ── Touch drag helpers ────────────────────────────────────────────────────
   const handleTouchDragStart = (wsId, x, y) => {
     setIsDragging(true)
@@ -363,14 +377,14 @@ export default function DashboardPage() {
                     return (
                     <div
                       key={a.id}
-                      onClick={() => a.attachedWorksheetHtml && setViewAssignment(a)}
+                      onClick={() => a.attachedWorksheetName && openAssignment(a)}
                       className={`flex flex-wrap items-center gap-x-3 gap-y-2 bg-gradient-to-r from-violet-50 to-fuchsia-50 dark:from-violet-900/20 dark:to-fuchsia-900/10 ring-1 ring-violet-200/60 dark:ring-violet-500/20 rounded-2xl px-3.5 py-3 transition-all ${
-                        a.attachedWorksheetHtml
+                        a.attachedWorksheetName
                           ? 'cursor-pointer hover:ring-violet-400 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98]'
                           : ''
                       }`}
                     >
-                      <span className="text-lg flex-shrink-0">{a.attachedWorksheetHtml ? '📄' : '📋'}</span>
+                      <span className="text-lg flex-shrink-0">{a.attachedWorksheetName ? '📄' : '📋'}</span>
                       {/* min width so on phones the buttons wrap below instead of squeezing the text */}
                       <div className="flex-1 min-w-[9rem]">
                         <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{a.title}</p>
@@ -385,7 +399,7 @@ export default function DashboardPage() {
                         )}
                       </div>
                       <div className="flex-shrink-0 ml-auto flex items-center gap-3">
-                      {a.attachedWorksheetHtml && (
+                      {a.attachedWorksheetName && (
                         <span className="text-xs text-violet-600 dark:text-violet-400 font-semibold whitespace-nowrap">{t('viewArrow')}</span>
                       )}
                       {submitted[a.id] ? (

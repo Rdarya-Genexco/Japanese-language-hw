@@ -5,7 +5,7 @@ import { useRole } from '../contexts/RoleContext'
 import {
   createClassroom, getTeacherClassrooms, getAssignments,
   getAssignmentSubmissions, getClassroomSubmissions, getClassroomMembers,
-  removeClassroomMember, deleteClassroom, gradeAssignmentSubmission,
+  removeClassroomMember, deleteClassroom, gradeAssignmentSubmission, deleteSubmission,
 } from '../utils/firestoreService'
 import Header from '../components/Header'
 import AssignmentModal from '../components/AssignmentModal'
@@ -137,6 +137,20 @@ export default function ClassesPage() {
     }
   }, [activeCode])
 
+  // Teacher clears out a submission (frees storage); assignmentId null = general submission
+  const handleDeleteSubmission = (code, assignmentId, sub) => {
+    setTimeout(async () => {
+      if (!window.confirm(t('confirmDeleteSubmission', { name: sub.studentName || t('student') }))) return
+      try {
+        await deleteSubmission(code, assignmentId, sub.id)
+        if (assignmentId) setSubmissions(p => ({ ...p, [assignmentId]: (p[assignmentId] || []).filter(x => x.id !== sub.id) }))
+        else setGeneralSubs(p => ({ ...p, [code]: (p[code] || []).filter(x => x.id !== sub.id) }))
+      } catch (err) {
+        alert(t('failedDeleteSubmission') + ': ' + errorText(err, t))
+      }
+    }, 0)
+  }
+
   const toggleAssignment = async (code, a) => {
     if (expandedAssignment === a.id) { setExpandedAssignment(null); return }
     setExpandedAssignment(a.id)
@@ -233,6 +247,7 @@ export default function ClassesPage() {
                 deleting={deletingCode === cls.code}
                 onRemoveMember={(m) => handleRemoveMember(cls.code, m)}
                 onViewSubmission={setViewSubmission}
+                onDeleteSubmission={(assignmentId, sub) => handleDeleteSubmission(cls.code, assignmentId, sub)}
                 onDeleteClass={() => handleDeleteClass(cls.code)}
                 assignments={assignments[cls.code]}
                 loadingAssignments={loadingAssignments[cls.code]}
@@ -286,7 +301,7 @@ export default function ClassesPage() {
 }
 
 function ClassroomCard({
-  cls, active, copied, members, removingUid, deleting, onRemoveMember, onDeleteClass, onViewSubmission,
+  cls, active, copied, members, removingUid, deleting, onRemoveMember, onDeleteClass, onViewSubmission, onDeleteSubmission,
   assignments, loadingAssignments,
   expandedAssignment, submissions, loadingSubs,
   generalSubs, loadingGeneralSubs, expandedGeneral,
@@ -469,6 +484,7 @@ function ClassroomCard({
                             {submissions[a.id].map(s => (
                               <SubmissionRow key={s.id} s={s} icon="👤" onView={onViewSubmission} dueMs={dueStatus(a).dueMs}
                                 grading={{ code: cls.code, assignmentId: a.id }}
+                                onDelete={() => onDeleteSubmission(a.id, s)}
                                 className="bg-white dark:bg-slate-800 rounded-lg px-2.5 py-1.5" />
                             ))}
                           </div>
@@ -506,6 +522,7 @@ function ClassroomCard({
                 <div className="space-y-1.5">
                   {generalSubs.map(s => (
                     <SubmissionRow key={s.id} s={s} icon="📄" onView={onViewSubmission}
+                      onDelete={() => onDeleteSubmission(null, s)}
                       className="bg-slate-50 dark:bg-slate-900/30 rounded-xl px-2.5 py-2" />
                   ))}
                 </div>
@@ -531,7 +548,7 @@ function ClassroomCard({
   )
 }
 
-function SubmissionRow({ s, icon, onView, className, dueMs, grading = null }) {
+function SubmissionRow({ s, icon, onView, onDelete, className, dueMs, grading = null }) {
   const { t, formatDate } = useLang()
   const canView = !!s.worksheetHtml
   const late = dueMs && s.submittedAt?.seconds && s.submittedAt.seconds * 1000 > dueMs
@@ -540,11 +557,12 @@ function SubmissionRow({ s, icon, onView, className, dueMs, grading = null }) {
   const graded = !!(saved.grade || saved.teacherReply)
   return (
     <div className={`border border-slate-200 dark:border-slate-700 ${className}`}>
+      <div className="flex items-start gap-1">
       <button
         type="button"
         onClick={() => canView && onView(s)}
         disabled={!canView}
-        className="w-full flex items-center gap-2 text-[10px] text-left rounded-md transition-colors enabled:hover:bg-violet-50 dark:enabled:hover:bg-violet-900/20"
+        className="flex-1 min-w-0 flex items-center gap-2 text-[10px] text-left rounded-md transition-colors enabled:hover:bg-violet-50 dark:enabled:hover:bg-violet-900/20"
       >
         <span className="text-sm flex-shrink-0">{icon}</span>
         <div className="flex-1 min-w-0">
@@ -562,6 +580,18 @@ function SubmissionRow({ s, icon, onView, className, dueMs, grading = null }) {
         {late && <span className="flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">{t('late')}</span>}
         {canView && <span className="text-violet-600 dark:text-violet-400 font-semibold flex-shrink-0">{t('viewArrow')}</span>}
       </button>
+      {onDelete && (
+        <button
+          type="button"
+          onClick={onDelete}
+          title={t('deleteSubmission')}
+          aria-label={t('deleteSubmission')}
+          className="flex-shrink-0 p-1 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors"
+        >
+          <Trash2 size={12} />
+        </button>
+      )}
+      </div>
 
       {grading && !open && (
         <div className="flex flex-wrap items-start gap-x-2 gap-y-1 mt-1.5 text-[10px]">
