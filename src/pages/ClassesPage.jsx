@@ -564,10 +564,10 @@ function SubmissionRow({ s, icon, onView, className, dueMs, grading = null }) {
       </button>
 
       {grading && !open && (
-        <div className="flex items-start gap-2 mt-1.5 text-[10px]">
+        <div className="flex flex-wrap items-start gap-x-2 gap-y-1 mt-1.5 text-[10px]">
           {graded && (
-            <p className="flex-1 min-w-0 text-emerald-700 dark:text-emerald-400 whitespace-pre-wrap break-words">
-              {saved.grade && <span className="font-bold mr-1.5">{t('gradeLabel')}: {saved.grade}</span>}
+            <p className="flex-1 min-w-[8rem] text-emerald-700 dark:text-emerald-400 whitespace-pre-wrap break-words">
+              {saved.grade && <span className="font-bold mr-1.5 whitespace-nowrap">{t('gradeLabel')}: {saved.grade}</span>}
               {saved.teacherReply}
             </p>
           )}

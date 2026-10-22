@@ -358,37 +358,33 @@ export default function DashboardPage() {
                     <div
                       key={a.id}
                       onClick={() => a.attachedWorksheetHtml && setViewAssignment(a)}
-                      className={`flex items-center gap-3 bg-gradient-to-r from-violet-50 to-fuchsia-50 dark:from-violet-900/20 dark:to-fuchsia-900/10 ring-1 ring-violet-200/60 dark:ring-violet-500/20 rounded-2xl px-3.5 py-3 transition-all ${
+                      className={`flex flex-wrap items-center gap-x-3 gap-y-2 bg-gradient-to-r from-violet-50 to-fuchsia-50 dark:from-violet-900/20 dark:to-fuchsia-900/10 ring-1 ring-violet-200/60 dark:ring-violet-500/20 rounded-2xl px-3.5 py-3 transition-all ${
                         a.attachedWorksheetHtml
                           ? 'cursor-pointer hover:ring-violet-400 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98]'
                           : ''
                       }`}
                     >
                       <span className="text-lg flex-shrink-0">{a.attachedWorksheetHtml ? '📄' : '📋'}</span>
-                      <div className="flex-1 min-w-0">
+                      {/* min width so on phones the buttons wrap below instead of squeezing the text */}
+                      <div className="flex-1 min-w-[9rem]">
                         <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{a.title}</p>
                         {a.description && (
                           <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{a.description}</p>
                         )}
                         {a.dueDate && <p className="text-xs text-amber-600 dark:text-amber-400">{t('dueOn', { date: formatDate(a.dueDate) })}</p>}
-                        {(submitted[a.id]?.grade || submitted[a.id]?.teacherReply) && (
-                          <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 ring-1 ring-emerald-200 dark:ring-emerald-800 rounded-lg px-2 py-1 whitespace-pre-wrap break-words">
-                            {submitted[a.id].grade && <span className="font-bold mr-1.5">{t('gradeLabel')}: {submitted[a.id].grade}</span>}
-                            {submitted[a.id].teacherReply && <><span className="font-semibold">{t('teacherReplyLabel')}:</span> {submitted[a.id].teacherReply}</>}
-                          </p>
-                        )}
                         {!submitted[a.id] && overdueText(due, t) && (
                           <p className={`text-xs font-semibold ${closed ? 'text-rose-600 dark:text-rose-400' : 'text-orange-600 dark:text-orange-400'}`}>
                             ⚠️ {overdueText(due, t)}
                           </p>
                         )}
                       </div>
+                      <div className="flex-shrink-0 ml-auto flex items-center gap-3">
                       {a.attachedWorksheetHtml && (
-                        <span className="flex-shrink-0 text-xs text-violet-600 dark:text-violet-400 font-semibold">{t('viewArrow')}</span>
+                        <span className="text-xs text-violet-600 dark:text-violet-400 font-semibold whitespace-nowrap">{t('viewArrow')}</span>
                       )}
                       {submitted[a.id] ? (
-                        <div className="flex-shrink-0 flex items-center gap-1.5">
-                          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">{t('submittedCheck')}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">{t('submittedCheck')}</span>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleUnsubmit(a) }}
                             disabled={unsubmittingId === a.id || closed || !!submitted[a.id]?.gradedAt}
@@ -402,10 +398,22 @@ export default function DashboardPage() {
                         <button
                           onClick={(e) => { e.stopPropagation(); setSubmitAssignment(a) }}
                           disabled={submitted[a.id] === undefined || closed}
-                          className="flex-shrink-0 text-xs font-semibold bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors"
+                          className="text-xs font-semibold bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors"
                         >
                           {closed ? t('closed') : t('submit')}
                         </button>
+                      )}
+                      </div>
+                      {/* Teacher's grade and reply: full width under the card's other content */}
+                      {(submitted[a.id]?.grade || submitted[a.id]?.teacherReply) && (
+                        <div className="basis-full text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 ring-1 ring-emerald-200 dark:ring-emerald-800 rounded-lg px-2.5 py-1.5 space-y-0.5">
+                          {submitted[a.id].grade && (
+                            <p><span className="font-bold whitespace-nowrap">{t('gradeLabel')}:</span> <span className="font-bold">{submitted[a.id].grade}</span></p>
+                          )}
+                          {submitted[a.id].teacherReply && (
+                            <p className="whitespace-pre-wrap break-words"><span className="font-semibold">{t('teacherReplyLabel')}:</span> {submitted[a.id].teacherReply}</p>
+                          )}
+                        </div>
                       )}
                     </div>
                   )})}
