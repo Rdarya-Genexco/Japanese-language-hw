@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { runningInstalled } from '../hooks/androidApp'
 import { useAuth } from '../contexts/AuthContext'
 import { useLang } from '../contexts/LanguageContext'
 import { LANGUAGES } from '../utils/languages'
@@ -164,14 +165,49 @@ function detectOs() {
   const ua = navigator.userAgent
   if (/Windows/i.test(ua)) return 'windows'
   // iPadOS reports itself as "Macintosh"; a touch screen gives it away
-  if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad/i.test(ua) && navigator.maxTouchPoints <= 1) return 'mac'
+  if (/iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1)) return 'ios'
+  if (/Macintosh|Mac OS X/i.test(ua)) return 'mac'
   if (/Android/i.test(ua)) return 'android'
   if (/Linux/i.test(ua)) return 'linux'
   return null
 }
 
+/**
+ * iPhone / iPad: Apple doesn't allow installing apps from a website, so the app is added to the
+ * Home Screen from Safari (it then opens full-screen like an app). The button shows the steps.
+ */
+function useIosAddToHomeScreen({ t, highlighted, onDevice }) {
+  const [open, setOpen] = useState(false)
+  return { button: (
+    <button
+      key="ios"
+      type="button"
+      onClick={() => setOpen(v => !v)}
+      aria-expanded={open}
+      className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+        highlighted
+          ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/30'
+          : 'bg-white/5 hover:bg-white/10 text-white/85 ring-1 ring-white/10'
+      }`}
+    >
+      <PhoneIcon /> {t('downloadIos')}
+    </button>
+  ), steps: open && (
+    <div className="mt-3 max-w-md mx-auto text-left text-xs text-white/80 leading-relaxed bg-white/5 ring-1 ring-white/10 rounded-xl px-4 py-3" role="region" aria-label={t('downloadIos')}>
+      <p className="font-semibold text-white mb-1.5">{onDevice ? t('iosStepsIntro') : t('iosNotOnDevice')}</p>
+      <ol className="list-decimal pl-4 space-y-1">
+        <li>{t('iosStep1')}</li>
+        <li>{t('iosStep2')}</li>
+        <li>{t('iosStep3')}</li>
+      </ol>
+    </div>
+  ) }
+}
+
 function DesktopDownloads({ t }) {
   const current = detectOs()
+  const ios = useIosAddToHomeScreen({ t, highlighted: current === 'ios', onDevice: current === 'ios' })
+  // Already added to the Home Screen / running as an app: no need to offer it
   // Not offered inside the Android app itself
   const downloads = canOfferAndroidInstall() ? [...DOWNLOADS, { os: 'android', key: 'downloadAndroid', url: ANDROID_APK_URL }] : DOWNLOADS
   return (
@@ -191,11 +227,21 @@ function DesktopDownloads({ t }) {
             <DownloadIcon /> {t(d.key)}
           </a>
         ))}
+        {!runningInstalled() && ios.button}
       </div>
+      {ios.steps}
       {/* Installers aren't code-signed yet, so Windows/macOS show a warning the first time */}
-      <p className="text-xs text-white/45 mt-3 max-w-md mx-auto leading-relaxed">{t('unsignedInstallerHint')}</p>
+      {current !== 'ios' && current !== 'android' && <p className="text-xs text-white/45 mt-3 max-w-md mx-auto leading-relaxed">{t('unsignedInstallerHint')}</p>}
       {current === 'android' && <p className="text-xs text-white/45 mt-2 max-w-md mx-auto leading-relaxed">{t('androidInstallHelp')}</p>}
     </div>
+  )
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="6" y="2" width="12" height="20" rx="2.5" /><path d="M11 18h2" />
+    </svg>
   )
 }
 
