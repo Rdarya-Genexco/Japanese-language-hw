@@ -1,0 +1,42 @@
+APP NAME (13/30)
+Doc Translate
+
+SHORT DESCRIPTION (77/80)
+Translate school worksheets with AI, then share them with your class to grade
+
+FULL DESCRIPTION
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages, English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+UPLOAD ORDER
+App icon: app-icon-512.png
+Feature graphic: feature-graphic-1024x500.png
+Phone screenshots: 1-home, 2-worksheet, 3-upload, 4-class, 5-student, 6-japanese
+Video: leave blank

@@ -487,21 +487,21 @@ export default function DashboardPage() {
             isDragTarget={isDragging}
             onDropWorksheet={handleMoveWorksheet}
           />
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {role === 'teacher' && (
               <button
                 onClick={() => setListView(v => !v)}
                 className="btn-secondary text-sm"
                 title={listView ? t('gridView') : t('listView')}
               >
-                {listView ? <LayoutGrid size={16} /> : <List size={16} />}
+                {listView ? <LayoutGrid size={16} className="shrink-0" /> : <List size={16} className="shrink-0" />}
               </button>
             )}
             <button onClick={() => setShowNewFolder(true)} className="btn-secondary text-sm">
-              <FolderPlus size={16} /> {t('newFolder')}
+              <FolderPlus size={16} className="shrink-0" /> {t('newFolder')}
             </button>
             <button onClick={() => setShowUpload(true)} className="btn-primary text-sm" data-tour="upload">
-              <Upload size={16} /> {t('upload')}
+              <Upload size={16} className="shrink-0" /> {t('upload')}
             </button>
           </div>
         </div>
