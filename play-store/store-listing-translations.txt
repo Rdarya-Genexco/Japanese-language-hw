@@ -1,0 +1,3362 @@
+Doc Translate — Google Play store listing translations
+Each section: language code, then App name, Short description, Full description.
+
+============================================================
+Language: en-US
+
+App name:
+Doc Translate
+
+Short description:
+Translate school worksheets with AI, then share them with your class to grade
+
+Full description:
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: en-GB
+
+App name:
+Doc Translate
+
+Short description:
+Translate school worksheets with AI, then share them with your class to grade
+
+Full description:
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: en-AU
+
+App name:
+Doc Translate
+
+Short description:
+Translate school worksheets with AI, then share them with your class to grade
+
+Full description:
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: en-CA
+
+App name:
+Doc Translate
+
+Short description:
+Translate school worksheets with AI, then share them with your class to grade
+
+Full description:
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: en-IN
+
+App name:
+Doc Translate
+
+Short description:
+Translate school worksheets with AI, then share them with your class to grade
+
+Full description:
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: en-SG
+
+App name:
+Doc Translate
+
+Short description:
+Translate school worksheets with AI, then share them with your class to grade
+
+Full description:
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: en-ZA
+
+App name:
+Doc Translate
+
+Short description:
+Translate school worksheets with AI, then share them with your class to grade
+
+Full description:
+Doc Translate turns any school worksheet into a clean, translated copy in seconds, so every student can understand the work, whatever language they speak at home.
+
+📄 TRANSLATE ANY WORKSHEET
+• Upload a PDF, Word file, PowerPoint or a photo of a printed sheet
+• AI reads the page and rebuilds it as a neat, formatted worksheet in the language you choose
+• Download as PDF or Word, print it, or share it with a link
+
+🏫 BUILT FOR CLASSROOMS
+• Teachers create classes and invite students with a simple class code
+• Set assignments with due dates
+• Students submit their work right from the app
+• Teachers view submissions, give a grade and reply with feedback
+
+🎒 MADE FOR STUDENTS
+• Keep worksheets organised in folders
+• Track your streak and earn badges as you complete worksheets
+• Tanu the friendly helper gives study tips and a quick tour of the app
+
+🌍 USE IT IN YOUR LANGUAGE
+The app itself is available in 10 languages: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish and Russian. Switch anytime from the top bar.
+
+🔒 SIMPLE AND PRIVATE
+• Sign in securely with your Google account
+• Your worksheets are visible only to you, and to your teacher when you submit them
+• Delete your account and all your data at any time from Settings
+
+Works on phones, tablets and computers. Your worksheets sync across all your devices.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ja-JP
+
+App name:
+Doc Translate
+
+Short description:
+AIで学校のプリントを翻訳し、クラスで共有して採点できるアプリ
+
+Full description:
+Doc Translateは、学校のプリントを数秒できれいな翻訳版に変換します。家庭で話す言語が何であっても、すべての生徒が課題を理解できます。
+
+📄 どんなプリントも翻訳
+• PDF、Word、PowerPoint、または印刷したプリントの写真をアップロード
+• AIがページを読み取り、選んだ言語で整ったプリントに作り直します
+• PDFやWordでダウンロード、印刷、またはリンクで共有
+
+🏫 教室のために
+• 先生はクラスを作成し、クラスコードで生徒を招待
+• 締め切り付きの課題を出せます
+• 生徒はアプリから直接提出
+• 先生は提出物を確認し、成績とコメントを返せます
+
+🎒 生徒のために
+• プリントをフォルダで整理
+• 連続記録をつけてバッジを集めよう
+• 案内役のタヌが学習のコツやアプリの使い方を教えてくれます
+
+🌍 あなたの言語で
+アプリは英語、中国語、日本語、韓国語、フランス語、ドイツ語、イタリア語、ポルトガル語、スペイン語、ロシア語の10言語に対応。上部のバーからいつでも切り替えられます。
+
+🔒 シンプルで安心
+• Googleアカウントで安全にログイン
+• プリントはあなただけが見られます（提出したときは先生も）
+• 設定からいつでもアカウントとすべてのデータを削除できます
+
+スマートフォン、タブレット、パソコンで利用でき、すべての端末で同期されます。
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: zh-CN
+
+App name:
+Doc Translate
+
+Short description:
+用AI翻译学校作业单，并分享给班级进行批改
+
+Full description:
+Doc Translate 可在几秒内把任何学校作业单变成清晰的翻译版本，无论学生在家说什么语言，都能读懂作业。
+
+📄 翻译任何作业单
+• 上传 PDF、Word、PowerPoint 或纸质作业的照片
+• AI 读取页面，并用你选择的语言重建为排版整齐的作业单
+• 下载为 PDF 或 Word、打印，或通过链接分享
+
+🏫 为课堂打造
+• 老师创建班级，用班级码邀请学生
+• 布置带截止日期的作业
+• 学生直接在应用中提交
+• 老师查看提交、打分并回复评语
+
+🎒 为学生设计
+• 用文件夹整理作业单
+• 记录连续天数，完成作业赢取徽章
+• 友好的小助手 Tanu 提供学习小贴士和应用导览
+
+🌍 使用你的语言
+应用界面支持 10 种语言：英语、中文、日语、韩语、法语、德语、意大利语、葡萄牙语、西班牙语和俄语，可随时在顶部栏切换。
+
+🔒 简单且私密
+• 使用 Google 账号安全登录
+• 作业单仅你本人可见，提交后老师也可查看
+• 可随时在设置中删除账号及所有数据
+
+支持手机、平板和电脑，作业单在所有设备间同步。
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: zh-TW
+
+App name:
+Doc Translate
+
+Short description:
+用 AI 翻譯學校學習單，並分享給班級批改
+
+Full description:
+Doc Translate 能在幾秒內將任何學校學習單轉成清楚的翻譯版本，不論學生在家說哪種語言，都能看懂作業。
+
+📄 翻譯任何學習單
+• 上傳 PDF、Word、PowerPoint 或紙本學習單的照片
+• AI 讀取頁面，並以你選擇的語言重建成排版整齊的學習單
+• 下載為 PDF 或 Word、列印，或以連結分享
+
+🏫 為課堂打造
+• 老師建立班級，以班級代碼邀請學生
+• 指派有截止日期的作業
+• 學生直接在 App 中繳交
+• 老師查看繳交內容、評分並回覆意見
+
+🎒 為學生設計
+• 以資料夾整理學習單
+• 記錄連續天數，完成作業贏得徽章
+• 親切的小幫手 Tanu 提供學習訣竅與 App 導覽
+
+🌍 使用你的語言
+App 介面支援 10 種語言：英文、中文、日文、韓文、法文、德文、義大利文、葡萄牙文、西班牙文和俄文，可隨時從上方列切換。
+
+🔒 簡單又安全
+• 使用 Google 帳戶安全登入
+• 學習單只有你看得到，繳交後老師也能查看
+• 可隨時在設定中刪除帳戶與所有資料
+
+支援手機、平板和電腦，學習單會在所有裝置間同步。
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: zh-HK
+
+App name:
+Doc Translate
+
+Short description:
+用 AI 翻譯學校學習單，並分享給班級批改
+
+Full description:
+Doc Translate 能在幾秒內將任何學校學習單轉成清楚的翻譯版本，不論學生在家說哪種語言，都能看懂作業。
+
+📄 翻譯任何學習單
+• 上傳 PDF、Word、PowerPoint 或紙本學習單的照片
+• AI 讀取頁面，並以你選擇的語言重建成排版整齊的學習單
+• 下載為 PDF 或 Word、列印，或以連結分享
+
+🏫 為課堂打造
+• 老師建立班級，以班級代碼邀請學生
+• 指派有截止日期的作業
+• 學生直接在 App 中繳交
+• 老師查看繳交內容、評分並回覆意見
+
+🎒 為學生設計
+• 以資料夾整理學習單
+• 記錄連續天數，完成作業贏得徽章
+• 親切的小幫手 Tanu 提供學習訣竅與 App 導覽
+
+🌍 使用你的語言
+App 介面支援 10 種語言：英文、中文、日文、韓文、法文、德文、義大利文、葡萄牙文、西班牙文和俄文，可隨時從上方列切換。
+
+🔒 簡單又安全
+• 使用 Google 帳戶安全登入
+• 學習單只有你看得到，繳交後老師也能查看
+• 可隨時在設定中刪除帳戶與所有資料
+
+支援手機、平板和電腦，學習單會在所有裝置間同步。
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ko-KR
+
+App name:
+Doc Translate
+
+Short description:
+AI로 학교 학습지를 번역하고 반 친구들과 공유해 채점받으세요
+
+Full description:
+Doc Translate는 어떤 학교 학습지든 몇 초 만에 깔끔한 번역본으로 바꿔 줍니다. 집에서 어떤 언어를 쓰든 모든 학생이 과제를 이해할 수 있어요.
+
+📄 모든 학습지 번역
+• PDF, Word, PowerPoint 또는 인쇄된 학습지 사진 업로드
+• AI가 페이지를 읽고 선택한 언어로 깔끔한 학습지를 다시 만듭니다
+• PDF나 Word로 다운로드, 인쇄 또는 링크로 공유
+
+🏫 교실을 위해
+• 선생님은 반을 만들고 반 코드로 학생을 초대
+• 마감일이 있는 과제 출제
+• 학생은 앱에서 바로 제출
+• 선생님은 제출물을 보고 점수와 피드백을 남깁니다
+
+🎒 학생을 위해
+• 학습지를 폴더로 정리
+• 연속 기록을 쌓고 배지를 모으세요
+• 친절한 도우미 타누가 공부 팁과 앱 둘러보기를 제공합니다
+
+🌍 내 언어로
+앱은 영어, 중국어, 일본어, 한국어, 프랑스어, 독일어, 이탈리아어, 포르투갈어, 스페인어, 러시아어 10개 언어를 지원하며 상단 바에서 언제든 바꿀 수 있습니다.
+
+🔒 간단하고 안전하게
+• Google 계정으로 안전하게 로그인
+• 학습지는 나만 볼 수 있으며, 제출하면 선생님도 볼 수 있습니다
+• 설정에서 언제든 계정과 모든 데이터를 삭제할 수 있습니다
+
+휴대폰, 태블릿, 컴퓨터에서 사용할 수 있고 모든 기기에서 동기화됩니다.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: fr-FR
+
+App name:
+Doc Translate
+
+Short description:
+Traduisez vos fiches scolaires avec l'IA et partagez-les avec votre classe
+
+Full description:
+Doc Translate transforme n'importe quelle fiche scolaire en une copie traduite et soignée en quelques secondes, pour que chaque élève comprenne le travail, quelle que soit la langue parlée à la maison.
+
+📄 TRADUISEZ N'IMPORTE QUELLE FICHE
+• Importez un PDF, un fichier Word, un PowerPoint ou la photo d'une fiche imprimée
+• L'IA lit la page et la reconstruit en une fiche bien présentée dans la langue choisie
+• Téléchargez en PDF ou Word, imprimez ou partagez avec un lien
+
+🏫 CONÇU POUR LA CLASSE
+• Les enseignants créent des classes et invitent les élèves avec un code de classe
+• Donnez des devoirs avec une date limite
+• Les élèves rendent leur travail directement dans l'application
+• Les enseignants consultent les rendus, notent et répondent avec un commentaire
+
+🎒 PENSÉ POUR LES ÉLÈVES
+• Rangez vos fiches dans des dossiers
+• Suivez votre série et gagnez des badges en terminant des fiches
+• Tanu, le petit assistant, donne des conseils d'étude et une visite guidée de l'application
+
+🌍 DANS VOTRE LANGUE
+L'application est disponible en 10 langues : anglais, chinois, japonais, coréen, français, allemand, italien, portugais, espagnol et russe. Changez à tout moment depuis la barre du haut.
+
+🔒 SIMPLE ET PRIVÉ
+• Connexion sécurisée avec votre compte Google
+• Vos fiches ne sont visibles que par vous, et par votre enseignant quand vous les rendez
+• Supprimez votre compte et toutes vos données à tout moment dans les Paramètres
+
+Fonctionne sur téléphone, tablette et ordinateur. Vos fiches sont synchronisées sur tous vos appareils.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: fr-CA
+
+App name:
+Doc Translate
+
+Short description:
+Traduisez vos fiches scolaires avec l'IA et partagez-les avec votre classe
+
+Full description:
+Doc Translate transforme n'importe quelle fiche scolaire en une copie traduite et soignée en quelques secondes, pour que chaque élève comprenne le travail, quelle que soit la langue parlée à la maison.
+
+📄 TRADUISEZ N'IMPORTE QUELLE FICHE
+• Importez un PDF, un fichier Word, un PowerPoint ou la photo d'une fiche imprimée
+• L'IA lit la page et la reconstruit en une fiche bien présentée dans la langue choisie
+• Téléchargez en PDF ou Word, imprimez ou partagez avec un lien
+
+🏫 CONÇU POUR LA CLASSE
+• Les enseignants créent des classes et invitent les élèves avec un code de classe
+• Donnez des devoirs avec une date limite
+• Les élèves rendent leur travail directement dans l'application
+• Les enseignants consultent les rendus, notent et répondent avec un commentaire
+
+🎒 PENSÉ POUR LES ÉLÈVES
+• Rangez vos fiches dans des dossiers
+• Suivez votre série et gagnez des badges en terminant des fiches
+• Tanu, le petit assistant, donne des conseils d'étude et une visite guidée de l'application
+
+🌍 DANS VOTRE LANGUE
+L'application est disponible en 10 langues : anglais, chinois, japonais, coréen, français, allemand, italien, portugais, espagnol et russe. Changez à tout moment depuis la barre du haut.
+
+🔒 SIMPLE ET PRIVÉ
+• Connexion sécurisée avec votre compte Google
+• Vos fiches ne sont visibles que par vous, et par votre enseignant quand vous les rendez
+• Supprimez votre compte et toutes vos données à tout moment dans les Paramètres
+
+Fonctionne sur téléphone, tablette et ordinateur. Vos fiches sont synchronisées sur tous vos appareils.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: de-DE
+
+App name:
+Doc Translate
+
+Short description:
+Schularbeitsblätter mit KI übersetzen und mit der Klasse teilen
+
+Full description:
+Doc Translate verwandelt jedes Arbeitsblatt in Sekunden in eine saubere, übersetzte Fassung, damit alle Schüler die Aufgaben verstehen, egal welche Sprache sie zu Hause sprechen.
+
+📄 JEDES ARBEITSBLATT ÜBERSETZEN
+• Lade ein PDF, eine Word-Datei, eine PowerPoint oder ein Foto eines gedruckten Blatts hoch
+• Die KI liest die Seite und baut sie als ordentlich formatiertes Arbeitsblatt in der gewählten Sprache neu auf
+• Als PDF oder Word herunterladen, drucken oder per Link teilen
+
+🏫 FÜR DEN UNTERRICHT
+• Lehrkräfte erstellen Klassen und laden Schüler mit einem Klassencode ein
+• Aufgaben mit Abgabetermin stellen
+• Schüler geben ihre Arbeit direkt in der App ab
+• Lehrkräfte sehen Abgaben, vergeben Noten und antworten mit Feedback
+
+🎒 FÜR SCHÜLER GEMACHT
+• Arbeitsblätter in Ordnern organisieren
+• Serie verfolgen und Abzeichen für erledigte Blätter sammeln
+• Der freundliche Helfer Tanu gibt Lerntipps und eine kurze Tour durch die App
+
+🌍 IN DEINER SPRACHE
+Die App gibt es in 10 Sprachen: Englisch, Chinesisch, Japanisch, Koreanisch, Französisch, Deutsch, Italienisch, Portugiesisch, Spanisch und Russisch. Jederzeit oben umschaltbar.
+
+🔒 EINFACH UND PRIVAT
+• Sichere Anmeldung mit deinem Google-Konto
+• Deine Arbeitsblätter siehst nur du, und deine Lehrkraft, wenn du sie abgibst
+• Konto und alle Daten jederzeit in den Einstellungen löschen
+
+Läuft auf Handy, Tablet und Computer. Deine Arbeitsblätter werden auf allen Geräten synchronisiert.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: it-IT
+
+App name:
+Doc Translate
+
+Short description:
+Traduci le schede scolastiche con l'IA e condividile con la classe
+
+Full description:
+Doc Translate trasforma qualsiasi scheda scolastica in una copia tradotta e ordinata in pochi secondi, così ogni studente capisce il compito, qualunque lingua parli a casa.
+
+📄 TRADUCI QUALSIASI SCHEDA
+• Carica un PDF, un file Word, un PowerPoint o la foto di una scheda stampata
+• L'IA legge la pagina e la ricostruisce come scheda ben formattata nella lingua scelta
+• Scarica in PDF o Word, stampa o condividi con un link
+
+🏫 PENSATO PER LA CLASSE
+• Gli insegnanti creano classi e invitano gli studenti con un codice classe
+• Assegna compiti con scadenza
+• Gli studenti consegnano direttamente dall'app
+• Gli insegnanti vedono le consegne, danno un voto e rispondono con un commento
+
+🎒 FATTO PER GLI STUDENTI
+• Organizza le schede in cartelle
+• Segui la tua serie e guadagna badge completando le schede
+• Tanu, l'aiutante simpatico, dà consigli di studio e un tour dell'app
+
+🌍 NELLA TUA LINGUA
+L'app è disponibile in 10 lingue: inglese, cinese, giapponese, coreano, francese, tedesco, italiano, portoghese, spagnolo e russo. Cambia in qualsiasi momento dalla barra in alto.
+
+🔒 SEMPLICE E PRIVATO
+• Accesso sicuro con il tuo account Google
+• Le tue schede sono visibili solo a te, e all'insegnante quando le consegni
+• Elimina account e dati in qualsiasi momento dalle Impostazioni
+
+Funziona su telefono, tablet e computer. Le schede si sincronizzano su tutti i dispositivi.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: pt-BR
+
+App name:
+Doc Translate
+
+Short description:
+Traduza atividades escolares com IA e compartilhe com a turma para corrigir
+
+Full description:
+O Doc Translate transforma qualquer atividade escolar em uma cópia traduzida e organizada em segundos, para que todo aluno entenda a tarefa, seja qual for o idioma falado em casa.
+
+📄 TRADUZA QUALQUER ATIVIDADE
+• Envie um PDF, arquivo Word, PowerPoint ou foto de uma folha impressa
+• A IA lê a página e a recria como uma atividade bem formatada no idioma escolhido
+• Baixe em PDF ou Word, imprima ou compartilhe por link
+
+🏫 FEITO PARA A SALA DE AULA
+• Professores criam turmas e convidam alunos com um código de turma
+• Passe tarefas com prazo de entrega
+• Alunos entregam o trabalho pelo próprio app
+• Professores veem as entregas, dão nota e respondem com comentários
+
+🎒 FEITO PARA ALUNOS
+• Organize as atividades em pastas
+• Acompanhe sua sequência e ganhe medalhas ao concluir atividades
+• Tanu, o ajudante simpático, dá dicas de estudo e um tour pelo app
+
+🌍 NO SEU IDIOMA
+O app está disponível em 10 idiomas: inglês, chinês, japonês, coreano, francês, alemão, italiano, português, espanhol e russo. Troque quando quiser na barra superior.
+
+🔒 SIMPLES E PRIVADO
+• Entre com segurança usando sua conta Google
+• Suas atividades são visíveis só para você, e para o professor quando você entrega
+• Exclua sua conta e todos os dados a qualquer momento em Configurações
+
+Funciona em celular, tablet e computador. Suas atividades sincronizam em todos os dispositivos.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: pt-PT
+
+App name:
+Doc Translate
+
+Short description:
+Traduza fichas escolares com IA e partilhe-as com a turma para avaliar
+
+Full description:
+O Doc Translate transforma qualquer ficha escolar numa cópia traduzida e cuidada em segundos, para que todos os alunos percebam o trabalho, seja qual for a língua que falam em casa.
+
+📄 TRADUZA QUALQUER FICHA
+• Carregue um PDF, ficheiro Word, PowerPoint ou fotografia de uma ficha impressa
+• A IA lê a página e reconstrói-a como uma ficha bem formatada na língua escolhida
+• Transfira em PDF ou Word, imprima ou partilhe com uma ligação
+
+🏫 FEITO PARA A SALA DE AULA
+• Os professores criam turmas e convidam alunos com um código de turma
+• Atribua trabalhos com prazo de entrega
+• Os alunos entregam o trabalho diretamente na aplicação
+• Os professores veem as entregas, avaliam e respondem com comentários
+
+🎒 FEITO PARA ALUNOS
+• Organize as fichas em pastas
+• Acompanhe a sua sequência e ganhe distintivos ao concluir fichas
+• O Tanu, o ajudante simpático, dá dicas de estudo e uma visita guiada à aplicação
+
+🌍 NA SUA LÍNGUA
+A aplicação está disponível em 10 línguas: inglês, chinês, japonês, coreano, francês, alemão, italiano, português, espanhol e russo. Mude a qualquer momento na barra superior.
+
+🔒 SIMPLES E PRIVADO
+• Inicie sessão em segurança com a sua conta Google
+• As suas fichas só são visíveis para si, e para o professor quando as entrega
+• Elimine a conta e todos os dados a qualquer momento nas Definições
+
+Funciona em telemóvel, tablet e computador. As fichas sincronizam em todos os dispositivos.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: es-ES
+
+App name:
+Doc Translate
+
+Short description:
+Traduce fichas escolares con IA y compártelas con tu clase para calificarlas
+
+Full description:
+Doc Translate convierte cualquier ficha escolar en una copia traducida y limpia en segundos, para que todo el alumnado entienda la tarea, hable el idioma que hable en casa.
+
+📄 TRADUCE CUALQUIER FICHA
+• Sube un PDF, un archivo Word, un PowerPoint o una foto de una hoja impresa
+• La IA lee la página y la reconstruye como una ficha bien maquetada en el idioma que elijas
+• Descárgala en PDF o Word, imprímela o compártela con un enlace
+
+🏫 HECHO PARA EL AULA
+• El profesorado crea clases e invita a los alumnos con un código de clase
+• Asigna tareas con fecha de entrega
+• Los alumnos entregan su trabajo desde la app
+• El profesorado ve las entregas, pone nota y responde con comentarios
+
+🎒 PENSADO PARA ESTUDIANTES
+• Organiza tus fichas en carpetas
+• Sigue tu racha y gana insignias al completar fichas
+• Tanu, el simpático ayudante, da consejos de estudio y un recorrido por la app
+
+🌍 EN TU IDIOMA
+La app está disponible en 10 idiomas: inglés, chino, japonés, coreano, francés, alemán, italiano, portugués, español y ruso. Cámbialo cuando quieras desde la barra superior.
+
+🔒 SENCILLO Y PRIVADO
+• Inicia sesión de forma segura con tu cuenta de Google
+• Tus fichas solo las ves tú, y tu profesor cuando las entregas
+• Elimina tu cuenta y todos tus datos cuando quieras desde Ajustes
+
+Funciona en móvil, tableta y ordenador. Tus fichas se sincronizan en todos tus dispositivos.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: es-419
+
+App name:
+Doc Translate
+
+Short description:
+Traduce hojas de trabajo escolares con IA y compártelas con tu clase
+
+Full description:
+Doc Translate convierte cualquier hoja de trabajo escolar en una copia traducida y limpia en segundos, para que todo el alumnado entienda la tarea, hable el idioma que hable en casa.
+
+📄 TRADUCE CUALQUIER HOJA DE TRABAJO
+• Sube un PDF, un archivo Word, un PowerPoint o una foto de una hoja impresa
+• La IA lee la página y la reconstruye como una hoja de trabajo bien maquetada en el idioma que elijas
+• Descárgala en PDF o Word, imprímela o compártela con un enlace
+
+🏫 HECHO PARA EL AULA
+• El profesorado crea clases e invita a los alumnos con un código de clase
+• Asigna tareas con fecha de entrega
+• Los alumnos entregan su trabajo desde la app
+• El profesorado ve las entregas, pone nota y responde con comentarios
+
+🎒 PENSADO PARA ESTUDIANTES
+• Organiza tus hojas de trabajo en carpetas
+• Sigue tu racha y gana insignias al completar hojas de trabajo
+• Tanu, el simpático ayudante, da consejos de estudio y un recorrido por la app
+
+🌍 EN TU IDIOMA
+La app está disponible en 10 idiomas: inglés, chino, japonés, coreano, francés, alemán, italiano, portugués, español y ruso. Cámbialo cuando quieras desde la barra superior.
+
+🔒 SENCILLO Y PRIVADO
+• Inicia sesión de forma segura con tu cuenta de Google
+• Tus hojas de trabajo solo las ves tú, y tu profesor cuando las entregas
+• Elimina tu cuenta y todos tus datos cuando quieras desde Configuración
+
+Funciona en celular, tableta y computadora. Tus hojas de trabajo se sincronizan en todos tus dispositivos.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: es-US
+
+App name:
+Doc Translate
+
+Short description:
+Traduce hojas de trabajo escolares con IA y compártelas con tu clase
+
+Full description:
+Doc Translate convierte cualquier hoja de trabajo escolar en una copia traducida y limpia en segundos, para que todo el alumnado entienda la tarea, hable el idioma que hable en casa.
+
+📄 TRADUCE CUALQUIER HOJA DE TRABAJO
+• Sube un PDF, un archivo Word, un PowerPoint o una foto de una hoja impresa
+• La IA lee la página y la reconstruye como una hoja de trabajo bien maquetada en el idioma que elijas
+• Descárgala en PDF o Word, imprímela o compártela con un enlace
+
+🏫 HECHO PARA EL AULA
+• El profesorado crea clases e invita a los alumnos con un código de clase
+• Asigna tareas con fecha de entrega
+• Los alumnos entregan su trabajo desde la app
+• El profesorado ve las entregas, pone nota y responde con comentarios
+
+🎒 PENSADO PARA ESTUDIANTES
+• Organiza tus hojas de trabajo en carpetas
+• Sigue tu racha y gana insignias al completar hojas de trabajo
+• Tanu, el simpático ayudante, da consejos de estudio y un recorrido por la app
+
+🌍 EN TU IDIOMA
+La app está disponible en 10 idiomas: inglés, chino, japonés, coreano, francés, alemán, italiano, portugués, español y ruso. Cámbialo cuando quieras desde la barra superior.
+
+🔒 SENCILLO Y PRIVADO
+• Inicia sesión de forma segura con tu cuenta de Google
+• Tus hojas de trabajo solo las ves tú, y tu profesor cuando las entregas
+• Elimina tu cuenta y todos tus datos cuando quieras desde Configuración
+
+Funciona en celular, tableta y computadora. Tus hojas de trabajo se sincronizan en todos tus dispositivos.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ru-RU
+
+App name:
+Doc Translate
+
+Short description:
+Переводите школьные задания с помощью ИИ и делитесь ими с классом
+
+Full description:
+Doc Translate за секунды превращает любой школьный лист заданий в аккуратную переведённую копию, чтобы каждый ученик понял задание, на каком бы языке он ни говорил дома.
+
+📄 ПЕРЕВОД ЛЮБОГО ЗАДАНИЯ
+• Загрузите PDF, файл Word, PowerPoint или фото распечатанного листа
+• ИИ прочитает страницу и создаст аккуратно оформленный лист на выбранном языке
+• Скачайте в PDF или Word, распечатайте или поделитесь ссылкой
+
+🏫 ДЛЯ КЛАССА
+• Учителя создают классы и приглашают учеников по коду класса
+• Задавайте задания со сроком сдачи
+• Ученики сдают работы прямо в приложении
+• Учителя просматривают работы, ставят оценки и оставляют комментарии
+
+🎒 ДЛЯ УЧЕНИКОВ
+• Храните задания в папках
+• Следите за серией и получайте значки за выполненные задания
+• Дружелюбный помощник Тану даёт советы по учёбе и проводит экскурсию по приложению
+
+🌍 НА ВАШЕМ ЯЗЫКЕ
+Приложение доступно на 10 языках: английском, китайском, японском, корейском, французском, немецком, итальянском, португальском, испанском и русском. Язык можно сменить в любой момент на верхней панели.
+
+🔒 ПРОСТО И КОНФИДЕНЦИАЛЬНО
+• Безопасный вход через аккаунт Google
+• Ваши задания видите только вы, а после сдачи — и учитель
+• Удалите аккаунт и все данные в любой момент в Настройках
+
+Работает на телефонах, планшетах и компьютерах. Задания синхронизируются на всех устройствах.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: nl-NL
+
+App name:
+Doc Translate
+
+Short description:
+Vertaal werkbladen van school met AI en deel ze met je klas om na te kijken
+
+Full description:
+Doc Translate maakt van elk werkblad binnen enkele seconden een nette, vertaalde versie, zodat elke leerling de opdracht begrijpt, welke taal er thuis ook gesproken wordt.
+
+📄 VERTAAL ELK WERKBLAD
+• Upload een pdf, Word-bestand, PowerPoint of foto van een geprint werkblad
+• AI leest de pagina en bouwt die opnieuw op als net opgemaakt werkblad in de taal die je kiest
+• Download als pdf of Word, print het of deel het met een link
+
+🏫 GEMAAKT VOOR DE KLAS
+• Docenten maken klassen aan en nodigen leerlingen uit met een klascode
+• Geef opdrachten met een inleverdatum
+• Leerlingen leveren hun werk direct in via de app
+• Docenten bekijken inzendingen, geven een cijfer en reageren met feedback
+
+🎒 VOOR LEERLINGEN
+• Orden werkbladen in mappen
+• Houd je reeks bij en verdien badges door werkbladen af te ronden
+• Tanu, het vriendelijke hulpje, geeft studietips en een korte rondleiding
+
+🌍 IN JOUW TAAL
+De app is beschikbaar in 10 talen: Engels, Chinees, Japans, Koreaans, Frans, Duits, Italiaans, Portugees, Spaans en Russisch. Wissel op elk moment via de bovenbalk.
+
+🔒 EENVOUDIG EN PRIVÉ
+• Log veilig in met je Google-account
+• Alleen jij ziet je werkbladen, en je docent als je ze inlevert
+• Verwijder je account en al je gegevens op elk moment via Instellingen
+
+Werkt op telefoon, tablet en computer. Je werkbladen worden op al je apparaten gesynchroniseerd.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: pl-PL
+
+App name:
+Doc Translate
+
+Short description:
+Tłumacz szkolne karty pracy z AI i udostępniaj je klasie do oceny
+
+Full description:
+Doc Translate w kilka sekund zamienia każdą szkolną kartę pracy w czytelną, przetłumaczoną kopię, aby każdy uczeń zrozumiał zadanie, niezależnie od języka, którym mówi w domu.
+
+📄 TŁUMACZ KAŻDĄ KARTĘ PRACY
+• Prześlij PDF, plik Word, PowerPoint lub zdjęcie wydrukowanej karty
+• AI odczytuje stronę i odtwarza ją jako starannie sformatowaną kartę w wybranym języku
+• Pobierz jako PDF lub Word, wydrukuj albo udostępnij linkiem
+
+🏫 STWORZONE DLA KLASY
+• Nauczyciele tworzą klasy i zapraszają uczniów kodem klasy
+• Zadawaj prace z terminem oddania
+• Uczniowie oddają prace bezpośrednio w aplikacji
+• Nauczyciele przeglądają prace, wystawiają oceny i odpowiadają komentarzem
+
+🎒 DLA UCZNIÓW
+• Porządkuj karty pracy w folderach
+• Śledź swoją serię i zdobywaj odznaki za ukończone karty
+• Przyjazny pomocnik Tanu daje wskazówki do nauki i oprowadza po aplikacji
+
+🌍 W TWOIM JĘZYKU
+Aplikacja jest dostępna w 10 językach: angielskim, chińskim, japońskim, koreańskim, francuskim, niemieckim, włoskim, portugalskim, hiszpańskim i rosyjskim. Zmienisz go w każdej chwili na górnym pasku.
+
+🔒 PROSTO I PRYWATNIE
+• Bezpieczne logowanie kontem Google
+• Twoje karty widzisz tylko ty, a po oddaniu także nauczyciel
+• W każdej chwili usuń konto i wszystkie dane w Ustawieniach
+
+Działa na telefonie, tablecie i komputerze. Karty synchronizują się na wszystkich urządzeniach.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: cs-CZ
+
+App name:
+Doc Translate
+
+Short description:
+Překládejte školní pracovní listy pomocí AI a sdílejte je se třídou
+
+Full description:
+Doc Translate během pár sekund promění jakýkoli školní pracovní list v úhlednou přeloženou kopii, aby každý žák úkolu rozuměl, ať doma mluví jakýmkoli jazykem.
+
+📄 PŘELOŽTE JAKÝKOLI PRACOVNÍ LIST
+• Nahrajte PDF, soubor Word, PowerPoint nebo fotku vytištěného listu
+• AI přečte stránku a vytvoří ji znovu jako pěkně naformátovaný list ve zvoleném jazyce
+• Stáhněte jako PDF nebo Word, vytiskněte nebo sdílejte odkazem
+
+🏫 PRO TŘÍDU
+• Učitelé zakládají třídy a zvou žáky pomocí kódu třídy
+• Zadávejte úkoly s termínem odevzdání
+• Žáci odevzdávají práci přímo v aplikaci
+• Učitelé prohlížejí odevzdané práce, hodnotí je a odpovídají zpětnou vazbou
+
+🎒 PRO ŽÁKY
+• Mějte pracovní listy uspořádané ve složkách
+• Sledujte svou sérii a sbírejte odznaky za dokončené listy
+• Přátelský pomocník Tanu dává tipy na učení a provede vás aplikací
+
+🌍 VE VAŠEM JAZYCE
+Aplikace je dostupná v 10 jazycích: angličtině, čínštině, japonštině, korejštině, francouzštině, němčině, italštině, portugalštině, španělštině a ruštině. Přepnout lze kdykoli v horní liště.
+
+🔒 JEDNODUŠE A SOUKROMĚ
+• Bezpečné přihlášení účtem Google
+• Vaše listy vidíte jen vy, a po odevzdání i váš učitel
+• Účet a všechna data můžete kdykoli smazat v Nastavení
+
+Funguje na telefonu, tabletu i počítači. Listy se synchronizují na všech zařízeních.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: sk
+
+App name:
+Doc Translate
+
+Short description:
+Prekladajte školské pracovné listy pomocou AI a zdieľajte ich s triedou
+
+Full description:
+Doc Translate za pár sekúnd premení akýkoľvek školský pracovný list na úhľadnú preloženú kópiu, aby každý žiak rozumel úlohe, nech doma hovorí akýmkoľvek jazykom.
+
+📄 PRELOŽTE AKÝKOĽVEK PRACOVNÝ LIST
+• Nahrajte PDF, súbor Word, PowerPoint alebo fotku vytlačeného listu
+• AI prečíta stránku a vytvorí ju nanovo ako pekne naformátovaný list vo zvolenom jazyku
+• Stiahnite ako PDF alebo Word, vytlačte alebo zdieľajte odkazom
+
+🏫 PRE TRIEDU
+• Učitelia vytvárajú triedy a pozývajú žiakov kódom triedy
+• Zadávajte úlohy s termínom odovzdania
+• Žiaci odovzdávajú prácu priamo v aplikácii
+• Učitelia prezerajú odovzdané práce, hodnotia a odpovedajú spätnou väzbou
+
+🎒 PRE ŽIAKOV
+• Majte pracovné listy usporiadané v priečinkoch
+• Sledujte svoju sériu a získavajte odznaky za dokončené listy
+• Priateľský pomocník Tanu dáva tipy na učenie a prevedie vás aplikáciou
+
+🌍 VO VAŠOM JAZYKU
+Aplikácia je dostupná v 10 jazykoch: angličtine, čínštine, japončine, kórejčine, francúzštine, nemčine, taliančine, portugalčine, španielčine a ruštine. Prepnúť môžete kedykoľvek v hornej lište.
+
+🔒 JEDNODUCHO A SÚKROMNE
+• Bezpečné prihlásenie účtom Google
+• Vaše listy vidíte len vy, a po odovzdaní aj váš učiteľ
+• Účet a všetky údaje môžete kedykoľvek odstrániť v Nastaveniach
+
+Funguje na telefóne, tablete aj počítači. Listy sa synchronizujú na všetkých zariadeniach.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: hu-HU
+
+App name:
+Doc Translate
+
+Short description:
+Fordíts iskolai feladatlapokat MI-vel, és oszd meg őket az osztállyal
+
+Full description:
+A Doc Translate másodpercek alatt bármely iskolai feladatlapból rendezett, lefordított példányt készít, így minden diák megérti a feladatot, bármilyen nyelven beszél otthon.
+
+📄 BÁRMILYEN FELADATLAP FORDÍTÁSA
+• Tölts fel PDF-et, Word-fájlt, PowerPointot vagy egy nyomtatott lap fotóját
+• A mesterséges intelligencia beolvassa az oldalt, és szépen formázott feladatlapként újraalkotja a választott nyelven
+• Töltsd le PDF-ként vagy Wordként, nyomtasd ki, vagy oszd meg linkkel
+
+🏫 AZ OSZTÁLYTEREMBE
+• A tanárok osztályokat hoznak létre, és osztálykóddal hívják meg a diákokat
+• Adj ki feladatokat határidővel
+• A diákok közvetlenül az alkalmazásban adják be munkájukat
+• A tanárok megnézik a beadásokat, osztályoznak és visszajelzést adnak
+
+🎒 DIÁKOKNAK
+• Rendezd mappákba a feladatlapjaidat
+• Kövesd a sorozatodat, és gyűjts jelvényeket
+• Tanu, a barátságos segítő tanulási tippeket ad és körbevezet az alkalmazásban
+
+🌍 A TE NYELVEDEN
+Az alkalmazás 10 nyelven érhető el: angol, kínai, japán, koreai, francia, német, olasz, portugál, spanyol és orosz. Bármikor válthatsz a felső sávban.
+
+🔒 EGYSZERŰ ÉS BIZTONSÁGOS
+• Biztonságos bejelentkezés Google-fiókkal
+• A feladatlapjaidat csak te látod, beadás után a tanárod is
+• Fiókodat és minden adatodat bármikor törölheted a Beállításokban
+
+Működik telefonon, táblagépen és számítógépen. A feladatlapok minden eszközödön szinkronizálódnak.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ro
+
+App name:
+Doc Translate
+
+Short description:
+Tradu fișele școlare cu AI și distribuie-le clasei pentru notare
+
+Full description:
+Doc Translate transformă orice fișă școlară într-o copie tradusă și îngrijită în câteva secunde, astfel încât fiecare elev să înțeleagă tema, indiferent ce limbă vorbește acasă.
+
+📄 TRADU ORICE FIȘĂ
+• Încarcă un PDF, un fișier Word, un PowerPoint sau o fotografie a unei fișe tipărite
+• AI citește pagina și o reface ca fișă bine formatată în limba aleasă
+• Descarcă în PDF sau Word, tipărește sau distribuie printr-un link
+
+🏫 CREAT PENTRU CLASĂ
+• Profesorii creează clase și invită elevii cu un cod de clasă
+• Dă teme cu termen limită
+• Elevii predau lucrarea direct din aplicație
+• Profesorii văd lucrările, pun note și răspund cu feedback
+
+🎒 PENTRU ELEVI
+• Organizează fișele în dosare
+• Urmărește-ți seria și câștigă insigne pe măsură ce termini fișe
+• Tanu, ajutorul prietenos, oferă sfaturi de studiu și un tur al aplicației
+
+🌍 ÎN LIMBA TA
+Aplicația este disponibilă în 10 limbi: engleză, chineză, japoneză, coreeană, franceză, germană, italiană, portugheză, spaniolă și rusă. Schimbi oricând din bara de sus.
+
+🔒 SIMPLU ȘI PRIVAT
+• Conectare sigură cu contul Google
+• Fișele tale sunt vizibile doar pentru tine, și pentru profesor când le predai
+• Șterge-ți contul și toate datele oricând din Setări
+
+Funcționează pe telefon, tabletă și computer. Fișele se sincronizează pe toate dispozitivele.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: uk
+
+App name:
+Doc Translate
+
+Short description:
+Перекладайте шкільні завдання за допомогою ШІ та діліться ними з класом
+
+Full description:
+Doc Translate за лічені секунди перетворює будь-який шкільний аркуш завдань на охайну перекладену копію, щоб кожен учень зрозумів завдання, якою б мовою він не говорив удома.
+
+📄 ПЕРЕКЛАД БУДЬ-ЯКОГО ЗАВДАННЯ
+• Завантажте PDF, файл Word, PowerPoint або фото надрукованого аркуша
+• ШІ прочитає сторінку й відтворить її як охайно оформлений аркуш обраною мовою
+• Завантажте у PDF чи Word, роздрукуйте або поділіться посиланням
+
+🏫 ДЛЯ КЛАСУ
+• Вчителі створюють класи й запрошують учнів за кодом класу
+• Задавайте завдання з терміном здачі
+• Учні здають роботи просто в застосунку
+• Вчителі переглядають роботи, ставлять оцінки й залишають відгуки
+
+🎒 ДЛЯ УЧНІВ
+• Зберігайте завдання в папках
+• Стежте за серією та отримуйте значки за виконані завдання
+• Привітний помічник Тану дає поради щодо навчання й проводить екскурсію застосунком
+
+🌍 ВАШОЮ МОВОЮ
+Застосунок доступний 10 мовами: англійською, китайською, японською, корейською, французькою, німецькою, італійською, португальською, іспанською та російською. Змінити мову можна будь-коли на верхній панелі.
+
+🔒 ПРОСТО Й КОНФІДЕНЦІЙНО
+• Безпечний вхід через обліковий запис Google
+• Ваші завдання бачите лише ви, а після здачі — і вчитель
+• Видаліть обліковий запис і всі дані будь-коли в Налаштуваннях
+
+Працює на телефонах, планшетах і комп'ютерах. Завдання синхронізуються на всіх пристроях.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: bg
+
+App name:
+Doc Translate
+
+Short description:
+Превеждайте училищни работни листове с ИИ и ги споделяйте с класа
+
+Full description:
+Doc Translate превръща всеки училищен работен лист в чисто преведено копие за секунди, така че всеки ученик да разбере задачата, без значение на какъв език говори у дома.
+
+📄 ПРЕВОД НА ВСЕКИ РАБОТЕН ЛИСТ
+• Качете PDF, Word файл, PowerPoint или снимка на отпечатан лист
+• ИИ прочита страницата и я пресъздава като добре оформен лист на избрания език
+• Изтеглете като PDF или Word, отпечатайте или споделете с връзка
+
+🏫 ЗА КЛАСНАТА СТАЯ
+• Учителите създават класове и канят ученици с код на класа
+• Задавайте задачи със срок
+• Учениците предават работата си направо в приложението
+• Учителите преглеждат работите, поставят оценки и отговарят с коментар
+
+🎒 ЗА УЧЕНИЦИ
+• Подреждайте листовете в папки
+• Следете серията си и печелете значки
+• Дружелюбният помощник Тану дава съвети за учене и обиколка на приложението
+
+🌍 НА ВАШИЯ ЕЗИК
+Приложението е достъпно на 10 езика: английски, китайски, японски, корейски, френски, немски, италиански, португалски, испански и руски. Сменяйте по всяко време от горната лента.
+
+🔒 ПРОСТО И ПОВЕРИТЕЛНО
+• Сигурен вход с профил в Google
+• Листовете ви виждате само вие, а след предаване и учителят ви
+• Изтрийте профила и всички данни по всяко време от Настройки
+
+Работи на телефон, таблет и компютър. Листовете се синхронизират на всички устройства.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: el-GR
+
+App name:
+Doc Translate
+
+Short description:
+Μεταφράστε σχολικά φύλλα εργασίας με AI και μοιραστείτε τα με την τάξη
+
+Full description:
+Το Doc Translate μετατρέπει οποιοδήποτε σχολικό φύλλο εργασίας σε καθαρό μεταφρασμένο αντίγραφο μέσα σε δευτερόλεπτα, ώστε κάθε μαθητής να καταλαβαίνει την εργασία, όποια γλώσσα κι αν μιλά στο σπίτι.
+
+📄 ΜΕΤΑΦΡΑΣΗ ΚΑΘΕ ΦΥΛΛΟΥ
+• Ανεβάστε PDF, αρχείο Word, PowerPoint ή φωτογραφία τυπωμένου φύλλου
+• Η τεχνητή νοημοσύνη διαβάζει τη σελίδα και τη δημιουργεί ξανά ως καλαίσθητο φύλλο στη γλώσσα που επιλέγετε
+• Κατεβάστε σε PDF ή Word, εκτυπώστε ή μοιραστείτε με σύνδεσμο
+
+🏫 ΦΤΙΑΓΜΕΝΟ ΓΙΑ ΤΗΝ ΤΑΞΗ
+• Οι εκπαιδευτικοί δημιουργούν τάξεις και προσκαλούν μαθητές με κωδικό τάξης
+• Αναθέστε εργασίες με προθεσμία
+• Οι μαθητές υποβάλλουν την εργασία τους μέσα από την εφαρμογή
+• Οι εκπαιδευτικοί βλέπουν τις υποβολές, βαθμολογούν και απαντούν με σχόλια
+
+🎒 ΓΙΑ ΜΑΘΗΤΕΣ
+• Οργανώστε τα φύλλα σε φακέλους
+• Παρακολουθήστε το σερί σας και κερδίστε σήματα
+• Ο φιλικός βοηθός Tanu δίνει συμβουλές μελέτης και μια γρήγορη περιήγηση
+
+🌍 ΣΤΗ ΓΛΩΣΣΑ ΣΑΣ
+Η εφαρμογή διατίθεται σε 10 γλώσσες: αγγλικά, κινέζικα, ιαπωνικά, κορεατικά, γαλλικά, γερμανικά, ιταλικά, πορτογαλικά, ισπανικά και ρωσικά. Αλλάξτε τη γλώσσα από την επάνω γραμμή.
+
+🔒 ΑΠΛΟ ΚΑΙ ΙΔΙΩΤΙΚΟ
+• Ασφαλής σύνδεση με λογαριασμό Google
+• Τα φύλλα σας τα βλέπετε μόνο εσείς, και ο εκπαιδευτικός όταν τα υποβάλετε
+• Διαγράψτε τον λογαριασμό και όλα τα δεδομένα οποιαδήποτε στιγμή από τις Ρυθμίσεις
+
+Λειτουργεί σε κινητό, tablet και υπολογιστή. Τα φύλλα συγχρονίζονται σε όλες τις συσκευές.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: tr-TR
+
+App name:
+Doc Translate
+
+Short description:
+Okul çalışma kâğıtlarını yapay zekâyla çevirin ve sınıfınızla paylaşın
+
+Full description:
+Doc Translate, herhangi bir okul çalışma kâğıdını saniyeler içinde düzenli, çevrilmiş bir kopyaya dönüştürür; böylece her öğrenci evde hangi dili konuşursa konuşsun ödevi anlar.
+
+📄 HER ÇALIŞMA KÂĞIDINI ÇEVİRİN
+• PDF, Word dosyası, PowerPoint veya basılı bir kâğıdın fotoğrafını yükleyin
+• Yapay zekâ sayfayı okur ve seçtiğiniz dilde düzgün biçimlendirilmiş bir çalışma kâğıdı olarak yeniden oluşturur
+• PDF veya Word olarak indirin, yazdırın ya da bağlantıyla paylaşın
+
+🏫 SINIF İÇİN TASARLANDI
+• Öğretmenler sınıf oluşturur ve öğrencileri sınıf koduyla davet eder
+• Teslim tarihli ödevler verin
+• Öğrenciler ödevlerini doğrudan uygulamadan teslim eder
+• Öğretmenler teslimleri görür, not verir ve geri bildirimle yanıtlar
+
+🎒 ÖĞRENCİLER İÇİN
+• Çalışma kâğıtlarını klasörlerde düzenleyin
+• Serinizi takip edin, kâğıtları tamamladıkça rozet kazanın
+• Sevimli yardımcı Tanu çalışma ipuçları verir ve uygulamayı tanıtır
+
+🌍 KENDİ DİLİNİZDE
+Uygulama 10 dilde kullanılabilir: İngilizce, Çince, Japonca, Korece, Fransızca, Almanca, İtalyanca, Portekizce, İspanyolca ve Rusça. Üst çubuktan istediğiniz zaman değiştirin.
+
+🔒 BASİT VE GİZLİ
+• Google hesabınızla güvenle oturum açın
+• Çalışma kâğıtlarınızı yalnızca siz, teslim ettiğinizde de öğretmeniniz görür
+• Hesabınızı ve tüm verilerinizi Ayarlar'dan istediğiniz zaman silin
+
+Telefonda, tablette ve bilgisayarda çalışır. Çalışma kâğıtlarınız tüm cihazlarınızda eşitlenir.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: sv-SE
+
+App name:
+Doc Translate
+
+Short description:
+Översätt skolans arbetsblad med AI och dela dem med klassen för bedömning
+
+Full description:
+Doc Translate gör om vilket arbetsblad som helst till en snygg, översatt kopia på några sekunder, så att alla elever förstår uppgiften oavsett vilket språk de talar hemma.
+
+📄 ÖVERSÄTT VILKET ARBETSBLAD SOM HELST
+• Ladda upp en PDF, Word-fil, PowerPoint eller ett foto av ett utskrivet blad
+• AI läser sidan och bygger upp den som ett prydligt arbetsblad på det språk du väljer
+• Ladda ner som PDF eller Word, skriv ut eller dela med en länk
+
+🏫 BYGGD FÖR KLASSRUMMET
+• Lärare skapar klasser och bjuder in elever med en klasskod
+• Dela ut uppgifter med inlämningsdatum
+• Elever lämnar in direkt i appen
+• Lärare ser inlämningar, sätter betyg och svarar med feedback
+
+🎒 FÖR ELEVER
+• Ordna arbetsbladen i mappar
+• Följ din svit och tjäna märken när du gör klart blad
+• Den vänliga hjälparen Tanu ger studietips och en snabb rundtur i appen
+
+🌍 PÅ DITT SPRÅK
+Appen finns på 10 språk: engelska, kinesiska, japanska, koreanska, franska, tyska, italienska, portugisiska, spanska och ryska. Byt när som helst i övre fältet.
+
+🔒 ENKELT OCH PRIVAT
+• Logga in säkert med ditt Google-konto
+• Bara du ser dina arbetsblad, och din lärare när du lämnar in
+• Radera ditt konto och all data när som helst under Inställningar
+
+Fungerar på mobil, surfplatta och dator. Arbetsbladen synkas mellan alla dina enheter.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: da-DK
+
+App name:
+Doc Translate
+
+Short description:
+Oversæt skolens opgaveark med AI, og del dem med klassen til bedømmelse
+
+Full description:
+Doc Translate gør ethvert opgaveark til en pæn, oversat kopi på få sekunder, så alle elever forstår opgaven, uanset hvilket sprog de taler derhjemme.
+
+📄 OVERSÆT ETHVERT OPGAVEARK
+• Upload en PDF, Word-fil, PowerPoint eller et foto af et udskrevet ark
+• AI læser siden og genopbygger den som et pænt opsat ark på det sprog, du vælger
+• Download som PDF eller Word, udskriv eller del med et link
+
+🏫 LAVET TIL KLASSEN
+• Lærere opretter klasser og inviterer elever med en klassekode
+• Giv opgaver med afleveringsfrist
+• Elever afleverer direkte i appen
+• Lærere ser afleveringer, giver karakter og svarer med feedback
+
+🎒 TIL ELEVER
+• Organiser opgaveark i mapper
+• Følg din stime, og optjen badges, når du gør ark færdige
+• Den venlige hjælper Tanu giver studietips og en hurtig rundvisning
+
+🌍 PÅ DIT SPROG
+Appen findes på 10 sprog: engelsk, kinesisk, japansk, koreansk, fransk, tysk, italiensk, portugisisk, spansk og russisk. Skift når som helst i topbjælken.
+
+🔒 ENKELT OG PRIVAT
+• Log sikkert ind med din Google-konto
+• Kun du kan se dine ark, og din lærer når du afleverer
+• Slet din konto og alle data når som helst under Indstillinger
+
+Virker på telefon, tablet og computer. Dine ark synkroniseres på alle dine enheder.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: no-NO
+
+App name:
+Doc Translate
+
+Short description:
+Oversett skolens arbeidsark med KI og del dem med klassen for vurdering
+
+Full description:
+Doc Translate gjør ethvert arbeidsark om til en ryddig, oversatt kopi på sekunder, slik at alle elever forstår oppgaven, uansett hvilket språk de snakker hjemme.
+
+📄 OVERSETT ETHVERT ARBEIDSARK
+• Last opp en PDF, Word-fil, PowerPoint eller et bilde av et utskrevet ark
+• KI leser siden og bygger den opp igjen som et pent formatert ark på språket du velger
+• Last ned som PDF eller Word, skriv ut eller del med en lenke
+
+🏫 LAGET FOR KLASSEROMMET
+• Lærere oppretter klasser og inviterer elever med en klassekode
+• Gi oppgaver med innleveringsfrist
+• Elever leverer direkte i appen
+• Lærere ser innleveringer, gir karakter og svarer med tilbakemelding
+
+🎒 FOR ELEVER
+• Organiser arbeidsark i mapper
+• Følg rekken din og tjen merker når du fullfører ark
+• Den vennlige hjelperen Tanu gir studietips og en rask omvisning
+
+🌍 PÅ DITT SPRÅK
+Appen finnes på 10 språk: engelsk, kinesisk, japansk, koreansk, fransk, tysk, italiensk, portugisisk, spansk og russisk. Bytt når som helst i topplinjen.
+
+🔒 ENKELT OG PRIVAT
+• Logg trygt inn med Google-kontoen din
+• Bare du ser arkene dine, og læreren når du leverer
+• Slett kontoen og alle data når som helst under Innstillinger
+
+Fungerer på mobil, nettbrett og datamaskin. Arkene synkroniseres på alle enhetene dine.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: fi-FI
+
+App name:
+Doc Translate
+
+Short description:
+Käännä koulun tehtävämonisteet tekoälyllä ja jaa ne luokalle arvioitavaksi
+
+Full description:
+Doc Translate muuttaa minkä tahansa tehtävämonisteen siistiksi käännetyksi versioksi sekunneissa, jotta jokainen oppilas ymmärtää tehtävän riippumatta kotikielestään.
+
+📄 KÄÄNNÄ MIKÄ TAHANSA MONISTE
+• Lataa PDF, Word-tiedosto, PowerPoint tai kuva tulostetusta monisteesta
+• Tekoäly lukee sivun ja rakentaa siitä siististi muotoillun monisteen valitsemallasi kielellä
+• Lataa PDF- tai Word-muodossa, tulosta tai jaa linkillä
+
+🏫 LUOKKAHUONEESEEN
+• Opettajat luovat luokkia ja kutsuvat oppilaita luokkakoodilla
+• Anna tehtäviä määräajalla
+• Oppilaat palauttavat työnsä suoraan sovelluksessa
+• Opettajat näkevät palautukset, arvioivat ja vastaavat palautteella
+
+🎒 OPPILAILLE
+• Järjestä monisteet kansioihin
+• Seuraa putkeasi ja ansaitse merkkejä
+• Ystävällinen apuri Tanu antaa opiskeluvinkkejä ja esittelee sovelluksen
+
+🌍 OMALLA KIELELLÄSI
+Sovellus on saatavilla 10 kielellä: englanti, kiina, japani, korea, ranska, saksa, italia, portugali, espanja ja venäjä. Vaihda milloin tahansa yläpalkista.
+
+🔒 HELPPO JA YKSITYINEN
+• Kirjaudu turvallisesti Google-tililläsi
+• Monisteesi näet vain sinä, ja opettaja kun palautat ne
+• Poista tilisi ja kaikki tietosi milloin tahansa Asetuksista
+
+Toimii puhelimella, tabletilla ja tietokoneella. Monisteet synkronoituvat kaikkiin laitteisiisi.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: is-IS
+
+App name:
+Doc Translate
+
+Short description:
+Þýddu verkefnablöð skólans með gervigreind og deildu þeim með bekknum
+
+Full description:
+Doc Translate breytir hvaða verkefnablaði sem er í snyrtilegt, þýtt eintak á nokkrum sekúndum, svo allir nemendur skilji verkefnið, sama hvaða tungumál er talað heima.
+
+📄 ÞÝDDU HVAÐA VERKEFNABLAÐ SEM ER
+• Hladdu upp PDF, Word-skjali, PowerPoint eða mynd af útprentuðu blaði
+• Gervigreind les síðuna og endurgerir hana sem snyrtilegt blað á því tungumáli sem þú velur
+• Sæktu sem PDF eða Word, prentaðu eða deildu með tengli
+
+🏫 GERT FYRIR KENNSLUSTOFUNA
+• Kennarar búa til bekki og bjóða nemendum með bekkjarkóða
+• Settu fyrir verkefni með skilafresti
+• Nemendur skila beint í appinu
+• Kennarar skoða skil, gefa einkunn og svara með endurgjöf
+
+🎒 FYRIR NEMENDUR
+• Raðaðu verkefnablöðum í möppur
+• Fylgstu með rununni þinni og safnaðu merkjum
+• Vingjarnlegi hjálparinn Tanu gefur námsráð og stutta kynningu á appinu
+
+🌍 Á ÞÍNU TUNGUMÁLI
+Appið er á 10 tungumálum: ensku, kínversku, japönsku, kóresku, frönsku, þýsku, ítölsku, portúgölsku, spænsku og rússnesku. Skiptu hvenær sem er í efstu stikunni.
+
+🔒 EINFALT OG PERSÓNULEGT
+• Skráðu þig örugglega inn með Google-reikningi
+• Aðeins þú sérð blöðin þín, og kennarinn þegar þú skilar
+• Eyddu reikningnum og öllum gögnum hvenær sem er í Stillingum
+
+Virkar í síma, spjaldtölvu og tölvu. Blöðin samstillast á öllum tækjunum þínum.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: et
+
+App name:
+Doc Translate
+
+Short description:
+Tõlgi kooli töölehti tehisintellektiga ja jaga neid klassiga hindamiseks
+
+Full description:
+Doc Translate muudab mis tahes koolitöölehe sekunditega korralikuks tõlgitud koopiaks, et iga õpilane mõistaks ülesannet, ükskõik mis keelt ta kodus räägib.
+
+📄 TÕLGI MIS TAHES TÖÖLEHT
+• Laadi üles PDF, Wordi fail, PowerPoint või foto prinditud lehest
+• Tehisintellekt loeb lehe ja loob selle uuesti korralikult vormindatud töölehena valitud keeles
+• Laadi alla PDF-i või Wordina, prindi või jaga lingiga
+
+🏫 KLASSIRUUMI JAOKS
+• Õpetajad loovad klasse ja kutsuvad õpilasi klassikoodiga
+• Anna ülesandeid tähtajaga
+• Õpilased esitavad töö otse rakenduses
+• Õpetajad näevad esitatud töid, hindavad ja annavad tagasisidet
+
+🎒 ÕPILASTELE
+• Korralda töölehed kaustadesse
+• Jälgi oma seeriat ja teeni märke
+• Sõbralik abiline Tanu jagab õppimisnõuandeid ja tutvustab rakendust
+
+🌍 SINU KEELES
+Rakendus on saadaval 10 keeles: inglise, hiina, jaapani, korea, prantsuse, saksa, itaalia, portugali, hispaania ja vene keeles. Vaheta igal ajal ülemiselt ribalt.
+
+🔒 LIHTNE JA PRIVAATNE
+• Logi turvaliselt sisse Google'i kontoga
+• Sinu töölehti näed ainult sina ja esitamisel ka õpetaja
+• Kustuta konto ja kõik andmed igal ajal Seadetes
+
+Töötab telefonis, tahvelarvutis ja arvutis. Töölehed sünkroonitakse kõigis seadmetes.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: lv
+
+App name:
+Doc Translate
+
+Short description:
+Tulkojiet skolas darba lapas ar MI un kopīgojiet tās ar klasi vērtēšanai
+
+Full description:
+Doc Translate dažās sekundēs pārvērš jebkuru skolas darba lapu glītā tulkotā kopijā, lai katrs skolēns saprastu uzdevumu neatkarīgi no valodas, ko runā mājās.
+
+📄 TULKOJIET JEBKURU DARBA LAPU
+• Augšupielādējiet PDF, Word failu, PowerPoint vai izdrukātas lapas fotoattēlu
+• MI nolasa lapu un izveido to no jauna kā glīti noformētu darba lapu izvēlētajā valodā
+• Lejupielādējiet kā PDF vai Word, izdrukājiet vai kopīgojiet ar saiti
+
+🏫 KLASEI
+• Skolotāji izveido klases un uzaicina skolēnus ar klases kodu
+• Uzdodiet darbus ar iesniegšanas termiņu
+• Skolēni iesniedz darbu tieši lietotnē
+• Skolotāji skata iesniegtos darbus, liek atzīmes un sniedz atsauksmes
+
+🎒 SKOLĒNIEM
+• Kārtojiet darba lapas mapēs
+• Sekojiet savai sērijai un nopelniet nozīmītes
+• Draudzīgais palīgs Tanu sniedz mācību padomus un iepazīstina ar lietotni
+
+🌍 JŪSU VALODĀ
+Lietotne pieejama 10 valodās: angļu, ķīniešu, japāņu, korejiešu, franču, vācu, itāļu, portugāļu, spāņu un krievu. Mainiet jebkurā laikā augšējā joslā.
+
+🔒 VIENKĀRŠI UN PRIVĀTI
+• Droša pierakstīšanās ar Google kontu
+• Jūsu darba lapas redzat tikai jūs, un skolotājs, kad tās iesniedzat
+• Dzēsiet kontu un visus datus jebkurā laikā Iestatījumos
+
+Darbojas tālrunī, planšetdatorā un datorā. Darba lapas tiek sinhronizētas visās ierīcēs.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: lt
+
+App name:
+Doc Translate
+
+Short description:
+Verskite mokyklos užduočių lapus su DI ir dalinkitės jais su klase
+
+Full description:
+Doc Translate per kelias sekundes paverčia bet kurį mokyklos užduočių lapą tvarkinga išversta kopija, kad kiekvienas mokinys suprastų užduotį, nesvarbu, kokia kalba kalba namuose.
+
+📄 IŠVERSKITE BET KURĮ UŽDUOČIŲ LAPĄ
+• Įkelkite PDF, Word failą, PowerPoint arba atspausdinto lapo nuotrauką
+• DI perskaito puslapį ir sukuria jį iš naujo kaip tvarkingą lapą pasirinkta kalba
+• Atsisiųskite kaip PDF ar Word, atspausdinkite arba dalinkitės nuoroda
+
+🏫 KLASEI
+• Mokytojai kuria klases ir kviečia mokinius klasės kodu
+• Skirkite užduotis su terminu
+• Mokiniai pateikia darbus tiesiai programėlėje
+• Mokytojai peržiūri darbus, vertina ir atsako komentarais
+
+🎒 MOKINIAMS
+• Tvarkykite lapus aplankuose
+• Sekite savo seriją ir pelnykite ženklelius
+• Draugiškas pagalbininkas Tanu duoda mokymosi patarimų ir aprodo programėlę
+
+🌍 JŪSŲ KALBA
+Programėlė prieinama 10 kalbų: anglų, kinų, japonų, korėjiečių, prancūzų, vokiečių, italų, portugalų, ispanų ir rusų. Keiskite bet kada viršutinėje juostoje.
+
+🔒 PAPRASTA IR PRIVATU
+• Saugus prisijungimas su Google paskyra
+• Jūsų lapus matote tik jūs, o pateikus – ir mokytojas
+• Ištrinkite paskyrą ir visus duomenis bet kada Nustatymuose
+
+Veikia telefone, planšetėje ir kompiuteryje. Lapai sinchronizuojami visuose įrenginiuose.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ca
+
+App name:
+Doc Translate
+
+Short description:
+Tradueix fitxes escolars amb IA i comparteix-les amb la classe per avaluar
+
+Full description:
+Doc Translate converteix qualsevol fitxa escolar en una còpia traduïda i neta en pocs segons, perquè tot l'alumnat entengui la feina, parli la llengua que parli a casa.
+
+📄 TRADUEIX QUALSEVOL FITXA
+• Puja un PDF, un fitxer Word, un PowerPoint o una foto d'una fitxa impresa
+• La IA llegeix la pàgina i la reconstrueix com una fitxa ben maquetada en la llengua que triïs
+• Descarrega-la en PDF o Word, imprimeix-la o comparteix-la amb un enllaç
+
+🏫 FET PER A L'AULA
+• El professorat crea classes i convida l'alumnat amb un codi de classe
+• Assigna tasques amb data de lliurament
+• L'alumnat lliura la feina des de l'app
+• El professorat veu els lliuraments, posa nota i respon amb comentaris
+
+🎒 PER A ESTUDIANTS
+• Organitza les fitxes en carpetes
+• Segueix la teva ratxa i guanya insígnies
+• En Tanu, l'ajudant simpàtic, dona consells d'estudi i fa una visita guiada
+
+🌍 EN LA TEVA LLENGUA
+L'app està disponible en 10 llengües: anglès, xinès, japonès, coreà, francès, alemany, italià, portuguès, castellà i rus. Canvia-la quan vulguis des de la barra superior.
+
+🔒 SENZILL I PRIVAT
+• Inicia sessió de manera segura amb el compte de Google
+• Només tu veus les teves fitxes, i el professor quan les lliures
+• Elimina el compte i totes les dades quan vulguis des de Configuració
+
+Funciona en mòbil, tauleta i ordinador. Les fitxes se sincronitzen a tots els dispositius.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: gl-ES
+
+App name:
+Doc Translate
+
+Short description:
+Traduce fichas escolares con IA e compárteas coa clase para cualificalas
+
+Full description:
+Doc Translate converte calquera ficha escolar nunha copia traducida e limpa en segundos, para que todo o alumnado entenda a tarefa, fale a lingua que fale na casa.
+
+📄 TRADUCE CALQUERA FICHA
+• Sube un PDF, un ficheiro Word, un PowerPoint ou unha foto dunha folla impresa
+• A IA le a páxina e reconstrúea como unha ficha ben maquetada na lingua que escollas
+• Descárgaa en PDF ou Word, imprímea ou compártea cunha ligazón
+
+🏫 FEITO PARA A AULA
+• O profesorado crea clases e convida o alumnado cun código de clase
+• Asigna tarefas con data de entrega
+• O alumnado entrega o traballo desde a app
+• O profesorado ve as entregas, cualifica e responde con comentarios
+
+🎒 PARA ESTUDANTES
+• Organiza as fichas en cartafoles
+• Segue a túa racha e gaña insignias
+• Tanu, o axudante simpático, dá consellos de estudo e un percorrido pola app
+
+🌍 NA TÚA LINGUA
+A app está dispoñible en 10 linguas: inglés, chinés, xaponés, coreano, francés, alemán, italiano, portugués, español e ruso. Cámbiaa cando queiras desde a barra superior.
+
+🔒 SINXELO E PRIVADO
+• Inicia sesión de forma segura coa túa conta de Google
+• Só ti ves as túas fichas, e o teu profesor cando as entregas
+• Elimina a conta e todos os datos cando queiras desde Configuración
+
+Funciona en móbil, tableta e ordenador. As fichas sincronízanse en todos os dispositivos.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: eu-ES
+
+App name:
+Doc Translate
+
+Short description:
+Itzuli eskolako lan-fitxak AArekin eta partekatu ikasgelarekin
+
+Full description:
+Doc Translate-k edozein eskola-fitxa itzulpen txukun bihurtzen du segundo gutxitan, ikasle guztiek ataza uler dezaten, etxean edozein hizkuntza hitz egiten dutela ere.
+
+📄 ITZULI EDOZEIN FITXA
+• Igo PDF bat, Word fitxategi bat, PowerPoint bat edo inprimatutako orri baten argazkia
+• AAk orria irakurri eta aukeratutako hizkuntzan formatu txukuneko fitxa gisa berreraikitzen du
+• Deskargatu PDF edo Word gisa, inprimatu edo partekatu esteka batekin
+
+🏫 IKASGELARAKO
+• Irakasleek klaseak sortzen dituzte eta ikasleak klase-kode batekin gonbidatzen
+• Jarri entrega-data duten atazak
+• Ikasleek lana aplikaziotik bertatik entregatzen dute
+• Irakasleek entregak ikusi, kalifikatu eta iruzkinekin erantzuten dute
+
+🎒 IKASLEENTZAT
+• Antolatu fitxak karpetetan
+• Jarraitu zure segida eta irabazi intsigniak
+• Tanu laguntzaile atseginak ikasteko aholkuak eta aplikazioaren bisita gidatua eskaintzen ditu
+
+🌍 ZURE HIZKUNTZAN
+Aplikazioa 10 hizkuntzatan dago: ingelesa, txinera, japoniera, koreera, frantsesa, alemana, italiera, portugesa, gaztelania eta errusiera. Aldatu edonoiz goiko barratik.
+
+🔒 ERRAZA ETA PRIBATUA
+• Hasi saioa modu seguruan Google kontuarekin
+• Zure fitxak zuk bakarrik ikusten dituzu, eta irakasleak entregatzen dituzunean
+• Ezabatu kontua eta datu guztiak edonoiz Ezarpenetan
+
+Telefonoan, tabletan eta ordenagailuan dabil. Fitxak gailu guztietan sinkronizatzen dira.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: hr
+
+App name:
+Doc Translate
+
+Short description:
+Prevedite školske radne listiće uz AI i podijelite ih s razredom
+
+Full description:
+Doc Translate pretvara bilo koji školski radni listić u urednu prevedenu kopiju u nekoliko sekundi, kako bi svaki učenik razumio zadatak, bez obzira na to kojim jezikom govori kod kuće.
+
+📄 PREVEDITE BILO KOJI LISTIĆ
+• Učitajte PDF, Word datoteku, PowerPoint ili fotografiju ispisanog listića
+• AI čita stranicu i ponovno je izrađuje kao uredno oblikovan listić na odabranom jeziku
+• Preuzmite kao PDF ili Word, ispišite ili podijelite poveznicom
+
+🏫 ZA UČIONICU
+• Učitelji stvaraju razrede i pozivaju učenike kodom razreda
+• Zadajte zadaće s rokom predaje
+• Učenici predaju rad izravno u aplikaciji
+• Učitelji pregledavaju predane radove, ocjenjuju i odgovaraju komentarom
+
+🎒 ZA UČENIKE
+• Organizirajte listiće u mape
+• Pratite svoj niz i osvajajte značke
+• Prijateljski pomoćnik Tanu daje savjete za učenje i kratki obilazak aplikacije
+
+🌍 NA VAŠEM JEZIKU
+Aplikacija je dostupna na 10 jezika: engleskom, kineskom, japanskom, korejskom, francuskom, njemačkom, talijanskom, portugalskom, španjolskom i ruskom. Promijenite ga bilo kada na gornjoj traci.
+
+🔒 JEDNOSTAVNO I PRIVATNO
+• Sigurna prijava Google računom
+• Vaše listiće vidite samo vi, a nakon predaje i vaš učitelj
+• Izbrišite račun i sve podatke bilo kada u Postavkama
+
+Radi na mobitelu, tabletu i računalu. Listići se sinkroniziraju na svim uređajima.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: sr
+
+App name:
+Doc Translate
+
+Short description:
+Преводите школске радне листове уз AI и делите их са одељењем
+
+Full description:
+Doc Translate за неколико секунди претвара било који школски радни лист у уредну преведену копију, да би сваки ученик разумео задатак, без обзира на то којим језиком говори код куће.
+
+📄 ПРЕВЕДИТЕ БИЛО КОЈИ РАДНИ ЛИСТ
+• Отпремите PDF, Word датотеку, PowerPoint или фотографију одштампаног листа
+• AI чита страницу и поново је прави као уредно обликован лист на изабраном језику
+• Преузмите као PDF или Word, одштампајте или поделите линком
+
+🏫 ЗА УЧИОНИЦУ
+• Наставници праве одељења и позивају ученике кодом одељења
+• Задајте задатке са роком предаје
+• Ученици предају рад директно у апликацији
+• Наставници прегледају радове, оцењују и одговарају коментаром
+
+🎒 ЗА УЧЕНИКЕ
+• Организујте листове у фасцикле
+• Пратите свој низ и освајајте беџеве
+• Пријатељски помоћник Тану даје савете за учење и кратак обилазак апликације
+
+🌍 НА ВАШЕМ ЈЕЗИКУ
+Апликација је доступна на 10 језика: енглеском, кинеском, јапанском, корејском, француском, немачком, италијанском, португалском, шпанском и руском. Промените га било када на горњој траци.
+
+🔒 ЈЕДНОСТАВНО И ПРИВАТНО
+• Безбедна пријава Google налогом
+• Ваше листове видите само ви, а након предаје и наставник
+• Избришите налог и све податке било када у Подешавањима
+
+Ради на телефону, таблету и рачунару. Листови се синхронизују на свим уређајима.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: sl
+
+App name:
+Doc Translate
+
+Short description:
+Prevajajte šolske delovne liste z UI in jih delite z razredom
+
+Full description:
+Doc Translate v nekaj sekundah spremeni katerikoli šolski delovni list v urejeno prevedeno kopijo, da vsak učenec razume nalogo, ne glede na to, kateri jezik govori doma.
+
+📄 PREVEDITE KATERIKOLI DELOVNI LIST
+• Naložite PDF, datoteko Word, PowerPoint ali fotografijo natisnjenega lista
+• UI prebere stran in jo znova izdela kot lepo oblikovan list v izbranem jeziku
+• Prenesite kot PDF ali Word, natisnite ali delite s povezavo
+
+🏫 ZA UČILNICO
+• Učitelji ustvarijo razrede in povabijo učence s kodo razreda
+• Dodelite naloge z rokom oddaje
+• Učenci oddajo delo neposredno v aplikaciji
+• Učitelji pregledajo oddaje, ocenijo in odgovorijo s povratno informacijo
+
+🎒 ZA UČENCE
+• Urejajte liste v mapah
+• Spremljajte svoj niz in zbirajte značke
+• Prijazni pomočnik Tanu daje nasvete za učenje in kratek ogled aplikacije
+
+🌍 V VAŠEM JEZIKU
+Aplikacija je na voljo v 10 jezikih: angleščini, kitajščini, japonščini, korejščini, francoščini, nemščini, italijanščini, portugalščini, španščini in ruščini. Zamenjate ga lahko kadarkoli v zgornji vrstici.
+
+🔒 PREPROSTO IN ZASEBNO
+• Varna prijava z Google računom
+• Vaše liste vidite samo vi, po oddaji pa tudi učitelj
+• Račun in vse podatke lahko kadarkoli izbrišete v Nastavitvah
+
+Deluje na telefonu, tablici in računalniku. Listi se sinhronizirajo na vseh napravah.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: mk-MK
+
+App name:
+Doc Translate
+
+Short description:
+Преведете училишни работни листови со ВИ и споделете ги со класот
+
+Full description:
+Doc Translate за неколку секунди го претвора секој училишен работен лист во уредна преведена копија, за секој ученик да ја разбере задачата, без разлика на кој јазик зборува дома.
+
+📄 ПРЕВЕДЕТЕ СЕКОЈ РАБОТЕН ЛИСТ
+• Прикачете PDF, Word датотека, PowerPoint или фотографија од испечатен лист
+• ВИ ја чита страницата и ја прави одново како уредно форматиран лист на избраниот јазик
+• Преземете како PDF или Word, испечатете или споделете со линк
+
+🏫 ЗА УЧИЛНИЦАТА
+• Наставниците создаваат класови и ги покануваат учениците со код на класот
+• Задавајте задачи со рок за предавање
+• Учениците ја предаваат работата директно во апликацијата
+• Наставниците ги прегледуваат работите, оценуваат и одговараат со коментар
+
+🎒 ЗА УЧЕНИЦИ
+• Организирајте ги листовите во папки
+• Следете ја својата низа и освојувајте беџови
+• Пријателскиот помошник Тану дава совети за учење и кратка обиколка на апликацијата
+
+🌍 НА ВАШИОТ ЈАЗИК
+Апликацијата е достапна на 10 јазици: англиски, кинески, јапонски, корејски, француски, германски, италијански, португалски, шпански и руски. Променете го во секое време од горната лента.
+
+🔒 ЕДНОСТАВНО И ПРИВАТНО
+• Безбедна најава со Google сметка
+• Вашите листови ги гледате само вие, а по предавањето и наставникот
+• Избришете ја сметката и сите податоци во секое време во Поставки
+
+Работи на телефон, таблет и компјутер. Листовите се синхронизираат на сите уреди.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: sq
+
+App name:
+Doc Translate
+
+Short description:
+Përkthe fletët e punës së shkollës me IA dhe ndaji me klasën për vlerësim
+
+Full description:
+Doc Translate e kthen çdo fletë pune shkollore në një kopje të përkthyer dhe të rregullt brenda pak sekondash, që çdo nxënës ta kuptojë detyrën, cilado gjuhë që flet në shtëpi.
+
+📄 PËRKTHE ÇDO FLETË PUNE
+• Ngarko një PDF, skedar Word, PowerPoint ose foto të një flete të shtypur
+• IA lexon faqen dhe e rindërton si fletë të formatuar bukur në gjuhën që zgjedh
+• Shkarkoje si PDF ose Word, printoje ose ndaje me një lidhje
+
+🏫 PËR KLASËN
+• Mësuesit krijojnë klasa dhe ftojnë nxënësit me një kod klase
+• Jep detyra me afat dorëzimi
+• Nxënësit dorëzojnë punën direkt nga aplikacioni
+• Mësuesit shohin dorëzimet, vendosin nota dhe përgjigjen me komente
+
+🎒 PËR NXËNËSIT
+• Organizo fletët në dosje
+• Ndiq serinë tënde dhe fito distinktivë
+• Ndihmësi miqësor Tanu jep këshilla studimi dhe një prezantim të aplikacionit
+
+🌍 NË GJUHËN TËNDE
+Aplikacioni është i disponueshëm në 10 gjuhë: anglisht, kinezisht, japonisht, koreanisht, frëngjisht, gjermanisht, italisht, portugalisht, spanjisht dhe rusisht. Ndryshoje kur të duash nga shiriti i sipërm.
+
+🔒 E THJESHTË DHE PRIVATE
+• Hyr në mënyrë të sigurt me llogarinë Google
+• Fletët e tua i sheh vetëm ti, dhe mësuesi kur i dorëzon
+• Fshi llogarinë dhe të gjitha të dhënat kur të duash te Cilësimet
+
+Funksionon në telefon, tablet dhe kompjuter. Fletët sinkronizohen në të gjitha pajisjet.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: be
+
+App name:
+Doc Translate
+
+Short description:
+Перакладайце школьныя заданні з дапамогай ШІ і дзяліцеся імі з класам
+
+Full description:
+Doc Translate за лічаныя секунды ператварае любы школьны ліст заданняў у акуратную перакладзеную копію, каб кожны вучань зразумеў заданне, на якой бы мове ён ні размаўляў дома.
+
+📄 ПЕРАКЛАД ЛЮБОГА ЗАДАННЯ
+• Загрузіце PDF, файл Word, PowerPoint або фота надрукаванага ліста
+• ШІ прачытае старонку і створыць акуратна аформлены ліст на абранай мове
+• Спампуйце ў PDF ці Word, раздрукуйце або падзяліцеся спасылкай
+
+🏫 ДЛЯ КЛАСА
+• Настаўнікі ствараюць класы і запрашаюць вучняў па кодзе класа
+• Задавайце заданні з тэрмінам здачы
+• Вучні здаюць работы проста ў праграме
+• Настаўнікі праглядаюць работы, ставяць адзнакі і пакідаюць водгукі
+
+🎒 ДЛЯ ВУЧНЯЎ
+• Захоўвайце заданні ў папках
+• Сачыце за серыяй і атрымлівайце значкі
+• Прыязны памочнік Тану дае парады па вучобе і праводзіць экскурсію па праграме
+
+🌍 НА ВАШАЙ МОВЕ
+Праграма даступная на 10 мовах: англійскай, кітайскай, японскай, карэйскай, французскай, нямецкай, італьянскай, партугальскай, іспанскай і рускай. Змяніць мову можна ў любы момант на верхняй панэлі.
+
+🔒 ПРОСТА І КАНФІДЭНЦЫЙНА
+• Бяспечны ўваход праз уліковы запіс Google
+• Вашы заданні бачыце толькі вы, а пасля здачы — і настаўнік
+• Выдаліце ўліковы запіс і ўсе даныя ў любы момант у Наладах
+
+Працуе на тэлефонах, планшэтах і камп'ютарах. Заданні сінхранізуюцца на ўсіх прыладах.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: af
+
+App name:
+Doc Translate
+
+Short description:
+Vertaal skoolwerkkaarte met KI en deel dit met jou klas vir nasien
+
+Full description:
+Doc Translate verander enige skoolwerkkaart binne sekondes in 'n netjiese, vertaalde kopie, sodat elke leerder die werk verstaan, watter taal hulle ook al tuis praat.
+
+📄 VERTAAL ENIGE WERKKAART
+• Laai 'n PDF, Word-lêer, PowerPoint of foto van 'n gedrukte blad op
+• KI lees die bladsy en bou dit weer as 'n netjies geformateerde werkkaart in die taal wat jy kies
+• Laai af as PDF of Word, druk dit of deel dit met 'n skakel
+
+🏫 GEBOU VIR DIE KLASKAMER
+• Onderwysers skep klasse en nooi leerders met 'n klaskode
+• Gee take met 'n sperdatum
+• Leerders handig hul werk direk in die app in
+• Onderwysers sien inhandigings, gee 'n punt en antwoord met terugvoer
+
+🎒 VIR LEERDERS
+• Hou werkkaarte in vouers georden
+• Volg jou reeks en verdien kentekens
+• Tanu, die vriendelike helper, gee studiewenke en 'n vinnige toer van die app
+
+🌍 IN JOU TAAL
+Die app is beskikbaar in 10 tale: Engels, Chinees, Japannees, Koreaans, Frans, Duits, Italiaans, Portugees, Spaans en Russies. Verander enige tyd in die boonste balk.
+
+🔒 EENVOUDIG EN PRIVAAT
+• Meld veilig aan met jou Google-rekening
+• Net jy sien jou werkkaarte, en jou onderwyser wanneer jy dit inhandig
+• Skrap jou rekening en alle data enige tyd in Instellings
+
+Werk op foon, tablet en rekenaar. Jou werkkaarte sinkroniseer oor al jou toestelle.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: rm
+
+App name:
+Doc Translate
+
+Short description:
+Translatai fegls da lavur da scola cun IA e cundividai els cun la classa
+
+Full description:
+Doc Translate transfurma mintga fegl da lavur da scola en paucas secundas en ina copia translatada e ordinada, uschia che mintga scolar chapescha la lavur, tgenin lingua ch'el discurra a chasa.
+
+📄 TRANSLATAR MINTGA FEGL DA LAVUR
+• Chargiai si in PDF, ina datoteca Word, in PowerPoint u ina foto d'in fegl stampà
+• L'IA legia la pagina e la reconstruescha sco fegl bain formatà en la lingua tschernida
+• Telechargiai sco PDF u Word, stampai u cundividai cun in link
+
+🏫 PER LA STANZA DA SCOLA
+• Ils magisters creeschan classas ed envidan scolars cun in code da classa
+• Dai incumbensas cun termin
+• Ils scolars consegnan la lavur directamain en l'app
+• Ils magisters vesan las consegnas, dattan notas e respundan cun commentaris
+
+🎒 PER SCOLARS
+• Organisai ils fegls en ordinaturs
+• Suandai Vossa seria e gudagnai insignas
+• Tanu, il gidanter simpatic, dat cussegls d'emprender ed ina curta visita da l'app
+
+🌍 EN VOSSA LINGUA
+L'app è disponibla en 10 linguas: englais, chinais, giapunais, corean, franzos, tudestg, talian, portugais, spagnol e russ. Midai da tut temp en la trav sura.
+
+🔒 SIMPEL E PRIVAT
+• S'annunziai a moda segira cun Voss conto Google
+• Vossa fegls vesais mo Vus, e Voss magister cura che Vus als consegnais
+• Stizzai Voss conto e tut las datas da tut temp en las Configuraziuns
+
+Funcziuna sin telefon, tablet e computer. Ils fegls vegnan sincronisads sin tut ils apparats.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ar
+
+App name:
+Doc Translate
+
+Short description:
+ترجم أوراق العمل المدرسية بالذكاء الاصطناعي وشاركها مع صفك لتقييمها
+
+Full description:
+يحوّل Doc Translate أي ورقة عمل مدرسية إلى نسخة مترجمة ومرتبة خلال ثوانٍ، ليفهم كل طالب المطلوب مهما كانت اللغة التي يتحدثها في المنزل.
+
+📄 ترجم أي ورقة عمل
+• ارفع ملف PDF أو Word أو PowerPoint أو صورة لورقة مطبوعة
+• يقرأ الذكاء الاصطناعي الصفحة ويعيد إنشاءها كورقة عمل منسقة باللغة التي تختارها
+• نزّلها بصيغة PDF أو Word، أو اطبعها، أو شاركها برابط
+
+🏫 مصمم للفصل الدراسي
+• ينشئ المعلمون فصولًا ويدعون الطلاب برمز الفصل
+• حدّد واجبات بمواعيد تسليم
+• يسلّم الطلاب أعمالهم مباشرة من التطبيق
+• يطّلع المعلمون على التسليمات ويضعون الدرجات ويردّون بالملاحظات
+
+🎒 مصنوع للطلاب
+• نظّم أوراق العمل في مجلدات
+• تابع سلسلة أيامك واربح الشارات عند إكمال الأوراق
+• يقدّم المساعد اللطيف تانو نصائح للدراسة وجولة سريعة في التطبيق
+
+🌍 بلغتك
+التطبيق متاح بـ 10 لغات: الإنجليزية والصينية واليابانية والكورية والفرنسية والألمانية والإيطالية والبرتغالية والإسبانية والروسية. غيّر اللغة في أي وقت من الشريط العلوي.
+
+🔒 بسيط وخاص
+• سجّل الدخول بأمان بحساب Google
+• أوراقك مرئية لك وحدك، ولمعلمك عند تسليمها
+• احذف حسابك وجميع بياناتك في أي وقت من الإعدادات
+
+يعمل على الهواتف والأجهزة اللوحية وأجهزة الكمبيوتر، وتتم مزامنة أوراقك على جميع أجهزتك.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: iw-IL
+
+App name:
+Doc Translate
+
+Short description:
+תרגמו דפי עבודה של בית הספר עם AI ושתפו אותם עם הכיתה לבדיקה
+
+Full description:
+Doc Translate הופך כל דף עבודה לעותק מתורגם ומסודר תוך שניות, כדי שכל תלמיד יבין את המשימה, בכל שפה שמדברים אצלו בבית.
+
+📄 תרגום של כל דף עבודה
+• העלו PDF, קובץ Word, מצגת PowerPoint או צילום של דף מודפס
+• הבינה המלאכותית קוראת את הדף ובונה אותו מחדש כדף עבודה מעוצב בשפה שבחרתם
+• הורידו כ-PDF או Word, הדפיסו או שתפו בקישור
+
+🏫 נבנה לכיתה
+• מורים יוצרים כיתות ומזמינים תלמידים עם קוד כיתה
+• תנו משימות עם תאריך הגשה
+• תלמידים מגישים ישירות מהאפליקציה
+• מורים צופים בהגשות, נותנים ציון ומשיבים במשוב
+
+🎒 לתלמידים
+• סדרו דפי עבודה בתיקיות
+• עקבו אחרי הרצף שלכם וזכו בתגים
+• העוזר החביב טאנו נותן טיפים ללמידה וסיור קצר באפליקציה
+
+🌍 בשפה שלכם
+האפליקציה זמינה ב-10 שפות: אנגלית, סינית, יפנית, קוריאנית, צרפתית, גרמנית, איטלקית, פורטוגזית, ספרדית ורוסית. אפשר להחליף בכל עת מהסרגל העליון.
+
+🔒 פשוט ופרטי
+• התחברות מאובטחת עם חשבון Google
+• רק אתם רואים את הדפים שלכם, והמורה כשאתם מגישים
+• מחקו את החשבון ואת כל הנתונים בכל עת בהגדרות
+
+עובד בטלפון, בטאבלט ובמחשב. הדפים מסתנכרנים בין כל המכשירים.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: fa
+
+App name:
+Doc Translate
+
+Short description:
+کاربرگ‌های مدرسه را با هوش مصنوعی ترجمه کنید و با کلاس به اشتراک بگذارید
+
+Full description:
+Doc Translate هر کاربرگ مدرسه را در چند ثانیه به نسخه‌ای ترجمه‌شده و مرتب تبدیل می‌کند تا هر دانش‌آموز، با هر زبانی که در خانه صحبت می‌کند، تکلیف را بفهمد.
+
+📄 ترجمه هر کاربرگ
+• فایل PDF، Word، PowerPoint یا عکس یک برگه چاپی را بارگذاری کنید
+• هوش مصنوعی صفحه را می‌خواند و آن را به‌صورت کاربرگی مرتب به زبان دلخواه شما بازسازی می‌کند
+• به‌صورت PDF یا Word دانلود کنید، چاپ کنید یا با پیوند به اشتراک بگذارید
+
+🏫 ساخته‌شده برای کلاس
+• معلمان کلاس می‌سازند و دانش‌آموزان را با کد کلاس دعوت می‌کنند
+• تکلیف با مهلت تحویل تعیین کنید
+• دانش‌آموزان کارشان را مستقیم از برنامه تحویل می‌دهند
+• معلمان تحویل‌ها را می‌بینند، نمره می‌دهند و بازخورد می‌نویسند
+
+🎒 برای دانش‌آموزان
+• کاربرگ‌ها را در پوشه‌ها مرتب کنید
+• روزهای پیاپی خود را دنبال کنید و نشان بگیرید
+• تانو، دستیار مهربان، نکات مطالعه و معرفی کوتاهی از برنامه ارائه می‌دهد
+
+🌍 به زبان شما
+برنامه به 10 زبان در دسترس است: انگلیسی، چینی، ژاپنی، کره‌ای، فرانسوی، آلمانی، ایتالیایی، پرتغالی، اسپانیایی و روسی. هر زمان از نوار بالا تغییر دهید.
+
+🔒 ساده و خصوصی
+• ورود امن با حساب Google
+• کاربرگ‌های شما فقط برای خودتان قابل مشاهده است، و هنگام تحویل برای معلمتان
+• هر زمان از تنظیمات، حساب و همه داده‌های خود را حذف کنید
+
+روی تلفن، تبلت و رایانه کار می‌کند و کاربرگ‌ها در همه دستگاه‌ها همگام می‌شوند.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ur
+
+App name:
+Doc Translate
+
+Short description:
+اسکول کی ورک شیٹس کو اے آئی سے ترجمہ کریں اور کلاس کے ساتھ شیئر کریں
+
+Full description:
+Doc Translate کسی بھی اسکول ورک شیٹ کو چند سیکنڈ میں صاف ستھری ترجمہ شدہ کاپی میں بدل دیتا ہے، تاکہ ہر طالب علم کام سمجھ سکے، چاہے وہ گھر میں کوئی بھی زبان بولتا ہو۔
+
+📄 کسی بھی ورک شیٹ کا ترجمہ
+• PDF، Word فائل، PowerPoint یا چھپی ہوئی شیٹ کی تصویر اپ لوڈ کریں
+• اے آئی صفحہ پڑھ کر اسے آپ کی منتخب زبان میں خوبصورت ورک شیٹ کی صورت میں دوبارہ بناتا ہے
+• PDF یا Word میں ڈاؤن لوڈ کریں، پرنٹ کریں یا لنک سے شیئر کریں
+
+🏫 کلاس روم کے لیے
+• اساتذہ کلاسز بناتے ہیں اور کلاس کوڈ سے طلبہ کو مدعو کرتے ہیں
+• آخری تاریخ کے ساتھ اسائنمنٹس دیں
+• طلبہ ایپ ہی سے اپنا کام جمع کراتے ہیں
+• اساتذہ جمع شدہ کام دیکھتے، گریڈ دیتے اور رائے لکھتے ہیں
+
+🎒 طلبہ کے لیے
+• ورک شیٹس کو فولڈرز میں ترتیب دیں
+• اپنا سلسلہ جاری رکھیں اور بیجز جیتیں
+• دوستانہ مددگار تانو پڑھائی کے مشورے اور ایپ کا مختصر تعارف دیتا ہے
+
+🌍 آپ کی زبان میں
+ایپ 10 زبانوں میں دستیاب ہے: انگریزی، چینی، جاپانی، کوریائی، فرانسیسی، جرمن، اطالوی، پرتگالی، ہسپانوی اور روسی۔ اوپر والی بار سے کسی بھی وقت تبدیل کریں۔
+
+🔒 آسان اور محفوظ
+• اپنے Google اکاؤنٹ سے محفوظ طریقے سے سائن ان کریں
+• آپ کی ورک شیٹس صرف آپ دیکھ سکتے ہیں، اور جمع کرانے پر آپ کے استاد
+• ترتیبات سے کسی بھی وقت اپنا اکاؤنٹ اور تمام ڈیٹا حذف کریں
+
+فون، ٹیبلٹ اور کمپیوٹر پر چلتا ہے۔ آپ کی ورک شیٹس تمام آلات پر ہم آہنگ رہتی ہیں۔
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: hy-AM
+
+App name:
+Doc Translate
+
+Short description:
+Թարգմանեք դպրոցական առաջադրանքները AI-ով և կիսվեք դասարանի հետ
+
+Full description:
+Doc Translate-ը վայրկյանների ընթացքում ցանկացած դպրոցական աշխատաթերթ վերածում է կոկիկ թարգմանված տարբերակի, որպեսզի յուրաքանչյուր աշակերտ հասկանա առաջադրանքը՝ անկախ տանը խոսվող լեզվից։
+
+📄 ԹԱՐԳՄԱՆԵՔ ՑԱՆԿԱՑԱԾ ԱՇԽԱՏԱԹԵՐԹ
+• Վերբեռնեք PDF, Word ֆայլ, PowerPoint կամ տպված թերթի լուսանկար
+• AI-ն կարդում է էջը և վերստեղծում այն որպես կոկիկ աշխատաթերթ ձեր ընտրած լեզվով
+• Ներբեռնեք PDF կամ Word ձևաչափով, տպեք կամ կիսվեք հղումով
+
+🏫 ԴԱՍԱՐԱՆԻ ՀԱՄԱՐ
+• Ուսուցիչները ստեղծում են դասարաններ և հրավիրում աշակերտներին դասարանի կոդով
+• Տվեք առաջադրանքներ վերջնաժամկետով
+• Աշակերտները հանձնում են աշխատանքը անմիջապես հավելվածում
+• Ուսուցիչները դիտում են աշխատանքները, գնահատում և արձագանքում
+
+🎒 ԱՇԱԿԵՐՏՆԵՐԻ ՀԱՄԱՐ
+• Դասավորեք աշխատաթերթերը թղթապանակներում
+• Հետևեք ձեր շարքին և վաստակեք կրծքանշաններ
+• Բարեհամբույր օգնական Տանուն տալիս է ուսման խորհուրդներ և ծանոթացնում հավելվածին
+
+🌍 ՁԵՐ ԼԵԶՎՈՎ
+Հավելվածը հասանելի է 10 լեզվով՝ անգլերեն, չինարեն, ճապոներեն, կորեերեն, ֆրանսերեն, գերմաներեն, իտալերեն, պորտուգալերեն, իսպաներեն և ռուսերեն։ Փոխեք ցանկացած պահի վերևի վահանակից։
+
+🔒 ՊԱՐԶ ԵՎ ԱՆՁՆԱԿԱՆ
+• Անվտանգ մուտք Google հաշվով
+• Ձեր աշխատաթերթերը տեսնում եք միայն դուք, իսկ հանձնելուց հետո՝ նաև ուսուցիչը
+• Ջնջեք ձեր հաշիվը և բոլոր տվյալները ցանկացած պահի Կարգավորումներում
+
+Աշխատում է հեռախոսում, պլանշետում և համակարգչում։ Աշխատաթերթերը համաժամեցվում են բոլոր սարքերում։
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: az-AZ
+
+App name:
+Doc Translate
+
+Short description:
+Məktəb iş vərəqlərini Sİ ilə tərcümə edin və sinifinizlə paylaşın
+
+Full description:
+Doc Translate istənilən məktəb iş vərəqini saniyələr içində səliqəli, tərcümə olunmuş nüsxəyə çevirir ki, hər şagird evdə hansı dildə danışmasından asılı olmayaraq tapşırığı başa düşsün.
+
+📄 İSTƏNİLƏN İŞ VƏRƏQİNİ TƏRCÜMƏ EDİN
+• PDF, Word faylı, PowerPoint və ya çap olunmuş vərəqin şəklini yükləyin
+• Süni intellekt səhifəni oxuyur və seçdiyiniz dildə səliqəli iş vərəqi kimi yenidən qurur
+• PDF və ya Word kimi endirin, çap edin və ya keçidlə paylaşın
+
+🏫 SİNİF ÜÇÜN
+• Müəllimlər siniflər yaradır və şagirdləri sinif kodu ilə dəvət edir
+• Son tarixli tapşırıqlar verin
+• Şagirdlər işlərini birbaşa tətbiqdən təhvil verir
+• Müəllimlər təhvil verilən işlərə baxır, qiymət verir və rəy yazır
+
+🎒 ŞAGİRDLƏR ÜÇÜN
+• İş vərəqlərini qovluqlarda təşkil edin
+• Seriyanızı izləyin və nişanlar qazanın
+• Mehriban köməkçi Tanu dərs məsləhətləri verir və tətbiqi tanıdır
+
+🌍 ÖZ DİLİNİZDƏ
+Tətbiq 10 dildə mövcuddur: ingilis, çin, yapon, koreya, fransız, alman, italyan, portuqal, ispan və rus. İstənilən vaxt yuxarı paneldən dəyişin.
+
+🔒 SADƏ VƏ MƏXFİ
+• Google hesabınızla təhlükəsiz daxil olun
+• İş vərəqlərinizi yalnız siz, təhvil verdikdə isə müəlliminiz görür
+• Hesabınızı və bütün məlumatları istənilən vaxt Ayarlardan silin
+
+Telefon, planşet və kompüterdə işləyir. İş vərəqləri bütün cihazlarda sinxronlaşır.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ka-GE
+
+App name:
+Doc Translate
+
+Short description:
+თარგმნეთ სასკოლო სამუშაო ფურცლები AI-ით და გაუზიარეთ კლასს
+
+Full description:
+Doc Translate ნებისმიერ სასკოლო სამუშაო ფურცელს წამებში აქცევს სუფთა, ნათარგმნ ასლად, რათა ყველა მოსწავლემ გაიგოს დავალება, მიუხედავად იმისა, რა ენაზე ლაპარაკობს სახლში.
+
+📄 თარგმნეთ ნებისმიერი ფურცელი
+• ატვირთეთ PDF, Word ფაილი, PowerPoint ან დაბეჭდილი ფურცლის ფოტო
+• AI კითხულობს გვერდს და თავიდან ქმნის მას მოწესრიგებულ ფურცლად არჩეულ ენაზე
+• ჩამოტვირთეთ PDF ან Word ფორმატში, დაბეჭდეთ ან გააზიარეთ ბმულით
+
+🏫 საკლასო ოთახისთვის
+• მასწავლებლები ქმნიან კლასებს და იწვევენ მოსწავლეებს კლასის კოდით
+• მიეცით დავალებები ვადით
+• მოსწავლეები აბარებენ ნამუშევარს პირდაპირ აპში
+• მასწავლებლები ათვალიერებენ ნამუშევრებს, აფასებენ და პასუხობენ კომენტარით
+
+🎒 მოსწავლეებისთვის
+• დაალაგეთ ფურცლები საქაღალდეებში
+• ადევნეთ თვალი თქვენს სერიას და მოიპოვეთ სამკერდე ნიშნები
+• მეგობრული დამხმარე ტანუ გაძლევთ სწავლის რჩევებს და გაცნობთ აპს
+
+🌍 თქვენს ენაზე
+აპი ხელმისაწვდომია 10 ენაზე: ინგლისური, ჩინური, იაპონური, კორეული, ფრანგული, გერმანული, იტალიური, პორტუგალიური, ესპანური და რუსული. შეცვალეთ ნებისმიერ დროს ზედა ზოლიდან.
+
+🔒 მარტივი და კონფიდენციალური
+• უსაფრთხო შესვლა Google ანგარიშით
+• თქვენს ფურცლებს მხოლოდ თქვენ ხედავთ, ჩაბარების შემდეგ კი მასწავლებელიც
+• წაშალეთ ანგარიში და ყველა მონაცემი ნებისმიერ დროს პარამეტრებში
+
+მუშაობს ტელეფონზე, პლანშეტსა და კომპიუტერზე. ფურცლები სინქრონდება ყველა მოწყობილობაზე.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: kk
+
+App name:
+Doc Translate
+
+Short description:
+Мектеп жұмыс парақтарын ЖИ арқылы аударып, сыныппен бөлісіңіз
+
+Full description:
+Doc Translate кез келген мектеп жұмыс парағын бірнеше секундта ұқыпты аударылған көшірмеге айналдырады, сонда әр оқушы үйде қай тілде сөйлесе де тапсырманы түсінеді.
+
+📄 КЕЗ КЕЛГЕН ПАРАҚТЫ АУДАРЫҢЫЗ
+• PDF, Word файлын, PowerPoint немесе басылған парақтың фотосын жүктеңіз
+• ЖИ бетті оқып, оны таңдаған тіліңізде ұқыпты пішімделген парақ ретінде қайта жасайды
+• PDF немесе Word ретінде жүктеп алыңыз, басып шығарыңыз немесе сілтемемен бөлісіңіз
+
+🏫 СЫНЫП ҮШІН
+• Мұғалімдер сынып құрып, оқушыларды сынып кодымен шақырады
+• Мерзімі бар тапсырмалар беріңіз
+• Оқушылар жұмысын тікелей қолданбада тапсырады
+• Мұғалімдер тапсырылған жұмыстарды көріп, баға қойып, пікір жазады
+
+🎒 ОҚУШЫЛАР ҮШІН
+• Парақтарды қалталарға реттеңіз
+• Серияңызды бақылап, белгілер жинаңыз
+• Мейірімді көмекші Тану оқу кеңестерін беріп, қолданбамен таныстырады
+
+🌍 ӨЗ ТІЛІҢІЗДЕ
+Қолданба 10 тілде қолжетімді: ағылшын, қытай, жапон, корей, француз, неміс, итальян, португал, испан және орыс. Жоғарғы жолақтан кез келген уақытта ауыстырыңыз.
+
+🔒 ҚАРАПАЙЫМ ӘРІ ҚАУІПСІЗ
+• Google аккаунтымен қауіпсіз кіріңіз
+• Парақтарыңызды тек сіз, ал тапсырғанда мұғаліміңіз де көреді
+• Аккаунтыңыз бен барлық деректерді кез келген уақытта Параметрлерден жойыңыз
+
+Телефонда, планшетте және компьютерде жұмыс істейді. Парақтар барлық құрылғыларда синхрондалады.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ky-KG
+
+App name:
+Doc Translate
+
+Short description:
+Мектептин иш барактарын ЖИ менен которуп, класс менен бөлүшүңүз
+
+Full description:
+Doc Translate каалаган мектеп иш барагын бир нече секундда тыкан которулган көчүрмөгө айлантат, ошентип ар бир окуучу үйдө кайсы тилде сүйлөсө да тапшырманы түшүнөт.
+
+📄 КААЛАГАН БАРАКТЫ КОТОРУҢУЗ
+• PDF, Word файлын, PowerPoint же басылган барактын сүрөтүн жүктөңүз
+• ЖИ баракты окуп, аны тандалган тилде тыкан иш барагы катары кайра түзөт
+• PDF же Word катары жүктөп алыңыз, басып чыгарыңыз же шилтеме менен бөлүшүңүз
+
+🏫 КЛАСС ҮЧҮН
+• Мугалимдер класс түзүп, окуучуларды класс коду менен чакырышат
+• Мөөнөтү бар тапшырмаларды бериңиз
+• Окуучулар ишин түз эле колдонмодо тапшырышат
+• Мугалимдер тапшырылган иштерди көрүп, баа коюп, пикир жазышат
+
+🎒 ОКУУЧУЛАР ҮЧҮН
+• Барактарды папкаларга иреттеңиз
+• Серияңызды көзөмөлдөп, белгилерди утуп алыңыз
+• Боорукер жардамчы Тану окуу кеңештерин берип, колдонмо менен тааныштырат
+
+🌍 ӨЗ ТИЛИҢИЗДЕ
+Колдонмо 10 тилде жеткиликтүү: англис, кытай, жапон, корей, француз, немис, италия, португал, испан жана орус. Үстүңкү тилкеден каалаган убакта алмаштырыңыз.
+
+🔒 ЖӨНӨКӨЙ ЖАНА КУПУЯ
+• Google аккаунту менен коопсуз кириңиз
+• Барактарыңызды сиз гана, тапшырганда мугалимиңиз да көрөт
+• Аккаунтуңузду жана бардык маалыматты каалаган убакта Жөндөөлөрдөн өчүрүңүз
+
+Телефондо, планшетте жана компьютерде иштейт. Барактар бардык түзмөктөрдө шайкештирилет.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: mn-MN
+
+App name:
+Doc Translate
+
+Short description:
+Сургуулийн дасгалын хуудсыг AI-аар орчуулж, ангитайгаа хуваалцаарай
+
+Full description:
+Doc Translate нь сургуулийн аливаа дасгалын хуудсыг хэдхэн секундэд цэгцтэй орчуулсан хувилбар болгодог тул сурагч бүр гэртээ ямар хэлээр ярьдгаас үл хамааран даалгавраа ойлгоно.
+
+📄 ДУРЫН ХУУДСЫГ ОРЧУУЛАХ
+• PDF, Word файл, PowerPoint эсвэл хэвлэсэн хуудасны зургийг байршуулна уу
+• AI хуудсыг уншиж, таны сонгосон хэлээр цэгцтэй хэлбэржүүлсэн хуудас болгон дахин бүтээнэ
+• PDF эсвэл Word хэлбэрээр татах, хэвлэх эсвэл холбоосоор хуваалцах
+
+🏫 АНГИД ЗОРИУЛСАН
+• Багш нар анги үүсгэж, сурагчдыг ангийн кодоор урина
+• Хугацаатай даалгавар өгнө
+• Сурагчид ажлаа аппаас шууд илгээнэ
+• Багш нар илгээсэн ажлыг харж, дүн тавьж, санал бичнэ
+
+🎒 СУРАГЧДАД
+• Хуудсуудаа хавтсаар цэгцэл
+• Цувралаа хянаж, тэмдэг цуглуул
+• Найрсаг туслах Тану суралцах зөвлөгөө өгч, аппыг танилцуулна
+
+🌍 ӨӨРИЙН ХЭЛЭЭР
+Апп 10 хэлээр ажиллана: англи, хятад, япон, солонгос, франц, герман, итали, португал, испани, орос. Дээд самбараас хүссэн үедээ солино уу.
+
+🔒 ЭНГИЙН БА НУУЦЛАЛТАЙ
+• Google бүртгэлээрээ аюулгүй нэвтрэх
+• Таны хуудсыг зөвхөн та, илгээсний дараа багш тань хардаг
+• Тохиргооноос хүссэн үедээ бүртгэл болон бүх өгөгдлөө устгах
+
+Утас, таблет, компьютер дээр ажиллана. Хуудсууд бүх төхөөрөмжид синк хийгдэнэ.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: hi-IN
+
+App name:
+Doc Translate
+
+Short description:
+AI से स्कूल की वर्कशीट का अनुवाद करें और जाँच के लिए क्लास के साथ साझा करें
+
+Full description:
+Doc Translate किसी भी स्कूल वर्कशीट को कुछ ही सेकंड में साफ़-सुथरी अनुवादित कॉपी में बदल देता है, ताकि हर छात्र काम समझ सके, चाहे वह घर पर कोई भी भाषा बोलता हो।
+
+📄 किसी भी वर्कशीट का अनुवाद
+• PDF, Word फ़ाइल, PowerPoint या छपी हुई शीट की फ़ोटो अपलोड करें
+• AI पेज पढ़ता है और उसे आपकी चुनी हुई भाषा में सुंदर फ़ॉर्मैट वाली वर्कशीट के रूप में दोबारा बनाता है
+• PDF या Word में डाउनलोड करें, प्रिंट करें या लिंक से साझा करें
+
+🏫 क्लासरूम के लिए
+• शिक्षक क्लास बनाते हैं और क्लास कोड से छात्रों को आमंत्रित करते हैं
+• अंतिम तिथि के साथ असाइनमेंट दें
+• छात्र सीधे ऐप से अपना काम जमा करते हैं
+• शिक्षक सबमिशन देखते हैं, ग्रेड देते हैं और फ़ीडबैक लिखते हैं
+
+🎒 छात्रों के लिए
+• वर्कशीट को फ़ोल्डर में व्यवस्थित रखें
+• अपनी स्ट्रीक बनाए रखें और बैज जीतें
+• दोस्ताना सहायक तानु पढ़ाई के टिप्स और ऐप का छोटा टूर देता है
+
+🌍 आपकी भाषा में
+ऐप 10 भाषाओं में उपलब्ध है: अंग्रेज़ी, चीनी, जापानी, कोरियाई, फ़्रेंच, जर्मन, इतालवी, पुर्तगाली, स्पेनिश और रूसी। ऊपर की पट्टी से कभी भी बदलें।
+
+🔒 आसान और निजी
+• अपने Google खाते से सुरक्षित साइन इन करें
+• आपकी वर्कशीट सिर्फ़ आप देख सकते हैं, और जमा करने पर आपके शिक्षक
+• सेटिंग्स से कभी भी अपना खाता और सारा डेटा हटाएँ
+
+फ़ोन, टैबलेट और कंप्यूटर पर चलता है। आपकी वर्कशीट सभी डिवाइस पर सिंक रहती हैं।
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: bn-BD
+
+App name:
+Doc Translate
+
+Short description:
+AI দিয়ে স্কুলের ওয়ার্কশিট অনুবাদ করুন এবং ক্লাসের সাথে শেয়ার করুন
+
+Full description:
+Doc Translate যেকোনো স্কুল ওয়ার্কশিটকে কয়েক সেকেন্ডে পরিষ্কার অনূদিত কপিতে পরিণত করে, যাতে প্রত্যেক শিক্ষার্থী কাজটি বুঝতে পারে, বাড়িতে সে যে ভাষাতেই কথা বলুক।
+
+📄 যেকোনো ওয়ার্কশিট অনুবাদ করুন
+• PDF, Word ফাইল, PowerPoint বা ছাপানো শিটের ছবি আপলোড করুন
+• AI পাতাটি পড়ে আপনার বেছে নেওয়া ভাষায় সুন্দরভাবে সাজানো ওয়ার্কশিট হিসেবে আবার তৈরি করে
+• PDF বা Word হিসেবে ডাউনলোড করুন, প্রিন্ট করুন বা লিংকে শেয়ার করুন
+
+🏫 ক্লাসরুমের জন্য
+• শিক্ষকরা ক্লাস তৈরি করেন এবং ক্লাস কোড দিয়ে শিক্ষার্থীদের আমন্ত্রণ জানান
+• জমার শেষ তারিখসহ অ্যাসাইনমেন্ট দিন
+• শিক্ষার্থীরা সরাসরি অ্যাপ থেকে কাজ জমা দেয়
+• শিক্ষকরা জমা দেওয়া কাজ দেখেন, গ্রেড দেন এবং মতামত লেখেন
+
+🎒 শিক্ষার্থীদের জন্য
+• ওয়ার্কশিট ফোল্ডারে গুছিয়ে রাখুন
+• আপনার ধারাবাহিকতা ধরে রাখুন এবং ব্যাজ জিতুন
+• বন্ধুসুলভ সহকারী তানু পড়াশোনার টিপস দেয় এবং অ্যাপটি ঘুরিয়ে দেখায়
+
+🌍 আপনার ভাষায়
+অ্যাপটি ১০টি ভাষায় পাওয়া যায়: ইংরেজি, চীনা, জাপানি, কোরিয়ান, ফরাসি, জার্মান, ইতালীয়, পর্তুগিজ, স্প্যানিশ ও রুশ। উপরের বার থেকে যেকোনো সময় বদলান।
+
+🔒 সহজ ও ব্যক্তিগত
+• আপনার Google অ্যাকাউন্ট দিয়ে নিরাপদে সাইন ইন করুন
+• আপনার ওয়ার্কশিট শুধু আপনি দেখতে পান, আর জমা দিলে আপনার শিক্ষক
+• সেটিংস থেকে যেকোনো সময় অ্যাকাউন্ট ও সব ডেটা মুছে ফেলুন
+
+ফোন, ট্যাবলেট ও কম্পিউটারে চলে। আপনার ওয়ার্কশিট সব ডিভাইসে সিঙ্ক থাকে।
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: gu
+
+App name:
+Doc Translate
+
+Short description:
+AI વડે શાળાની વર્કશીટનું ભાષાંતર કરો અને વર્ગ સાથે શેર કરો
+
+Full description:
+Doc Translate કોઈપણ શાળાની વર્કશીટને થોડી સેકંડમાં સુઘડ ભાષાંતરિત નકલમાં ફેરવે છે, જેથી દરેક વિદ્યાર્થી ઘરે કોઈ પણ ભાષા બોલતો હોય તો પણ કાર્ય સમજી શકે.
+
+📄 કોઈપણ વર્કશીટનું ભાષાંતર
+• PDF, Word ફાઇલ, PowerPoint અથવા છાપેલી શીટનો ફોટો અપલોડ કરો
+• AI પાનું વાંચીને તમે પસંદ કરેલી ભાષામાં સુઘડ વર્કશીટ તરીકે ફરી બનાવે છે
+• PDF અથવા Word તરીકે ડાઉનલોડ કરો, પ્રિન્ટ કરો અથવા લિંકથી શેર કરો
+
+🏫 વર્ગખંડ માટે
+• શિક્ષકો વર્ગ બનાવે છે અને વર્ગ કોડ વડે વિદ્યાર્થીઓને આમંત્રિત કરે છે
+• છેલ્લી તારીખ સાથે સોંપણી આપો
+• વિદ્યાર્થીઓ સીધા એપમાંથી કામ જમા કરે છે
+• શિક્ષકો જમા થયેલ કામ જુએ છે, ગ્રેડ આપે છે અને પ્રતિસાદ લખે છે
+
+🎒 વિદ્યાર્થીઓ માટે
+• વર્કશીટને ફોલ્ડરમાં ગોઠવો
+• તમારી સ્ટ્રીક જાળવો અને બેજ જીતો
+• મૈત્રીપૂર્ણ સહાયક તાનુ અભ્યાસની ટિપ્સ અને એપનો ટૂંકો પરિચય આપે છે
+
+🌍 તમારી ભાષામાં
+એપ 10 ભાષાઓમાં ઉપલબ્ધ છે: અંગ્રેજી, ચાઇનીઝ, જાપાનીઝ, કોરિયન, ફ્રેન્ચ, જર્મન, ઇટાલિયન, પોર્ટુગીઝ, સ્પેનિશ અને રશિયન. ઉપરની પટ્ટીમાંથી ગમે ત્યારે બદલો.
+
+🔒 સરળ અને ખાનગી
+• તમારા Google એકાઉન્ટથી સુરક્ષિત સાઇન ઇન કરો
+• તમારી વર્કશીટ ફક્ત તમે જ જોઈ શકો છો, અને જમા કરો ત્યારે તમારા શિક્ષક
+• સેટિંગ્સમાંથી ગમે ત્યારે એકાઉન્ટ અને બધો ડેટા કાઢી નાખો
+
+ફોન, ટેબ્લેટ અને કમ્પ્યુટર પર ચાલે છે. વર્કશીટ બધા ઉપકરણો પર સિંક થાય છે.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: mr-IN
+
+App name:
+Doc Translate
+
+Short description:
+AI ने शाळेच्या वर्कशीटचे भाषांतर करा आणि वर्गासोबत शेअर करा
+
+Full description:
+Doc Translate कोणत्याही शाळेच्या वर्कशीटला काही सेकंदांत नीटनेटक्या भाषांतरित प्रतीत बदलते, जेणेकरून प्रत्येक विद्यार्थ्याला घरी कोणतीही भाषा बोलत असला तरी काम समजेल.
+
+📄 कोणत्याही वर्कशीटचे भाषांतर
+• PDF, Word फाइल, PowerPoint किंवा छापलेल्या शीटचा फोटो अपलोड करा
+• AI पान वाचते आणि तुम्ही निवडलेल्या भाषेत नीटनेटकी वर्कशीट म्हणून पुन्हा तयार करते
+• PDF किंवा Word म्हणून डाउनलोड करा, प्रिंट करा किंवा लिंकने शेअर करा
+
+🏫 वर्गासाठी
+• शिक्षक वर्ग तयार करतात आणि वर्ग कोडने विद्यार्थ्यांना आमंत्रित करतात
+• शेवटच्या तारखेसह असाइनमेंट द्या
+• विद्यार्थी थेट ॲपमधून काम सबमिट करतात
+• शिक्षक सबमिशन पाहतात, ग्रेड देतात आणि अभिप्राय लिहितात
+
+🎒 विद्यार्थ्यांसाठी
+• वर्कशीट फोल्डरमध्ये व्यवस्थित ठेवा
+• तुमची स्ट्रीक टिकवा आणि बॅज जिंका
+• मैत्रीपूर्ण मदतनीस तानु अभ्यासाच्या टिप्स आणि ॲपची छोटी ओळख देतो
+
+🌍 तुमच्या भाषेत
+ॲप 10 भाषांमध्ये उपलब्ध आहे: इंग्रजी, चिनी, जपानी, कोरियन, फ्रेंच, जर्मन, इटालियन, पोर्तुगीज, स्पॅनिश आणि रशियन. वरच्या पट्टीतून कधीही बदला.
+
+🔒 सोपे आणि खाजगी
+• तुमच्या Google खात्याने सुरक्षितपणे साइन इन करा
+• तुमची वर्कशीट फक्त तुम्हीच पाहू शकता, आणि सबमिट केल्यावर तुमचे शिक्षक
+• सेटिंग्जमधून कधीही खाते आणि सर्व डेटा हटवा
+
+फोन, टॅबलेट आणि कॉम्प्युटरवर चालते. वर्कशीट सर्व डिव्हाइसवर सिंक होतात.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ta-IN
+
+App name:
+Doc Translate
+
+Short description:
+AI மூலம் பள்ளிப் பணித்தாள்களை மொழிபெயர்த்து வகுப்புடன் பகிருங்கள்
+
+Full description:
+Doc Translate எந்தப் பள்ளிப் பணித்தாளையும் சில நொடிகளில் நேர்த்தியான மொழிபெயர்ப்பு நகலாக மாற்றுகிறது, அதனால் ஒவ்வொரு மாணவரும் வீட்டில் எந்த மொழி பேசினாலும் பாடத்தைப் புரிந்துகொள்ளலாம்.
+
+📄 எந்தப் பணித்தாளையும் மொழிபெயர்க்கவும்
+• PDF, Word கோப்பு, PowerPoint அல்லது அச்சிட்ட தாளின் புகைப்படத்தைப் பதிவேற்றவும்
+• AI பக்கத்தைப் படித்து, நீங்கள் தேர்ந்தெடுத்த மொழியில் நேர்த்தியான பணித்தாளாக மீண்டும் உருவாக்குகிறது
+• PDF அல்லது Word ஆகப் பதிவிறக்கவும், அச்சிடவும் அல்லது இணைப்பு மூலம் பகிரவும்
+
+🏫 வகுப்பறைக்காக
+• ஆசிரியர்கள் வகுப்புகளை உருவாக்கி, வகுப்புக் குறியீட்டுடன் மாணவர்களை அழைக்கிறார்கள்
+• கடைசித் தேதியுடன் பணிகளை வழங்கவும்
+• மாணவர்கள் நேரடியாக ஆப்பிலிருந்து சமர்ப்பிக்கிறார்கள்
+• ஆசிரியர்கள் சமர்ப்பிப்புகளைப் பார்த்து, மதிப்பெண் அளித்து, கருத்து எழுதுகிறார்கள்
+
+🎒 மாணவர்களுக்காக
+• பணித்தாள்களைக் கோப்புறைகளில் ஒழுங்குபடுத்துங்கள்
+• உங்கள் தொடர்ச்சியைக் கண்காணித்து பதக்கங்களை வெல்லுங்கள்
+• நட்பான உதவியாளர் தனு படிப்புக் குறிப்புகளையும் ஆப் சுற்றுப்பயணத்தையும் தருகிறார்
+
+🌍 உங்கள் மொழியில்
+ஆப் 10 மொழிகளில் கிடைக்கிறது: ஆங்கிலம், சீனம், ஜப்பானியம், கொரியன், பிரெஞ்சு, ஜெர்மன், இத்தாலியன், போர்த்துகீசியம், ஸ்பானிஷ், ரஷ்யன். மேல் பட்டியிலிருந்து எப்போது வேண்டுமானாலும் மாற்றலாம்.
+
+🔒 எளிமையானது, தனிப்பட்டது
+• உங்கள் Google கணக்குடன் பாதுகாப்பாக உள்நுழையவும்
+• உங்கள் பணித்தாள்களை நீங்கள் மட்டுமே பார்க்க முடியும், சமர்ப்பித்தால் உங்கள் ஆசிரியரும்
+• அமைப்புகளில் எப்போது வேண்டுமானாலும் கணக்கையும் எல்லாத் தரவையும் நீக்கலாம்
+
+போன், டேப்லெட், கணினி அனைத்திலும் இயங்கும். பணித்தாள்கள் எல்லாச் சாதனங்களிலும் ஒத்திசைக்கப்படும்.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: te-IN
+
+App name:
+Doc Translate
+
+Short description:
+AIతో స్కూల్ వర్క్‌షీట్‌లను అనువదించి, తరగతితో పంచుకోండి
+
+Full description:
+Doc Translate ఏ స్కూల్ వర్క్‌షీట్‌నైనా కొన్ని సెకన్లలో చక్కని అనువాద ప్రతిగా మారుస్తుంది, దాంతో ప్రతి విద్యార్థి ఇంట్లో ఏ భాష మాట్లాడినా పనిని అర్థం చేసుకోగలరు.
+
+📄 ఏ వర్క్‌షీట్‌నైనా అనువదించండి
+• PDF, Word ఫైల్, PowerPoint లేదా ముద్రించిన షీట్ ఫోటోను అప్‌లోడ్ చేయండి
+• AI పేజీని చదివి, మీరు ఎంచుకున్న భాషలో చక్కని వర్క్‌షీట్‌గా మళ్లీ తయారు చేస్తుంది
+• PDF లేదా Wordగా డౌన్‌లోడ్ చేయండి, ప్రింట్ చేయండి లేదా లింక్‌తో పంచుకోండి
+
+🏫 తరగతి గది కోసం
+• ఉపాధ్యాయులు తరగతులు సృష్టించి, తరగతి కోడ్‌తో విద్యార్థులను ఆహ్వానిస్తారు
+• గడువు తేదీతో అసైన్‌మెంట్‌లు ఇవ్వండి
+• విద్యార్థులు నేరుగా యాప్ నుంచే సమర్పిస్తారు
+• ఉపాధ్యాయులు సమర్పణలు చూసి, గ్రేడ్ ఇచ్చి, అభిప్రాయం రాస్తారు
+
+🎒 విద్యార్థుల కోసం
+• వర్క్‌షీట్‌లను ఫోల్డర్‌లలో సర్దుకోండి
+• మీ స్ట్రీక్‌ను కొనసాగించి బ్యాడ్జ్‌లు గెలవండి
+• స్నేహపూర్వక సహాయకుడు తను చదువు చిట్కాలు, యాప్ పరిచయం ఇస్తాడు
+
+🌍 మీ భాషలో
+యాప్ 10 భాషల్లో అందుబాటులో ఉంది: ఇంగ్లీష్, చైనీస్, జపనీస్, కొరియన్, ఫ్రెంచ్, జర్మన్, ఇటాలియన్, పోర్చుగీస్, స్పానిష్, రష్యన్. పై బార్ నుంచి ఎప్పుడైనా మార్చుకోండి.
+
+🔒 సులభం, గోప్యం
+• మీ Google ఖాతాతో సురక్షితంగా సైన్ ఇన్ చేయండి
+• మీ వర్క్‌షీట్‌లు మీకు మాత్రమే కనిపిస్తాయి, సమర్పిస్తే మీ ఉపాధ్యాయుడికి కూడా
+• సెట్టింగ్‌ల నుంచి ఎప్పుడైనా ఖాతా, మొత్తం డేటాను తొలగించండి
+
+ఫోన్, టాబ్లెట్, కంప్యూటర్‌లో పనిచేస్తుంది. వర్క్‌షీట్‌లు అన్ని పరికరాల్లో సింక్ అవుతాయి.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: kn-IN
+
+App name:
+Doc Translate
+
+Short description:
+AI ಮೂಲಕ ಶಾಲಾ ವರ್ಕ್‌ಶೀಟ್‌ಗಳನ್ನು ಅನುವಾದಿಸಿ ಮತ್ತು ತರಗತಿಯೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ
+
+Full description:
+Doc Translate ಯಾವುದೇ ಶಾಲಾ ವರ್ಕ್‌ಶೀಟ್ ಅನ್ನು ಕೆಲವೇ ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಅಚ್ಚುಕಟ್ಟಾದ ಅನುವಾದಿತ ಪ್ರತಿಯಾಗಿ ಮಾಡುತ್ತದೆ, ಇದರಿಂದ ಪ್ರತಿಯೊಬ್ಬ ವಿದ್ಯಾರ್ಥಿಯೂ ಮನೆಯಲ್ಲಿ ಯಾವ ಭಾಷೆ ಮಾತನಾಡಿದರೂ ಕೆಲಸವನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಬಹುದು.
+
+📄 ಯಾವುದೇ ವರ್ಕ್‌ಶೀಟ್ ಅನುವಾದಿಸಿ
+• PDF, Word ಫೈಲ್, PowerPoint ಅಥವಾ ಮುದ್ರಿತ ಹಾಳೆಯ ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ
+• AI ಪುಟವನ್ನು ಓದಿ, ನೀವು ಆರಿಸಿದ ಭಾಷೆಯಲ್ಲಿ ಅಚ್ಚುಕಟ್ಟಾದ ವರ್ಕ್‌ಶೀಟ್ ಆಗಿ ಮರುನಿರ್ಮಿಸುತ್ತದೆ
+• PDF ಅಥವಾ Word ಆಗಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ, ಮುದ್ರಿಸಿ ಅಥವಾ ಲಿಂಕ್ ಮೂಲಕ ಹಂಚಿಕೊಳ್ಳಿ
+
+🏫 ತರಗತಿಗಾಗಿ
+• ಶಿಕ್ಷಕರು ತರಗತಿಗಳನ್ನು ರಚಿಸಿ, ತರಗತಿ ಕೋಡ್ ಮೂಲಕ ವಿದ್ಯಾರ್ಥಿಗಳನ್ನು ಆಹ್ವಾನಿಸುತ್ತಾರೆ
+• ಕೊನೆಯ ದಿನಾಂಕದೊಂದಿಗೆ ಅಸೈನ್‌ಮೆಂಟ್ ನೀಡಿ
+• ವಿದ್ಯಾರ್ಥಿಗಳು ನೇರವಾಗಿ ಆ್ಯಪ್‌ನಿಂದ ಸಲ್ಲಿಸುತ್ತಾರೆ
+• ಶಿಕ್ಷಕರು ಸಲ್ಲಿಕೆಗಳನ್ನು ನೋಡಿ, ಗ್ರೇಡ್ ನೀಡಿ, ಪ್ರತಿಕ್ರಿಯೆ ಬರೆಯುತ್ತಾರೆ
+
+🎒 ವಿದ್ಯಾರ್ಥಿಗಳಿಗಾಗಿ
+• ವರ್ಕ್‌ಶೀಟ್‌ಗಳನ್ನು ಫೋಲ್ಡರ್‌ಗಳಲ್ಲಿ ಜೋಡಿಸಿ
+• ನಿಮ್ಮ ಸ್ಟ್ರೀಕ್ ಮುಂದುವರಿಸಿ ಮತ್ತು ಬ್ಯಾಡ್ಜ್ ಗೆಲ್ಲಿ
+• ಸ್ನೇಹಪರ ಸಹಾಯಕ ತನು ಅಧ್ಯಯನ ಸಲಹೆಗಳು ಮತ್ತು ಆ್ಯಪ್ ಪರಿಚಯ ನೀಡುತ್ತಾನೆ
+
+🌍 ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ
+ಆ್ಯಪ್ 10 ಭಾಷೆಗಳಲ್ಲಿ ಲಭ್ಯವಿದೆ: ಇಂಗ್ಲಿಷ್, ಚೈನೀಸ್, ಜಪಾನೀಸ್, ಕೊರಿಯನ್, ಫ್ರೆಂಚ್, ಜರ್ಮನ್, ಇಟಾಲಿಯನ್, ಪೋರ್ಚುಗೀಸ್, ಸ್ಪ್ಯಾನಿಷ್ ಮತ್ತು ರಷ್ಯನ್. ಮೇಲಿನ ಪಟ್ಟಿಯಿಂದ ಯಾವಾಗ ಬೇಕಾದರೂ ಬದಲಾಯಿಸಿ.
+
+🔒 ಸರಳ ಮತ್ತು ಖಾಸಗಿ
+• ನಿಮ್ಮ Google ಖಾತೆಯಿಂದ ಸುರಕ್ಷಿತವಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಿ
+• ನಿಮ್ಮ ವರ್ಕ್‌ಶೀಟ್‌ಗಳು ನಿಮಗೆ ಮಾತ್ರ ಕಾಣುತ್ತವೆ, ಸಲ್ಲಿಸಿದಾಗ ನಿಮ್ಮ ಶಿಕ್ಷಕರಿಗೂ
+• ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ ಯಾವಾಗ ಬೇಕಾದರೂ ಖಾತೆ ಮತ್ತು ಎಲ್ಲಾ ಡೇಟಾ ಅಳಿಸಿ
+
+ಫೋನ್, ಟ್ಯಾಬ್ಲೆಟ್ ಮತ್ತು ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ವರ್ಕ್‌ಶೀಟ್‌ಗಳು ಎಲ್ಲಾ ಸಾಧನಗಳಲ್ಲಿ ಸಿಂಕ್ ಆಗುತ್ತವೆ.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ml-IN
+
+App name:
+Doc Translate
+
+Short description:
+AI ഉപയോഗിച്ച് സ്കൂൾ വർക്ക്ഷീറ്റുകൾ വിവർത്തനം ചെയ്ത് ക്ലാസുമായി പങ്കിടൂ
+
+Full description:
+Doc Translate ഏത് സ്കൂൾ വർക്ക്ഷീറ്റിനെയും നിമിഷങ്ങൾക്കുള്ളിൽ വൃത്തിയുള്ള വിവർത്തന പകർപ്പാക്കി മാറ്റുന്നു, അതുവഴി ഓരോ വിദ്യാർത്ഥിക്കും വീട്ടിൽ ഏത് ഭാഷ സംസാരിച്ചാലും ജോലി മനസ്സിലാകും.
+
+📄 ഏത് വർക്ക്ഷീറ്റും വിവർത്തനം ചെയ്യൂ
+• PDF, Word ഫയൽ, PowerPoint അല്ലെങ്കിൽ അച്ചടിച്ച ഷീറ്റിന്റെ ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യൂ
+• AI പേജ് വായിച്ച്, നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ഭാഷയിൽ ഭംഗിയുള്ള വർക്ക്ഷീറ്റായി വീണ്ടും നിർമ്മിക്കുന്നു
+• PDF അല്ലെങ്കിൽ Word ആയി ഡൗൺലോഡ് ചെയ്യൂ, പ്രിന്റ് ചെയ്യൂ അല്ലെങ്കിൽ ലിങ്ക് വഴി പങ്കിടൂ
+
+🏫 ക്ലാസ് മുറിക്കായി
+• അധ്യാപകർ ക്ലാസുകൾ സൃഷ്ടിച്ച് ക്ലാസ് കോഡ് വഴി വിദ്യാർത്ഥികളെ ക്ഷണിക്കുന്നു
+• അവസാന തീയതിയോടെ അസൈൻമെന്റുകൾ നൽകൂ
+• വിദ്യാർത്ഥികൾ ആപ്പിൽ നിന്ന് നേരിട്ട് സമർപ്പിക്കുന്നു
+• അധ്യാപകർ സമർപ്പണങ്ങൾ കണ്ട് ഗ്രേഡ് നൽകി ഫീഡ്‌ബാക്ക് എഴുതുന്നു
+
+🎒 വിദ്യാർത്ഥികൾക്കായി
+• വർക്ക്ഷീറ്റുകൾ ഫോൾഡറുകളിൽ ക്രമീകരിക്കൂ
+• നിങ്ങളുടെ സ്ട്രീക്ക് നിലനിർത്തി ബാഡ്ജുകൾ നേടൂ
+• സൗഹൃദ സഹായി തനു പഠന നുറുങ്ങുകളും ആപ്പ് പരിചയവും നൽകുന്നു
+
+🌍 നിങ്ങളുടെ ഭാഷയിൽ
+ആപ്പ് 10 ഭാഷകളിൽ ലഭ്യമാണ്: ഇംഗ്ലീഷ്, ചൈനീസ്, ജാപ്പനീസ്, കൊറിയൻ, ഫ്രഞ്ച്, ജർമ്മൻ, ഇറ്റാലിയൻ, പോർച്ചുഗീസ്, സ്പാനിഷ്, റഷ്യൻ. മുകളിലെ ബാറിൽ നിന്ന് എപ്പോൾ വേണമെങ്കിലും മാറ്റാം.
+
+🔒 ലളിതം, സ്വകാര്യം
+• നിങ്ങളുടെ Google അക്കൗണ്ട് ഉപയോഗിച്ച് സുരക്ഷിതമായി സൈൻ ഇൻ ചെയ്യൂ
+• നിങ്ങളുടെ വർക്ക്ഷീറ്റുകൾ നിങ്ങൾക്ക് മാത്രം കാണാം, സമർപ്പിച്ചാൽ അധ്യാപകർക്കും
+• ക്രമീകരണങ്ങളിൽ നിന്ന് എപ്പോൾ വേണമെങ്കിലും അക്കൗണ്ടും എല്ലാ ഡാറ്റയും ഇല്ലാതാക്കൂ
+
+ഫോൺ, ടാബ്‌ലെറ്റ്, കമ്പ്യൂട്ടർ എന്നിവയിൽ പ്രവർത്തിക്കുന്നു. വർക്ക്ഷീറ്റുകൾ എല്ലാ ഉപകരണങ്ങളിലും സമന്വയിപ്പിക്കപ്പെടുന്നു.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: pa
+
+App name:
+Doc Translate
+
+Short description:
+AI ਨਾਲ ਸਕੂਲ ਦੀਆਂ ਵਰਕਸ਼ੀਟਾਂ ਦਾ ਅਨੁਵਾਦ ਕਰੋ ਅਤੇ ਕਲਾਸ ਨਾਲ ਸਾਂਝਾ ਕਰੋ
+
+Full description:
+Doc Translate ਕਿਸੇ ਵੀ ਸਕੂਲ ਵਰਕਸ਼ੀਟ ਨੂੰ ਕੁਝ ਸਕਿੰਟਾਂ ਵਿੱਚ ਸਾਫ਼-ਸੁਥਰੀ ਅਨੁਵਾਦਿਤ ਕਾਪੀ ਵਿੱਚ ਬਦਲ ਦਿੰਦਾ ਹੈ, ਤਾਂ ਜੋ ਹਰ ਵਿਦਿਆਰਥੀ ਕੰਮ ਸਮਝ ਸਕੇ, ਭਾਵੇਂ ਉਹ ਘਰ ਵਿੱਚ ਕੋਈ ਵੀ ਭਾਸ਼ਾ ਬੋਲਦਾ ਹੋਵੇ।
+
+📄 ਕਿਸੇ ਵੀ ਵਰਕਸ਼ੀਟ ਦਾ ਅਨੁਵਾਦ
+• PDF, Word ਫ਼ਾਈਲ, PowerPoint ਜਾਂ ਛਪੀ ਸ਼ੀਟ ਦੀ ਫ਼ੋਟੋ ਅੱਪਲੋਡ ਕਰੋ
+• AI ਪੰਨਾ ਪੜ੍ਹ ਕੇ ਤੁਹਾਡੀ ਚੁਣੀ ਭਾਸ਼ਾ ਵਿੱਚ ਸੁੰਦਰ ਵਰਕਸ਼ੀਟ ਵਜੋਂ ਮੁੜ ਬਣਾਉਂਦਾ ਹੈ
+• PDF ਜਾਂ Word ਵਜੋਂ ਡਾਊਨਲੋਡ ਕਰੋ, ਪ੍ਰਿੰਟ ਕਰੋ ਜਾਂ ਲਿੰਕ ਨਾਲ ਸਾਂਝਾ ਕਰੋ
+
+🏫 ਕਲਾਸਰੂਮ ਲਈ
+• ਅਧਿਆਪਕ ਕਲਾਸਾਂ ਬਣਾਉਂਦੇ ਹਨ ਅਤੇ ਕਲਾਸ ਕੋਡ ਨਾਲ ਵਿਦਿਆਰਥੀਆਂ ਨੂੰ ਸੱਦਾ ਦਿੰਦੇ ਹਨ
+• ਆਖ਼ਰੀ ਤਾਰੀਖ਼ ਨਾਲ ਅਸਾਈਨਮੈਂਟ ਦਿਓ
+• ਵਿਦਿਆਰਥੀ ਸਿੱਧੇ ਐਪ ਤੋਂ ਕੰਮ ਜਮ੍ਹਾਂ ਕਰਦੇ ਹਨ
+• ਅਧਿਆਪਕ ਜਮ੍ਹਾਂ ਕੀਤਾ ਕੰਮ ਵੇਖਦੇ, ਗ੍ਰੇਡ ਦਿੰਦੇ ਅਤੇ ਫੀਡਬੈਕ ਲਿਖਦੇ ਹਨ
+
+🎒 ਵਿਦਿਆਰਥੀਆਂ ਲਈ
+• ਵਰਕਸ਼ੀਟਾਂ ਨੂੰ ਫੋਲਡਰਾਂ ਵਿੱਚ ਵਿਵਸਥਿਤ ਕਰੋ
+• ਆਪਣੀ ਲੜੀ ਜਾਰੀ ਰੱਖੋ ਅਤੇ ਬੈਜ ਜਿੱਤੋ
+• ਦੋਸਤਾਨਾ ਸਹਾਇਕ ਤਾਨੂ ਪੜ੍ਹਾਈ ਦੇ ਸੁਝਾਅ ਅਤੇ ਐਪ ਦੀ ਛੋਟੀ ਜਾਣ-ਪਛਾਣ ਦਿੰਦਾ ਹੈ
+
+🌍 ਤੁਹਾਡੀ ਭਾਸ਼ਾ ਵਿੱਚ
+ਐਪ 10 ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਉਪਲਬਧ ਹੈ: ਅੰਗਰੇਜ਼ੀ, ਚੀਨੀ, ਜਪਾਨੀ, ਕੋਰੀਆਈ, ਫ਼ਰਾਂਸੀਸੀ, ਜਰਮਨ, ਇਤਾਲਵੀ, ਪੁਰਤਗਾਲੀ, ਸਪੇਨੀ ਅਤੇ ਰੂਸੀ। ਉੱਪਰਲੀ ਪੱਟੀ ਤੋਂ ਕਦੇ ਵੀ ਬਦਲੋ।
+
+🔒 ਆਸਾਨ ਅਤੇ ਨਿੱਜੀ
+• ਆਪਣੇ Google ਖਾਤੇ ਨਾਲ ਸੁਰੱਖਿਅਤ ਸਾਈਨ ਇਨ ਕਰੋ
+• ਤੁਹਾਡੀਆਂ ਵਰਕਸ਼ੀਟਾਂ ਸਿਰਫ਼ ਤੁਸੀਂ ਵੇਖ ਸਕਦੇ ਹੋ, ਅਤੇ ਜਮ੍ਹਾਂ ਕਰਨ 'ਤੇ ਤੁਹਾਡੇ ਅਧਿਆਪਕ
+• ਸੈਟਿੰਗਾਂ ਤੋਂ ਕਦੇ ਵੀ ਖਾਤਾ ਅਤੇ ਸਾਰਾ ਡਾਟਾ ਮਿਟਾਓ
+
+ਫ਼ੋਨ, ਟੈਬਲੇਟ ਅਤੇ ਕੰਪਿਊਟਰ 'ਤੇ ਚੱਲਦਾ ਹੈ। ਵਰਕਸ਼ੀਟਾਂ ਸਾਰੀਆਂ ਡਿਵਾਈਸਾਂ 'ਤੇ ਸਿੰਕ ਹੁੰਦੀਆਂ ਹਨ।
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ne-NP
+
+App name:
+Doc Translate
+
+Short description:
+AI ले विद्यालयका वर्कसिट अनुवाद गर्नुहोस् र कक्षासँग सेयर गर्नुहोस्
+
+Full description:
+Doc Translate ले कुनै पनि विद्यालयको वर्कसिटलाई केही सेकेन्डमै सफा अनुवादित प्रतिमा बदल्छ, ताकि हरेक विद्यार्थीले घरमा जुनसुकै भाषा बोले पनि काम बुझ्न सकून्।
+
+📄 जुनसुकै वर्कसिट अनुवाद गर्नुहोस्
+• PDF, Word फाइल, PowerPoint वा छापिएको पानाको फोटो अपलोड गर्नुहोस्
+• AI ले पाना पढेर तपाईंले रोजेको भाषामा सफा वर्कसिटका रूपमा पुनः बनाउँछ
+• PDF वा Word मा डाउनलोड गर्नुहोस्, प्रिन्ट गर्नुहोस् वा लिङ्कमार्फत सेयर गर्नुहोस्
+
+🏫 कक्षाकोठाका लागि
+• शिक्षकहरूले कक्षा बनाउँछन् र कक्षा कोडमार्फत विद्यार्थीलाई निम्तो दिन्छन्
+• अन्तिम मितिसहित गृहकार्य दिनुहोस्
+• विद्यार्थीले एपबाटै काम बुझाउँछन्
+• शिक्षकले बुझाइएका काम हेर्छन्, ग्रेड दिन्छन् र प्रतिक्रिया लेख्छन्
+
+🎒 विद्यार्थीका लागि
+• वर्कसिटहरू फोल्डरमा मिलाउनुहोस्
+• आफ्नो लगातार क्रम कायम राख्नुहोस् र ब्याज जित्नुहोस्
+• मिलनसार सहयोगी तानुले पढाइका सुझाव र एपको छोटो परिचय दिन्छ
+
+🌍 तपाईंको भाषामा
+एप 10 भाषामा उपलब्ध छ: अंग्रेजी, चिनियाँ, जापानी, कोरियाली, फ्रान्सेली, जर्मन, इटालियन, पोर्तुगाली, स्पेनी र रुसी। माथिको पट्टीबाट जुनसुकै बेला बदल्नुहोस्।
+
+🔒 सजिलो र निजी
+• आफ्नो Google खाताबाट सुरक्षित रूपमा साइन इन गर्नुहोस्
+• तपाईंका वर्कसिट तपाईं मात्र देख्न सक्नुहुन्छ, बुझाएपछि तपाईंका शिक्षकले पनि
+• सेटिङबाट जुनसुकै बेला खाता र सबै डाटा मेटाउनुहोस्
+
+फोन, ट्याब्लेट र कम्प्युटरमा चल्छ। वर्कसिटहरू सबै उपकरणमा सिंक हुन्छन्।
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: si-LK
+
+App name:
+Doc Translate
+
+Short description:
+AI මගින් පාසල් වැඩ පත්‍රිකා පරිවර්තනය කර පන්තිය සමඟ බෙදාගන්න
+
+Full description:
+Doc Translate ඕනෑම පාසල් වැඩ පත්‍රිකාවක් තත්පර කිහිපයකින් පිළිවෙළට පරිවර්තනය කළ පිටපතක් බවට පත් කරයි, එවිට සෑම සිසුවෙකුටම නිවසේ කුමන භාෂාවක් කතා කළත් වැඩය තේරුම් ගත හැක.
+
+📄 ඕනෑම වැඩ පත්‍රිකාවක් පරිවර්තනය කරන්න
+• PDF, Word ගොනුවක්, PowerPoint හෝ මුද්‍රිත පත්‍රිකාවක ඡායාරූපයක් උඩුගත කරන්න
+• AI පිටුව කියවා ඔබ තෝරන භාෂාවෙන් පිළිවෙළට සැකසූ වැඩ පත්‍රිකාවක් ලෙස නැවත සාදයි
+• PDF හෝ Word ලෙස බාගන්න, මුද්‍රණය කරන්න හෝ සබැඳියකින් බෙදාගන්න
+
+🏫 පන්ති කාමරය සඳහා
+• ගුරුවරු පන්ති සාදා පන්ති කේතයකින් සිසුන්ට ආරාධනා කරති
+• නියමිත දිනයක් සහිත පැවරුම් දෙන්න
+• සිසුන් යෙදුමෙන්ම වැඩ භාර දෙති
+• ගුරුවරු භාරදීම් බලා, ශ්‍රේණි ලබා දී, ප්‍රතිචාර ලියති
+
+🎒 සිසුන් සඳහා
+• වැඩ පත්‍රිකා ෆෝල්ඩරවල සංවිධානය කරන්න
+• ඔබේ අඛණ්ඩතාව පවත්වාගෙන ලාංඡන දිනන්න
+• මිත්‍රශීලී සහායක තනු අධ්‍යයන ඉඟි සහ යෙදුමේ කෙටි හැඳින්වීමක් ලබා දෙයි
+
+🌍 ඔබේ භාෂාවෙන්
+යෙදුම භාෂා 10 කින් ලබා ගත හැක: ඉංග්‍රීසි, චීන, ජපන්, කොරියානු, ප්‍රංශ, ජර්මන්, ඉතාලි, පෘතුගීසි, ස්පාඤ්ඤ සහ රුසියානු. ඉහළ තීරුවෙන් ඕනෑම වේලාවක මාරු කරන්න.
+
+🔒 සරල සහ පෞද්ගලික
+• ඔබේ Google ගිණුමෙන් ආරක්ෂිතව පුරන්න
+• ඔබේ වැඩ පත්‍රිකා ඔබට පමණක් පෙනේ, භාර දුන් විට ඔබේ ගුරුවරයාටද
+• සැකසීම් වෙතින් ඕනෑම වේලාවක ගිණුම සහ සියලු දත්ත මකන්න
+
+දුරකථනය, ටැබ්ලටය සහ පරිගණකය මත ක්‍රියා කරයි. වැඩ පත්‍රිකා සියලු උපාංගවල සමමුහුර්ත වේ.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: th
+
+App name:
+Doc Translate
+
+Short description:
+แปลใบงานโรงเรียนด้วย AI และแชร์ให้ชั้นเรียนเพื่อตรวจให้คะแนน
+
+Full description:
+Doc Translate เปลี่ยนใบงานโรงเรียนใดก็ได้ให้เป็นฉบับแปลที่เรียบร้อยภายในไม่กี่วินาที เพื่อให้นักเรียนทุกคนเข้าใจงาน ไม่ว่าจะพูดภาษาอะไรที่บ้าน
+
+📄 แปลใบงานได้ทุกแบบ
+• อัปโหลด PDF ไฟล์ Word PowerPoint หรือรูปถ่ายใบงานที่พิมพ์ออกมา
+• AI อ่านหน้าเอกสารและสร้างใหม่เป็นใบงานที่จัดรูปแบบสวยงามในภาษาที่คุณเลือก
+• ดาวน์โหลดเป็น PDF หรือ Word พิมพ์ หรือแชร์ด้วยลิงก์
+
+🏫 สร้างมาเพื่อห้องเรียน
+• ครูสร้างชั้นเรียนและเชิญนักเรียนด้วยรหัสชั้นเรียน
+• มอบหมายงานพร้อมกำหนดส่ง
+• นักเรียนส่งงานได้โดยตรงจากแอป
+• ครูดูงานที่ส่ง ให้คะแนน และตอบกลับด้วยความคิดเห็น
+
+🎒 สำหรับนักเรียน
+• จัดใบงานเป็นโฟลเดอร์
+• ติดตามสถิติต่อเนื่องและรับเหรียญตรา
+• ทานุ ผู้ช่วยแสนใจดีให้เคล็ดลับการเรียนและพาชมแอป
+
+🌍 ในภาษาของคุณ
+แอปมีให้ใช้ 10 ภาษา ได้แก่ อังกฤษ จีน ญี่ปุ่น เกาหลี ฝรั่งเศส เยอรมัน อิตาลี โปรตุเกส สเปน และรัสเซีย เปลี่ยนได้ทุกเมื่อจากแถบด้านบน
+
+🔒 ง่ายและเป็นส่วนตัว
+• ลงชื่อเข้าใช้อย่างปลอดภัยด้วยบัญชี Google
+• ใบงานของคุณเห็นได้เฉพาะคุณ และครูเมื่อคุณส่งงาน
+• ลบบัญชีและข้อมูลทั้งหมดได้ทุกเมื่อในการตั้งค่า
+
+ใช้งานได้บนโทรศัพท์ แท็บเล็ต และคอมพิวเตอร์ ใบงานซิงค์ในทุกอุปกรณ์
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: vi
+
+App name:
+Doc Translate
+
+Short description:
+Dịch phiếu bài tập ở trường bằng AI và chia sẻ với lớp để chấm điểm
+
+Full description:
+Doc Translate biến bất kỳ phiếu bài tập nào thành bản dịch gọn gàng chỉ trong vài giây, để mọi học sinh đều hiểu bài, dù ở nhà nói ngôn ngữ nào.
+
+📄 DỊCH MỌI PHIẾU BÀI TẬP
+• Tải lên PDF, tệp Word, PowerPoint hoặc ảnh chụp phiếu đã in
+• AI đọc trang và dựng lại thành phiếu bài tập trình bày đẹp bằng ngôn ngữ bạn chọn
+• Tải xuống dạng PDF hoặc Word, in ra hoặc chia sẻ bằng đường liên kết
+
+🏫 DÀNH CHO LỚP HỌC
+• Giáo viên tạo lớp và mời học sinh bằng mã lớp
+• Giao bài tập có hạn nộp
+• Học sinh nộp bài ngay trong ứng dụng
+• Giáo viên xem bài nộp, chấm điểm và phản hồi nhận xét
+
+🎒 DÀNH CHO HỌC SINH
+• Sắp xếp phiếu bài tập vào thư mục
+• Theo dõi chuỗi ngày học và nhận huy hiệu
+• Trợ lý thân thiện Tanu đưa mẹo học tập và giới thiệu nhanh ứng dụng
+
+🌍 BẰNG NGÔN NGỮ CỦA BẠN
+Ứng dụng có 10 ngôn ngữ: tiếng Anh, Trung, Nhật, Hàn, Pháp, Đức, Ý, Bồ Đào Nha, Tây Ban Nha và Nga. Đổi bất cứ lúc nào từ thanh trên cùng.
+
+🔒 ĐƠN GIẢN VÀ RIÊNG TƯ
+• Đăng nhập an toàn bằng tài khoản Google
+• Chỉ bạn thấy phiếu bài tập của mình, và giáo viên khi bạn nộp
+• Xóa tài khoản và toàn bộ dữ liệu bất cứ lúc nào trong Cài đặt
+
+Dùng được trên điện thoại, máy tính bảng và máy tính. Phiếu bài tập được đồng bộ trên mọi thiết bị.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: id
+
+App name:
+Doc Translate
+
+Short description:
+Terjemahkan lembar kerja sekolah dengan AI dan bagikan ke kelas untuk dinilai
+
+Full description:
+Doc Translate mengubah lembar kerja sekolah apa pun menjadi salinan terjemahan yang rapi dalam hitungan detik, agar setiap siswa memahami tugasnya, apa pun bahasa yang dipakai di rumah.
+
+📄 TERJEMAHKAN LEMBAR KERJA APA PUN
+• Unggah PDF, file Word, PowerPoint, atau foto lembar cetak
+• AI membaca halaman dan menyusunnya ulang menjadi lembar kerja rapi dalam bahasa pilihan Anda
+• Unduh sebagai PDF atau Word, cetak, atau bagikan lewat tautan
+
+🏫 DIBUAT UNTUK KELAS
+• Guru membuat kelas dan mengundang siswa dengan kode kelas
+• Berikan tugas dengan tenggat waktu
+• Siswa mengumpulkan tugas langsung dari aplikasi
+• Guru melihat kiriman, memberi nilai, dan membalas dengan masukan
+
+🎒 UNTUK SISWA
+• Atur lembar kerja dalam folder
+• Pantau rangkaian belajarmu dan raih lencana
+• Tanu, si pembantu ramah, memberi tips belajar dan tur singkat aplikasi
+
+🌍 DALAM BAHASAMU
+Aplikasi tersedia dalam 10 bahasa: Inggris, Mandarin, Jepang, Korea, Prancis, Jerman, Italia, Portugis, Spanyol, dan Rusia. Ganti kapan saja dari bilah atas.
+
+🔒 SEDERHANA DAN PRIBADI
+• Masuk dengan aman menggunakan akun Google
+• Lembar kerjamu hanya terlihat olehmu, dan oleh guru saat kamu kumpulkan
+• Hapus akun dan semua data kapan saja dari Setelan
+
+Berfungsi di ponsel, tablet, dan komputer. Lembar kerja disinkronkan di semua perangkat.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ms
+
+App name:
+Doc Translate
+
+Short description:
+Terjemah lembaran kerja sekolah dengan AI dan kongsi dengan kelas untuk dinilai
+
+Full description:
+Doc Translate menukar mana-mana lembaran kerja sekolah kepada salinan terjemahan yang kemas dalam beberapa saat, supaya setiap pelajar faham tugasan, walau apa pun bahasa yang dituturkan di rumah.
+
+📄 TERJEMAH MANA-MANA LEMBARAN KERJA
+• Muat naik PDF, fail Word, PowerPoint atau foto lembaran bercetak
+• AI membaca halaman dan membinanya semula sebagai lembaran kerja yang kemas dalam bahasa pilihan anda
+• Muat turun sebagai PDF atau Word, cetak atau kongsi dengan pautan
+
+🏫 DIBINA UNTUK BILIK DARJAH
+• Guru mencipta kelas dan menjemput pelajar dengan kod kelas
+• Beri tugasan dengan tarikh akhir
+• Pelajar menghantar kerja terus dari aplikasi
+• Guru melihat hantaran, memberi gred dan membalas dengan maklum balas
+
+🎒 UNTUK PELAJAR
+• Susun lembaran kerja dalam folder
+• Jejak rentetan anda dan kumpul lencana
+• Tanu, pembantu yang mesra, memberi tip belajar dan lawatan ringkas aplikasi
+
+🌍 DALAM BAHASA ANDA
+Aplikasi tersedia dalam 10 bahasa: Inggeris, Cina, Jepun, Korea, Perancis, Jerman, Itali, Portugis, Sepanyol dan Rusia. Tukar bila-bila masa dari bar atas.
+
+🔒 MUDAH DAN PERIBADI
+• Log masuk dengan selamat menggunakan akaun Google
+• Hanya anda boleh melihat lembaran kerja anda, dan guru apabila anda menghantarnya
+• Padam akaun dan semua data bila-bila masa dalam Tetapan
+
+Berfungsi pada telefon, tablet dan komputer. Lembaran kerja disegerakkan merentas semua peranti.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: ms-MY
+
+App name:
+Doc Translate
+
+Short description:
+Terjemah lembaran kerja sekolah dengan AI dan kongsi dengan kelas untuk dinilai
+
+Full description:
+Doc Translate menukar mana-mana lembaran kerja sekolah kepada salinan terjemahan yang kemas dalam beberapa saat, supaya setiap pelajar faham tugasan, walau apa pun bahasa yang dituturkan di rumah.
+
+📄 TERJEMAH MANA-MANA LEMBARAN KERJA
+• Muat naik PDF, fail Word, PowerPoint atau foto lembaran bercetak
+• AI membaca halaman dan membinanya semula sebagai lembaran kerja yang kemas dalam bahasa pilihan anda
+• Muat turun sebagai PDF atau Word, cetak atau kongsi dengan pautan
+
+🏫 DIBINA UNTUK BILIK DARJAH
+• Guru mencipta kelas dan menjemput pelajar dengan kod kelas
+• Beri tugasan dengan tarikh akhir
+• Pelajar menghantar kerja terus dari aplikasi
+• Guru melihat hantaran, memberi gred dan membalas dengan maklum balas
+
+🎒 UNTUK PELAJAR
+• Susun lembaran kerja dalam folder
+• Jejak rentetan anda dan kumpul lencana
+• Tanu, pembantu yang mesra, memberi tip belajar dan lawatan ringkas aplikasi
+
+🌍 DALAM BAHASA ANDA
+Aplikasi tersedia dalam 10 bahasa: Inggeris, Cina, Jepun, Korea, Perancis, Jerman, Itali, Portugis, Sepanyol dan Rusia. Tukar bila-bila masa dari bar atas.
+
+🔒 MUDAH DAN PERIBADI
+• Log masuk dengan selamat menggunakan akaun Google
+• Hanya anda boleh melihat lembaran kerja anda, dan guru apabila anda menghantarnya
+• Padam akaun dan semua data bila-bila masa dalam Tetapan
+
+Berfungsi pada telefon, tablet dan komputer. Lembaran kerja disegerakkan merentas semua peranti.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: fil
+
+App name:
+Doc Translate
+
+Short description:
+Isalin ang worksheets ng paaralan gamit ang AI at ibahagi sa klase
+
+Full description:
+Ginagawa ng Doc Translate ang anumang worksheet ng paaralan na malinis at isinaling kopya sa loob ng ilang segundo, para maintindihan ng bawat estudyante ang gawain, anuman ang wikang sinasalita nila sa bahay.
+
+📄 ISALIN ANG ANUMANG WORKSHEET
+• Mag-upload ng PDF, Word file, PowerPoint o litrato ng naka-print na sheet
+• Binabasa ng AI ang pahina at binubuo itong muli bilang maayos na worksheet sa wikang pipiliin mo
+• I-download bilang PDF o Word, i-print, o ibahagi gamit ang link
+
+🏫 GINAWA PARA SA SILID-ARALAN
+• Gumagawa ang mga guro ng klase at nag-iimbita ng mga estudyante gamit ang class code
+• Magbigay ng takdang-aralin na may deadline
+• Direktang nagsusumite ang mga estudyante mula sa app
+• Tinitingnan ng mga guro ang mga isinumite, nagbibigay ng grado at sumasagot ng feedback
+
+🎒 PARA SA MGA ESTUDYANTE
+• Ayusin ang worksheets sa mga folder
+• Subaybayan ang iyong streak at kumita ng mga badge
+• Nagbibigay si Tanu, ang magiliw na katulong, ng study tips at mabilis na tour ng app
+
+🌍 SA IYONG WIKA
+Available ang app sa 10 wika: English, Chinese, Japanese, Korean, French, German, Italian, Portuguese, Spanish at Russian. Palitan kahit kailan mula sa itaas na bar.
+
+🔒 SIMPLE AT PRIBADO
+• Mag-sign in nang ligtas gamit ang iyong Google account
+• Ikaw lang ang nakakakita ng iyong worksheets, at ang guro mo kapag isinumite mo
+• Burahin ang iyong account at lahat ng data kahit kailan sa Settings
+
+Gumagana sa phone, tablet at computer. Naka-sync ang iyong worksheets sa lahat ng device.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: my-MM
+
+App name:
+Doc Translate
+
+Short description:
+ကျောင်းလေ့ကျင့်ခန်းစာရွက်များကို AI ဖြင့် ဘာသာပြန်ပြီး အတန်းနှင့် မျှဝေပါ
+
+Full description:
+Doc Translate သည် မည်သည့် ကျောင်းလေ့ကျင့်ခန်းစာရွက်ကိုမဆို စက္ကန့်ပိုင်းအတွင်း သပ်ရပ်သော ဘာသာပြန်မိတ္တူအဖြစ် ပြောင်းပေးသဖြင့် ကျောင်းသားတိုင်း အိမ်တွင် မည်သည့်ဘာသာစကား ပြောသည်ဖြစ်စေ အလုပ်ကို နားလည်နိုင်ပါသည်။
+
+📄 မည်သည့်စာရွက်ကိုမဆို ဘာသာပြန်ပါ
+• PDF၊ Word ဖိုင်၊ PowerPoint သို့မဟုတ် ပုံနှိပ်စာရွက်၏ ဓာတ်ပုံကို တင်ပါ
+• AI က စာမျက်နှာကို ဖတ်ပြီး သင်ရွေးသော ဘာသာစကားဖြင့် သပ်ရပ်သော စာရွက်အဖြစ် ပြန်လည်ဖန်တီးပေးသည်
+• PDF သို့မဟုတ် Word အဖြစ် ဒေါင်းလုဒ်လုပ်ပါ၊ ပုံနှိပ်ပါ သို့မဟုတ် လင့်ခ်ဖြင့် မျှဝေပါ
+
+🏫 စာသင်ခန်းအတွက်
+• ဆရာများက အတန်းများ ဖန်တီးပြီး အတန်းကုဒ်ဖြင့် ကျောင်းသားများကို ဖိတ်ခေါ်သည်
+• နောက်ဆုံးရက်ပါသော အိမ်စာများ ပေးပါ
+• ကျောင်းသားများက အက်ပ်မှ တိုက်ရိုက် တင်သွင်းသည်
+• ဆရာများက တင်သွင်းမှုများကို ကြည့်ရှုပြီး အမှတ်ပေး၍ အကြံပြုချက် ရေးသည်
+
+🎒 ကျောင်းသားများအတွက်
+• စာရွက်များကို ဖိုင်တွဲများတွင် စီစဉ်ပါ
+• သင့်ဆက်တိုက်မှတ်တမ်းကို ထိန်းပြီး တံဆိပ်များ ရယူပါ
+• ဖော်ရွေသော အကူ Tanu က လေ့လာရေးအကြံဉာဏ်နှင့် အက်ပ်လမ်းညွှန်ပေးသည်
+
+🌍 သင့်ဘာသာစကားဖြင့်
+အက်ပ်ကို ဘာသာစကား 10 မျိုးဖြင့် ရနိုင်သည်- အင်္ဂလိပ်၊ တရုတ်၊ ဂျပန်၊ ကိုရီးယား၊ ပြင်သစ်၊ ဂျာမန်၊ အီတလီ၊ ပေါ်တူဂီ၊ စပိန်နှင့် ရုရှား။ အပေါ်ဘားမှ အချိန်မရွေး ပြောင်းနိုင်သည်။
+
+🔒 ရိုးရှင်းပြီး သီးသန့်
+• သင့် Google အကောင့်ဖြင့် လုံခြုံစွာ ဝင်ပါ
+• သင့်စာရွက်များကို သင်သာ မြင်ရပြီး တင်သွင်းပါက ဆရာလည်း မြင်ရသည်
+• ဆက်တင်များမှ အချိန်မရွေး အကောင့်နှင့် ဒေတာအားလုံး ဖျက်နိုင်သည်
+
+ဖုန်း၊ တက်ဘလက်နှင့် ကွန်ပျူတာတွင် အလုပ်လုပ်သည်။ စာရွက်များကို စက်ပစ္စည်းအားလုံးတွင် စင့်ခ်လုပ်သည်။
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: km-KH
+
+App name:
+Doc Translate
+
+Short description:
+បកប្រែសន្លឹកកិច្ចការសាលាដោយ AI ហើយចែករំលែកជាមួយថ្នាក់
+
+Full description:
+Doc Translate បំប្លែងសន្លឹកកិច្ចការសាលាណាមួយទៅជាច្បាប់ចម្លងបកប្រែដ៏ស្អាតក្នុងរយៈពេលប៉ុន្មានវិនាទី ដើម្បីឱ្យសិស្សគ្រប់រូបយល់ពីកិច្ចការ មិនថាពួកគេនិយាយភាសាអ្វីនៅផ្ទះទេ។
+
+📄 បកប្រែសន្លឹកកិច្ចការណាមួយ
+• ផ្ទុកឡើង PDF ឯកសារ Word PowerPoint ឬរូបថតសន្លឹកដែលបានបោះពុម្ព
+• AI អានទំព័រ ហើយបង្កើតវាឡើងវិញជាសន្លឹកកិច្ចការដ៏ស្អាតជាភាសាដែលអ្នកជ្រើសរើស
+• ទាញយកជា PDF ឬ Word បោះពុម្ព ឬចែករំលែកតាមតំណ
+
+🏫 សម្រាប់ថ្នាក់រៀន
+• គ្រូបង្កើតថ្នាក់ ហើយអញ្ជើញសិស្សដោយលេខកូដថ្នាក់
+• ផ្តល់កិច្ចការដែលមានថ្ងៃផុតកំណត់
+• សិស្សដាក់ស្នើកិច្ចការដោយផ្ទាល់ពីកម្មវិធី
+• គ្រូមើលកិច្ចការដែលបានដាក់ស្នើ ដាក់ពិន្ទុ និងឆ្លើយតបជាមតិ
+
+🎒 សម្រាប់សិស្ស
+• រៀបចំសន្លឹកកិច្ចការក្នុងថត
+• តាមដានស៊េរីរបស់អ្នក ហើយទទួលបានស្លាកសញ្ញា
+• Tanu ជំនួយការដ៏រួសរាយ ផ្តល់គន្លឹះសិក្សា និងណែនាំកម្មវិធីយ៉ាងខ្លី
+
+🌍 ជាភាសារបស់អ្នក
+កម្មវិធីមាន 10 ភាសា៖ អង់គ្លេស ចិន ជប៉ុន កូរ៉េ បារាំង អាល្លឺម៉ង់ អ៊ីតាលី ព័រទុយហ្គាល់ អេស្ប៉ាញ និងរុស្ស៊ី។ ប្តូរបានគ្រប់ពេលពីរបារខាងលើ។
+
+🔒 សាមញ្ញ និងឯកជន
+• ចូលដោយសុវត្ថិភាពជាមួយគណនី Google
+• មានតែអ្នកទេដែលឃើញសន្លឹកកិច្ចការរបស់អ្នក ហើយគ្រូពេលអ្នកដាក់ស្នើ
+• លុបគណនី និងទិន្នន័យទាំងអស់បានគ្រប់ពេលនៅក្នុងការកំណត់
+
+ដំណើរការលើទូរសព្ទ ថេប្លេត និងកុំព្យូទ័រ។ សន្លឹកកិច្ចការធ្វើសមកាលកម្មលើឧបករណ៍ទាំងអស់។
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: lo-LA
+
+App name:
+Doc Translate
+
+Short description:
+ແປໃບວຽກໂຮງຮຽນດ້ວຍ AI ແລະແບ່ງປັນໃຫ້ຫ້ອງຮຽນເພື່ອໃຫ້ຄະແນນ
+
+Full description:
+Doc Translate ປ່ຽນໃບວຽກໂຮງຮຽນໃດກໍໄດ້ໃຫ້ເປັນສະບັບແປທີ່ເປັນລະບຽບພາຍໃນບໍ່ເທົ່າໃດວິນາທີ ເພື່ອໃຫ້ນັກຮຽນທຸກຄົນເຂົ້າໃຈວຽກ ບໍ່ວ່າຈະເວົ້າພາສາໃດຢູ່ເຮືອນ.
+
+📄 ແປໃບວຽກໃດກໍໄດ້
+• ອັບໂຫຼດ PDF, ໄຟລ໌ Word, PowerPoint ຫຼືຮູບຖ່າຍໃບວຽກທີ່ພິມອອກ
+• AI ອ່ານໜ້າເອກະສານ ແລະສ້າງໃໝ່ເປັນໃບວຽກທີ່ຈັດຮູບແບບງາມໃນພາສາທີ່ທ່ານເລືອກ
+• ດາວໂຫຼດເປັນ PDF ຫຼື Word, ພິມ ຫຼືແບ່ງປັນດ້ວຍລິ້ງ
+
+🏫 ສຳລັບຫ້ອງຮຽນ
+• ຄູສ້າງຫ້ອງຮຽນ ແລະເຊີນນັກຮຽນດ້ວຍລະຫັດຫ້ອງ
+• ມອບວຽກພ້ອມກຳນົດສົ່ງ
+• ນັກຮຽນສົ່ງວຽກໂດຍກົງຈາກແອັບ
+• ຄູເບິ່ງວຽກທີ່ສົ່ງ, ໃຫ້ຄະແນນ ແລະຕອບກັບຄຳຄິດເຫັນ
+
+🎒 ສຳລັບນັກຮຽນ
+• ຈັດໃບວຽກເປັນໂຟນເດີ
+• ຕິດຕາມສະຖິຕິຕໍ່ເນື່ອງ ແລະຮັບຫຼຽນ
+• Tanu ຜູ້ຊ່ວຍທີ່ເປັນມິດໃຫ້ເຄັດລັບການຮຽນ ແລະພາຊົມແອັບ
+
+🌍 ໃນພາສາຂອງທ່ານ
+ແອັບມີ 10 ພາສາ: ອັງກິດ, ຈີນ, ຍີ່ປຸ່ນ, ເກົາຫຼີ, ຝຣັ່ງ, ເຢຍລະມັນ, ອີຕາລີ, ປອກຕຸຍການ, ແອສປາໂຍນ ແລະຣັດເຊຍ. ປ່ຽນໄດ້ທຸກເວລາຈາກແຖບດ້ານເທິງ.
+
+🔒 ງ່າຍ ແລະເປັນສ່ວນຕົວ
+• ເຂົ້າສູ່ລະບົບຢ່າງປອດໄພດ້ວຍບັນຊີ Google
+• ໃບວຽກຂອງທ່ານເຫັນໄດ້ສະເພາະທ່ານ ແລະຄູເມື່ອທ່ານສົ່ງ
+• ລຶບບັນຊີ ແລະຂໍ້ມູນທັງໝົດໄດ້ທຸກເວລາໃນການຕັ້ງຄ່າ
+
+ໃຊ້ໄດ້ໃນໂທລະສັບ, ແທັບເລັດ ແລະຄອມພິວເຕີ. ໃບວຽກຊິງຄ໌ໃນທຸກອຸປະກອນ.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: sw
+
+App name:
+Doc Translate
+
+Short description:
+Tafsiri karatasi za kazi za shule kwa AI na uzishiriki na darasa
+
+Full description:
+Doc Translate hubadilisha karatasi yoyote ya kazi ya shule kuwa nakala safi iliyotafsiriwa kwa sekunde chache, ili kila mwanafunzi aelewe kazi, haijalishi anazungumza lugha gani nyumbani.
+
+📄 TAFSIRI KARATASI YOYOTE YA KAZI
+• Pakia PDF, faili la Word, PowerPoint au picha ya karatasi iliyochapishwa
+• AI husoma ukurasa na kuuunda upya kama karatasi nadhifu katika lugha unayochagua
+• Pakua kama PDF au Word, chapisha au shiriki kwa kiungo
+
+🏫 IMEUNDWA KWA DARASA
+• Walimu huunda madarasa na kuwaalika wanafunzi kwa msimbo wa darasa
+• Toa kazi zenye tarehe ya mwisho
+• Wanafunzi huwasilisha kazi moja kwa moja kwenye programu
+• Walimu huona kazi zilizowasilishwa, hutoa alama na kujibu kwa maoni
+
+🎒 KWA WANAFUNZI
+• Panga karatasi za kazi kwenye folda
+• Fuatilia mfululizo wako na upate beji
+• Tanu, msaidizi rafiki, hutoa vidokezo vya kusoma na ziara fupi ya programu
+
+🌍 KWA LUGHA YAKO
+Programu inapatikana kwa lugha 10: Kiingereza, Kichina, Kijapani, Kikorea, Kifaransa, Kijerumani, Kiitaliano, Kireno, Kihispania na Kirusi. Badilisha wakati wowote kwenye upau wa juu.
+
+🔒 RAHISI NA BINAFSI
+• Ingia kwa usalama ukitumia akaunti yako ya Google
+• Karatasi zako zinaonekana kwako tu, na kwa mwalimu ukiziwasilisha
+• Futa akaunti yako na data yote wakati wowote kwenye Mipangilio
+
+Inafanya kazi kwenye simu, kompyuta kibao na kompyuta. Karatasi husawazishwa kwenye vifaa vyako vyote.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: am
+
+App name:
+Doc Translate
+
+Short description:
+የትምህርት ቤት የሥራ ወረቀቶችን በAI ተርጉመው ከክፍልዎ ጋር ያጋሩ
+
+Full description:
+Doc Translate ማንኛውንም የትምህርት ቤት የሥራ ወረቀት በጥቂት ሰከንዶች ውስጥ ወደ ንጹሕ የተተረጎመ ቅጂ ይቀይራል፤ ስለዚህ እያንዳንዱ ተማሪ በቤቱ የሚናገረው ቋንቋ ምንም ይሁን ሥራውን ይረዳል።
+
+📄 ማንኛውንም የሥራ ወረቀት ይተርጉሙ
+• PDF፣ የWord ፋይል፣ PowerPoint ወይም የታተመ ወረቀት ፎቶ ይስቀሉ
+• AI ገጹን አንብቦ በመረጡት ቋንቋ በሥርዓት የተቀረጸ የሥራ ወረቀት አድርጎ እንደገና ይሠራዋል
+• እንደ PDF ወይም Word ያውርዱ፣ ያትሙ ወይም በአገናኝ ያጋሩ
+
+🏫 ለክፍል የተሠራ
+• መምህራን ክፍሎችን ይፈጥራሉ እና ተማሪዎችን በክፍል ኮድ ይጋብዛሉ
+• የማስረከቢያ ቀን ያላቸው የቤት ሥራዎችን ይስጡ
+• ተማሪዎች ሥራቸውን በቀጥታ ከመተግበሪያው ያስረክባሉ
+• መምህራን የተረከቡ ሥራዎችን ያያሉ፣ ውጤት ይሰጣሉ እና አስተያየት ይጽፋሉ
+
+🎒 ለተማሪዎች
+• የሥራ ወረቀቶችን በአቃፊዎች ያደራጁ
+• ተከታታይነትዎን ይከታተሉ እና ባጆችን ያግኙ
+• ወዳጃዊው ረዳት ታኑ የጥናት ምክሮችን እና የመተግበሪያውን አጭር ጉብኝት ይሰጣል
+
+🌍 በቋንቋዎ
+መተግበሪያው በ10 ቋንቋዎች ይገኛል፦ እንግሊዝኛ፣ ቻይንኛ፣ ጃፓንኛ፣ ኮሪያኛ፣ ፈረንሳይኛ፣ ጀርመንኛ፣ ጣሊያንኛ፣ ፖርቱጋልኛ፣ ስፓኒሽ እና ሩሲያኛ። ከላይኛው አሞሌ በማንኛውም ጊዜ ይቀይሩ።
+
+🔒 ቀላል እና ግላዊ
+• በGoogle መለያዎ በደህንነት ይግቡ
+• የሥራ ወረቀቶችዎን የሚያዩት እርስዎ ብቻ ነዎት፤ ሲያስረክቡ ደግሞ መምህርዎ
+• መለያዎን እና ሁሉንም ውሂብ በማንኛውም ጊዜ ከቅንብሮች ይሰርዙ
+
+በስልክ፣ በታብሌት እና በኮምፒውተር ይሠራል። የሥራ ወረቀቶች በሁሉም መሣሪያዎች ይመሳሰላሉ።
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
+
+============================================================
+Language: zu
+
+App name:
+Doc Translate
+
+Short description:
+Humusha amashidi omsebenzi wesikole nge-AI bese uwabelana nekilasi
+
+Full description:
+I-Doc Translate iguqula noma yiliphi ishidi lomsebenzi wesikole libe yikhophi ehunyushiwe ecocekile ngemizuzwana embalwa, ukuze wonke umfundi aqonde umsebenzi, noma ngabe ukhuluma luphi ulimi ekhaya.
+
+📄 HUMUSHA NOMA YILIPHI ISHIDI
+• Layisha i-PDF, ifayela le-Word, i-PowerPoint noma isithombe seshidi eliphrintiwe
+• I-AI ifunda ikhasi bese ilakha kabusha njengeshidi elihlelwe kahle ngolimi olukhethayo
+• Landa njenge-PDF noma i-Word, uphrinte, noma wabelane ngesixhumanisi
+
+🏫 KWENZELWE IKILASI
+• Othisha bakha amakilasi futhi bamema abafundi ngekhodi yekilasi
+• Nikeza imisebenzi enosuku lokugcina
+• Abafundi bahambisa umsebenzi wabo ngqo ku-app
+• Othisha babona imisebenzi ehanjisiwe, banikeze amamaki futhi baphendule ngempendulo
+
+🎒 KWABAFUNDI
+• Hlela amashidi emafolda
+• Landelela uchungechunge lwakho futhi uthole amabheji
+• UTanu, umsizi onobungane, unikeza amathiphu okufunda nohambo olufushane lwe-app
+
+🌍 NGOLIMI LWAKHO
+I-app iyatholakala ngezilimi eziyi-10: IsiNgisi, IsiShayina, IsiJapane, IsiKorea, IsiFulentshi, IsiJalimane, IsiNtaliyane, IsiPutukezi, IsiSpanishi nesiRashiya. Shintsha noma nini kubha engenhla.
+
+🔒 KULULA FUTHI KUYIMFIHLO
+• Ngena ngokuphephile nge-akhawunti yakho ye-Google
+• Amashidi akho abonwa nguwe kuphela, nanguthisha wakho uma uwahambisa
+• Susa i-akhawunti yakho nayo yonke idatha noma nini kuZilungiselelo
+
+Isebenza efonini, kuthebhulethi nasekhompyutheni. Amashidi akho avumelaniswa kuzo zonke izisetshenziswa.
+
+Privacy policy: https://doc-translate.netlify.app/privacy.html
