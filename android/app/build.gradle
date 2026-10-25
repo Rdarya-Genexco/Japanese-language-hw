@@ -13,12 +13,12 @@ def keystorePath = System.getenv('ANDROID_KEYSTORE_PATH')
 
 android {
     namespace 'app.netlify.doctranslate'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId 'app.netlify.doctranslate'
-        minSdk 21
-        targetSdk 34
+        minSdk 24
+        targetSdk 36
         versionCode major * 10000 + minor * 100 + patch
         versionName appVersion
     }
